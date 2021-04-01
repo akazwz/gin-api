@@ -1,12 +1,6 @@
 package util
 
-import (
-	"github.com/akaedison/go-gin-demo/global"
-	"go.uber.org/zap"
-	"os"
-)
-
-func PathExist(path string) (bool, error) {
+/*func PathExist(path string) (bool, error) {
 	_, err := os.Stat(path)
 	if err == nil {
 		return true, nil
@@ -15,9 +9,9 @@ func PathExist(path string) (bool, error) {
 		return false, nil
 	}
 	return false, err
-}
+}*/
 
-func CreateDir(dirs ...string) (err error) {
+/*func CreateDir(dirs ...string) (err error) {
 	for _, v := range dirs {
 		exist, err := PathExist(v)
 		if err != nil {
@@ -32,4 +26,4 @@ func CreateDir(dirs ...string) (err error) {
 		}
 	}
 	return err
-}
+}*/
