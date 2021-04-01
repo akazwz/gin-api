@@ -3,9 +3,8 @@ module github.com/akaedison/go-gin-demo
 go 1.16
 
 replace (
-	github.com/akaedison/go-gin-demo/conf => ./config
 	github.com/akaedison/go-gin-demo/middleware => ../go-gin-demo/middleware
-	github.com/akaedison/go-gin-demo/models => ./model
+	github.com/akaedison/go-gin-demo/model => ./model
 	github.com/akaedison/go-gin-demo/pkg/e => ../go-gin-demo/pkg/e
 	github.com/akaedison/go-gin-demo/pkg/setting => ../go-gin-demo/pkg/setting
 	github.com/akaedison/go-gin-demo/pkg/util => ../go-gin-demo/pkg/util

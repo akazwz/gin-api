@@ -1,0 +1,29 @@
+run_mode :
+  mode: debug
+
+app:
+  page_size : 10
+  jwt_secret : 345345&ert
+
+server:
+  port: 8000
+  read_timeout: 60
+  write_timeout: 60
+
+database:
+  type: mysql
+  user: root
+  password: 123456
+  host: localhost:3306
+  name: go
+
+zap:
+  level: 'info'
+  format: 'console'
+  prefix: '[AKA_ZWZ]'
+  director: 'log'
+  link-name: 'latest_log'
+  show-line: true
+  encode-level: 'LowercaseColorLevelEncoder'
+  stacktrace-key: 'stacktrace'
+  log-in-console: true
