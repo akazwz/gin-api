@@ -7,15 +7,16 @@ import (
 	"net/http"
 )
 
-func InitUserRouter(Router *gin.RouterGroup)  {
+func InitUserRouter(Router *gin.RouterGroup) {
 	UserRouter := Router.Group("user")
 	{
+		user := &model.User{}
 		UserRouter.GET("/get", func(c *gin.Context) {
-			global.GDB.Where("`id` = ?", 1).First(&model.User{})
+			global.GDB.First(user)
 			c.JSON(http.StatusOK, gin.H{
-				"code" : 200,
-				"msg" : "success",
-				"data" : &model.User{},
+				"code": 200,
+				"msg":  "success",
+				"data": user,
 			})
 		})
 	}
