@@ -6,6 +6,7 @@ replace (
 	github.com/akaedison/go-gin-demo/model => ./model
 	github.com/akaedison/go-gin-demo/pkg/util => ../go-gin-demo/pkg/util
 	github.com/akaedison/go-gin-demo/routers => ../go-gin-demo/routers
+	github.com/akaedison/go-gin-demo/service => ../go-gin-demo/service
 )
 
 require (
