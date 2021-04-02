@@ -102,159 +102,38 @@ vim /etc/init.d/nginx
 ````
 
 ````shell
-# chkconfig:   - 85 15
-
-# description:  Nginx is an HTTP(S) server, HTTP(S) reverse \
-#               proxy and IMAP/POP3 proxy server
-
-# processname: nginx
-# config:      /usr/local/nginx/conf/nginx.conf
-# pidfile:     /usr/local/nginx/logs/nginx.pid
-
-# Source function library.
-
-. /etc/rc.d/init.d/functions
-
-# Source networking configuration.
-
-. /etc/sysconfig/network
-
-# Check that networking is up.
-
-[ "$NETWORKING" = "no" ] && exit 0
-
-nginx="/usr/local/soft/nginx/sbin/nginx"
-
-prog=(basename(basenamenginx)
-
-NGINX_CONF_FILE="/usr/local/soft/nginx/conf/nginx.conf"
-
-lockfile=/var/lock/subsys/nginx
-
-start() {
-
-[ -x $nginx ] || exit 5
-
-[ -f $NGINX_CONF_FILE ] || exit 6
-
-echo -n "Starting"Startingprog: "
-
-daemon nginx -cnginx−cNGINX_CONF_FILE
-
-retval=$?
-
-echo
-
-[ $retval -eq 0 ] && touch $lockfile
-
-return $retval
-
-}
-
-stop() {
-
-echo -n "Stopping"Stoppingprog: "
-
-killproc $prog -QUIT
-
-retval=$?
-
-echo
-
-[ $retval -eq 0 ] && rm -f $lockfile
-
-return $retval
-
-}
-
-restart() {
-
-configtest || return $?
-
-stop
-
-start
-
-}
-
-reload() {
-
-configtest || return $?
-
-echo -n "Reloading"Reloadingprog: "
-
-killproc $nginx -HUP
-
-RETVAL=$?
-
-echo
-
-}
-
-force_reload() {
-
-restart
-
-}
-
-configtest() {
-
-nginx -t -cnginx−t−cNGINX_CONF_FILE
-
-}
-
-rh_status() {
-
-status $prog
-
-}
-
-rh_status_q() {
-
-rh_status >/dev/null 2>&1
-
-}
-
-case "$1" in
-
+#!/bin/bash
+#Startup script for the nginx Web Server
+#chkconfig: 2345 85 15
+nginx=/usr/local/soft/nginx/sbin/nginx
+conf=/usr/local/soft/nginx/conf/nginx.conf
+case $1 in
 start)
-
-rh_status_q && exit 0
-        $1
-        ;;
-
+echo -n "Starting Nginx"
+$nginx -c $conf
+echo " done."
+;;
 stop)
-
-rh_status_q || exit 0
-        $1
-        ;;
-
-restart|configtest)
-        $1
-        ;;
-
+echo -n "Stopping Nginx"
+killall -9 nginx
+echo " done."
+;;
+test)
+$nginx -t -c $conf
+echo "Success."
+;;
 reload)
-        rh_status_q || exit 7
-        $1
-        ;;
-
-force-reload)
-        force_reload
-        ;;
-    status)
-        rh_status
-        ;;
-
-condrestart|try-restart)
-
-rh_status_q || exit 0
-            ;;
-
+echo -n "Reloading Nginx"
+ps auxww | grep nginx | grep master | awk '{print $2}' | xargs kill -HUP
+echo " done."
+;;
+restart)
+$nginx -s reload
+echo "reload done."
+;;
 *)
-
-echo "Usage:"Usage:0 {start|stop|status|restart|condrestart|try-restart|reload|force-reload|configtest}"
-        exit 2
-
+echo "Usage: $0 {start|restart|reload|stop|test|show}"
+;;
 esac
 
 ````
