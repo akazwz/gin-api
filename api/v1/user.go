@@ -19,6 +19,7 @@ func Login(c *gin.Context) {
 	u := &model.User{Username: login.Username, Password: login.Password}
 	if err, _ := service.Login(u); err != nil {
 		response.FailWithMessage("Username Or Password Wrong", c)
+		return
 	}
 
 	response.OkWithDetail(login, "Login Success", c)

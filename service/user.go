@@ -23,6 +23,7 @@ func Register(u model.User) (err error, userInter model.User) {
 
 func Login(u *model.User) (err error, userInter *model.User) {
 	var user model.User
+	u.Password = util.MD5V([]byte(u.Password))
 	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Error
 	return err, &user
 }
