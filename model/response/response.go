@@ -29,6 +29,5 @@ func OkWithDetail(data interface{}, message string, c *gin.Context) {
 }
 
 func FailWithMessage(message string, c *gin.Context) {
-	c.Writer.Header().Set("Access-Control-Allow-Origin", "*")
 	Result(ERROR, map[string]interface{}{}, message, c)
 }
