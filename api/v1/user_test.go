@@ -51,5 +51,14 @@ func TestLogin(t *testing.T) {
 	}
 
 	str := (*string)(unsafe.Pointer(&respBytes))
-	fmt.Println(*str)
+
+	got := *str
+	want := `{"code":0,"data":{"username":"zwz","password":"123456"},"msg":"Login Success"}`
+
+	if got != want {
+		t.Errorf("got '%q' want '%q'", got, want)
+	}
+}
+
+func TestRegister(t *testing.T) {
 }
