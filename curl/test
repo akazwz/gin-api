@@ -1,9 +1,10 @@
+# login
 curl -v -X POST \
   http://localhost:8000/user/login \
   -H 'content-type: application/json' \
   -d '{ "username": "zwz", "password": "123456" }'
 
-
+# register
 curl -v -X POST \
   http://localhost:8000/user/register \
   -H 'content-type: application/json' \
