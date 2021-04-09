@@ -6,7 +6,6 @@ import (
 	"github.com/akaedison/go-gin-demo/initialize"
 )
 
-
 func main() {
 	//viper初始化配置
 	global.VP = initialize.InitViper()
@@ -28,6 +27,6 @@ func main() {
 	}
 
 	routers := initialize.Routers()
-	_ = routers.Run()
+	addr := fmt.Sprintf(":%d", global.CFG.Server.Addr)
+	_ = routers.Run(addr)
 }
-
