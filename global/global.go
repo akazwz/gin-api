@@ -13,4 +13,3 @@ var (
 	CFG config.Conf
 	LOG *zap.Logger
 )
-
