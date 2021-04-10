@@ -1,5 +1,5 @@
 ### 登陆接口
-POST localhost:8000/user/login
+POST {{host}}/user/login
 Content-Type: application/json
 
 {
@@ -8,7 +8,7 @@ Content-Type: application/json
 }
 
 ### 注册接口
-POST localhost:8000/user/register
+POST {{host}}/user/register
 Content-Type: application/json
 
 {
