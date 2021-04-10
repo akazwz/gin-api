@@ -5,7 +5,7 @@ app:
   page_size : 10
 
 server:
-  port: 8000
+  addr: 8000
   read_timeout: 60
   write_timeout: 60
 
