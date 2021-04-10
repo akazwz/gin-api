@@ -1,0 +1,17 @@
+### 登陆接口
+POST localhost:8000/user/login
+Content-Type: application/json
+
+{
+  "username" : "akazwz",
+  "password" : "123456"
+}
+
+### 注册接口
+POST localhost:8000/user/register
+Content-Type: application/json
+
+{
+  "username" : "zwz",
+  "password" : "123456"
+}
