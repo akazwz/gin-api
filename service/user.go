@@ -27,3 +27,17 @@ func Login(u *model.User) (err error, userInter *model.User) {
 	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Error
 	return err, &user
 }
+
+func FindUserByID(id int) (err error, user *model.User) {
+	var u model.User
+	err = global.GDB.Where("`id` = ?", id).First(&u).Error
+	return err, &u
+}
+
+func FindUserByUUID(uuid string) (err error, user *model.User) {
+	var u model.User
+	if err = global.GDB.Where("`uuid` = ?", uuid).First(&u).Error; err != nil {
+		return errors.New("user does not exist"), &u
+	}
+	return nil, &u
+}
