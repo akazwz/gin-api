@@ -1,0 +1,11 @@
+### add book
+POST {{host}}/book/add
+Content-Type: application/json
+token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiSUQiOjEsIlVzZXJuYW1lIjoiend6IiwiTmlja05hbWUiOiJ6d3oiLCJCdWZmZXJUaW1lIjowLCJleHAiOjE2MTg0ODY2NjcsImlzcyI6Inp3eiIsIm5iZiI6MTYxODQ4NTY2N30.L8ajKnn_po5jFIkbL_8M1aplmyJeshYx6xxfqSHS7uI
+
+{
+  "book_name" : "Time",
+  "author" : "zwz",
+  "price" : 37.7,
+  "introduction" : "A book about time"
+}

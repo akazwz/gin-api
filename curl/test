@@ -1,11 +1,18 @@
 # login
-curl -v -X POST \
-  http://localhost:8000/user/login \
+curl -v POST \
+  http://localhost:8000/base/login \
   -H 'content-type: application/json' \
   -d '{ "username": "zwz", "password": "123456" }'
 
 # register
-curl -v -X POST \
+curl -v POST \
   http://localhost:8000/user/register \
   -H 'content-type: application/json' \
   -d '{ "username": "zwz", "password": "123456" }'
+
+# book/add
+curl -v POST \
+  http://localhost:8000/book/add \
+  -H 'content-type: application/json' \
+  -H 'token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJVVUlEIjoiMDAwMDAwMDAtMDAwMC0wMDAwLTAwMDAtMDAwMDAwMDAwMDAwIiwiSUQiOjEsIlVzZXJuYW1lIjoiend6IiwiTmlja05hbWUiOiJ6d3oiLCJCdWZmZXJUaW1lIjowLCJleHAiOjE2MTg0ODY0MTgsImlzcyI6Inp3eiIsIm5iZiI6MTYxODQ4NTQxOH0.tGfomUUFbBEWebbg1pv0u-uo5_vN3KOQybGXqXf1FgQ' \
+  -d '{"book_name" : "Time","author" : "zwz","price" : "37.7","introduction" : "A book about time"}'

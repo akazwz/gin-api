@@ -1,5 +1,5 @@
 ### 登陆接口:成功
-POST {{host}}/user/login
+POST {{host}}/base/login
 Content-Type: application/json
 
 {

@@ -14,8 +14,8 @@ import (
 
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//jwt鉴权取头部信息 x-token,登录时返回token信息 前端进行存储
-		token := c.Request.Header.Get("x-token")
+		//jwt鉴权取头部信息 token,登录时返回token信息 前端进行存储
+		token := c.Request.Header.Get("token")
 		if token == "" {
 			response.FailWithMessage("Not Login", c)
 			c.Abort()
