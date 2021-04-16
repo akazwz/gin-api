@@ -2,32 +2,33 @@ run_mode :
   mode: debug
 
 app:
-  page_size : 10
+  pageSize : 10
 
 server:
+  mode: debug
   addr: 8000
-  read_timeout: 60
-  write_timeout: 60
+  readTimeout: 60
+  writeTimeout: 60
 
 database:
   type: mysql
   user: root
-  password: xxxxx
+  password: xxxx
   host: xx.xx.xx.xx:3306
   name: go
 
 jwt:
-  signing_key: 'dfg6Yf'
-  expires_time: 604800
-  buffer_time: 86400
+  signingKey: xxxxx
+  expiresTime: 604800
+  bufferTime: 86400
 
 zap:
   level: 'info'
   format: 'console'
   prefix: '[AKA_ZWZ]'
   director: 'log'
-  link_name: 'latest_log'
-  show_line: true
-  encode_level: 'LowercaseColorLevelEncoder'
-  stacktrace_key: 'stacktrace'
-  log_in_console: true
+  linkName: 'latest_log'
+  showLine: true
+  encodeLevel: 'LowercaseColorLevelEncoder'
+  stacktraceKey: 'stacktrace'
+  logInConsole: true

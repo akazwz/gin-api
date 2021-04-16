@@ -50,11 +50,12 @@ func TokenNext(c *gin.Context, user model.User) {
 		response.FailWithMessage("get token error", c)
 		return
 	}
+
 	response.OkWithDetail(response.LoginResponse{
 		User:      user,
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
-	}, "login success", c)
+	}, "Login Success", c)
 }
 
 func Register(c *gin.Context) {

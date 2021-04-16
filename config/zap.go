@@ -5,9 +5,9 @@ type Zap struct {
 	Format        string `yaml:"format"`
 	Prefix        string `yaml:"prefix"`
 	Director      string `yaml:"director"`
-	LinkName      string `yaml:"link-name"`
+	LinkName      string `yaml:"linkName"`
 	ShowLine      bool   `yaml:"showLine"`
-	EncodeLevel   string `yaml:"encode-level"`
-	StacktraceKey string `yaml:"stacktrace-key"`
-	LogInConsole  bool   `yaml:"log-in-console"`
+	EncodeLevel   string `yaml:"encodeLevel"`
+	StacktraceKey string `yaml:"stacktraceKey"`
+	LogInConsole  bool   `yaml:"logInConsole"`
 }

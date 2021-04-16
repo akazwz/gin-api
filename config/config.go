@@ -1,8 +1,8 @@
 package config
 
 type Conf struct {
-	Server   Server   `json:"server" yaml:"server"`
-	Database Database `json:"database" yaml:"database"`
-	JWT      JWT      `json:"jwt" yaml:"jwt"`
-	Zap      Zap      `json:"zap" yaml:"zap"`
+	Server   Server   `yaml:"server"`
+	Database Database `yaml:"database"`
+	JWT      JWT      `yaml:"jwt"`
+	Zap      Zap      `yaml:"zap"`
 }

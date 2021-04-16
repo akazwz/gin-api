@@ -13,8 +13,6 @@ func main() {
 		fmt.Println("配置初始化失败")
 	}
 
-	//global.LOG = initialize.Zap()
-
 	//gorm初始化数据库
 	global.GDB = initialize.InitDB()
 	if global.GDB != nil {
