@@ -9,7 +9,6 @@ import (
 	"github.com/akaedison/go-gin-demo/service"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	uuid "github.com/satori/go.uuid"
 	"time"
 )
 
@@ -34,7 +33,7 @@ func Login(c *gin.Context) {
 func TokenNext(c *gin.Context, user model.User) {
 	j := &middleware.JWT{SigningKey: []byte(global.CFG.JWT.SigningKey)}
 	claims := request.CustomClaims{
-		UUID:       uuid.UUID{},
+		UUID:       user.UUID,
 		ID:         user.ID,
 		Username:   user.Username,
 		NickName:   user.NickName,
