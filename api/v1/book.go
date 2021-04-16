@@ -29,3 +29,39 @@ func AddBook(c *gin.Context) {
 		response.OkWithDetail(bookAdded, "Add Success", c)
 	}
 }
+
+func Delete(c *gin.Context) {
+	var reqId request.GetById
+	if err := c.ShouldBindJSON(&reqId); err != nil {
+		response.FailWithMessage("Bind Error", c)
+		return
+	}
+	if reqId.Id == 0 {
+		response.FailWithMessage("id can not be null or 0", c)
+		return
+	}
+	jwtId := getUserId(c)
+	if jwtId == uint(reqId.Id) {
+		response.FailWithMessage("Delete Error, Cant not delete self", c)
+		return
+	}
+
+}
+
+func getUserId(c *gin.Context) uint {
+	if claims, exists := c.Get("claims"); !exists {
+		return 0
+	} else {
+		waitUse := claims.(*request.CustomClaims)
+		return waitUse.ID
+	}
+}
+
+func getUserUuid(c *gin.Context) string {
+	if claims, exists := c.Get("claims"); !exists {
+		return ""
+	} else {
+		waitUse := claims.(*request.CustomClaims)
+		return waitUse.UUID.String()
+	}
+}
