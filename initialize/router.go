@@ -36,7 +36,6 @@ func Routers() *gin.Engine {
 	privateGroupV1 := router.Group("v1")
 	privateGroupV1.Use(middleware.JWTAuth())
 	{
-		routers.InitUserRouter(privateGroupV1)
 		routers.InitBookRouter(privateGroupV1)
 	}
 

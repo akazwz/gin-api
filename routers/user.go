@@ -1,13 +1,1 @@
 package routers
-
-import (
-	v1 "github.com/akaedison/go-gin-demo/api/v1"
-	"github.com/gin-gonic/gin"
-)
-
-func InitUserRouter(Router *gin.RouterGroup) {
-	UserRouter := Router.Group("user")
-	{
-		UserRouter.POST("", v1.CreateUser)
-	}
-}

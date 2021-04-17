@@ -1,6 +1,7 @@
 package v1
 
 import (
+	_ "github.com/akaedison/go-gin-demo/docs"
 	"github.com/akaedison/go-gin-demo/model"
 	"github.com/akaedison/go-gin-demo/model/request"
 	"github.com/akaedison/go-gin-demo/model/response"
@@ -8,14 +9,19 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// CreateBook
+// @Summary Create A Book
 // @Title Create Book
 // @Author zwz
 // @Description create book
-// @Tag
+// @Tag book
 // @Accept json
 // @Produce json
-// @Param body body request.Book true "json"
-// @Router /v1/book [post]
+// @Param book body request.Book true "json"
+// @Param token header string true "token"
+// @Success 201 {object} model.Book
+// @Failure 400,401 {object} response.Response
+// @Router /book [post]
 func CreateBook(c *gin.Context) {
 	var book request.Book
 	err := c.ShouldBindJSON(&book)
@@ -38,6 +44,19 @@ func CreateBook(c *gin.Context) {
 	}
 }
 
+// DeleteBook
+// @Summary Delete A Book
+// @Title Delete Book
+// @Author zwz
+// @Description delete book
+// @Tag book
+// @Accept json
+// @Produce json
+// @Param reqId body request.GetById true "id:2"
+// @Param token header string true "token"
+// @Success 204
+// @Failure 400,401 {object} response.Response
+// @Router /book [delete]
 func DeleteBook(c *gin.Context) {
 	var reqId request.GetById
 	if err := c.ShouldBindJSON(&reqId); err != nil {

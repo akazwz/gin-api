@@ -12,7 +12,19 @@ import (
 	"time"
 )
 
-func CreateSession(c *gin.Context) {
+// CreateToken
+// @Summary Create A Token
+// @Title Create Token
+// @Author zwz
+// @Description create book
+// @Tag token
+// @Accept json
+// @Produce json
+// @Param login body request.Login true "login"
+// @Success 201 {object} response.LoginResponse
+// @Failure 400 {object} response.Response
+// @Router /token [post]
+func CreateToken(c *gin.Context) {
 	var login request.Login
 
 	if err := c.ShouldBindJSON(&login); err != nil {
@@ -57,6 +69,18 @@ func TokenNext(c *gin.Context, user model.User) {
 	}, "Login Success", c)
 }
 
+// CreateUser
+// @Summary Create A User
+// @Title Create User
+// @Author zwz
+// @Description create user
+// @Tag user
+// @Accept json
+// @Produce json
+// @Param user body request.Register true "user"
+// @Success 201 {object} model.Book
+// @Failure 400 {object} response.Response
+// @Router /user [post]
 func CreateUser(c *gin.Context) {
 	var register request.Register
 	err := c.ShouldBindJSON(&register)

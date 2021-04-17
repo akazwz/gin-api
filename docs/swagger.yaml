@@ -1,4 +1,47 @@
+basePath: /v1
 definitions:
+  model.Book:
+    properties:
+      author:
+        type: string
+      book_name:
+        type: string
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      id:
+        type: integer
+      introduction:
+        type: string
+      price:
+        type: number
+      updated_at:
+        type: string
+      uuid:
+        type: string
+    type: object
+  model.User:
+    properties:
+      created_at:
+        type: string
+      deleted_at:
+        type: string
+      header_img:
+        type: string
+      id:
+        type: integer
+      nick_name:
+        type: string
+      password:
+        type: string
+      updated_at:
+        type: string
+      username:
+        type: string
+      uuid:
+        type: string
+    type: object
   request.Book:
     properties:
       author:
@@ -12,6 +55,54 @@ definitions:
     required:
     - book_name
     type: object
+  request.GetById:
+    properties:
+      id:
+        type: number
+    type: object
+  request.Login:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  request.Register:
+    properties:
+      header_img:
+        type: string
+      nick_name:
+        type: string
+      password:
+        type: string
+      username:
+        type: string
+    required:
+    - password
+    - username
+    type: object
+  response.LoginResponse:
+    properties:
+      expires_at:
+        type: integer
+      token:
+        type: string
+      user:
+        $ref: '#/definitions/model.User'
+    type: object
+  response.Response:
+    properties:
+      code:
+        type: integer
+      data:
+        description: omitempty nil or default
+        type: object
+      msg:
+        type: string
+    type: object
 host: 127.0.0.1:8000
 info:
   contact:
@@ -21,11 +112,42 @@ info:
   description: Golang Restful Api Demo
   license:
     name: MIT
+    url: MIT
   termsOfService: https://akazwz.com
   title: Golang Restful Api
   version: "1.0"
 paths:
-  /v1/book:
+  /book:
+    delete:
+      consumes:
+      - application/json
+      description: delete book
+      parameters:
+      - description: id:2
+        in: body
+        name: reqId
+        required: true
+        schema:
+          $ref: '#/definitions/request.GetById'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "204":
+          description: ""
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Delete A Book
     post:
       consumes:
       - application/json
@@ -33,10 +155,77 @@ paths:
       parameters:
       - description: json
         in: body
-        name: body
+        name: book
         required: true
         schema:
           $ref: '#/definitions/request.Book'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
       produces:
       - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create A Book
+  /token:
+    post:
+      consumes:
+      - application/json
+      description: create book
+      parameters:
+      - description: login
+        in: body
+        name: login
+        required: true
+        schema:
+          $ref: '#/definitions/request.Login'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create A Token
+  /user:
+    post:
+      consumes:
+      - application/json
+      description: create user
+      parameters:
+      - description: user
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/request.Register'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/model.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create A User
 swagger: "2.0"

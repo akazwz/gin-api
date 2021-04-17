@@ -6,5 +6,6 @@ import (
 )
 
 func InitBaseRouter(Router *gin.RouterGroup) {
-	Router.POST("/session", v1.CreateSession)
+	Router.POST("/token", v1.CreateToken)
+	Router.POST("/user", v1.CreateUser)
 }
