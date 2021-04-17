@@ -21,12 +21,12 @@ import (
 // @Param token header string true "token"
 // @Success 201 {object} model.Book
 // @Failure 400,401 {object} response.Response
-// @Router /book [post]
+// @Router /books [post]
 func CreateBook(c *gin.Context) {
 	var book request.Book
 	err := c.ShouldBindJSON(&book)
 	if err != nil {
-		response.CommonFailed("Bind Json Error", CodeBindJsonError, c)
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
 		return
 	}
 
@@ -56,11 +56,11 @@ func CreateBook(c *gin.Context) {
 // @Param token header string true "token"
 // @Success 204
 // @Failure 400,401 {object} response.Response
-// @Router /book [delete]
+// @Router /books [delete]
 func DeleteBook(c *gin.Context) {
 	var reqId request.GetById
 	if err := c.ShouldBindJSON(&reqId); err != nil {
-		response.CommonFailed("Bind Error", CodeBindJsonError, c)
+		response.CommonFailed("Bind Error", CodeBindError, c)
 		return
 	}
 
@@ -74,6 +74,39 @@ func DeleteBook(c *gin.Context) {
 	} else {
 		response.DeleteSuccess(c)
 	}
+}
+
+// GetBookList
+// @Summary Get Books
+// @Title Get Books
+// @Author zwz
+// @Description get books
+// @Tag book
+// @Accept json
+// @Produce json
+// @Param page query int true "page"
+// @Param page_size query int true "page_size"
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400,401 {object} response.Response
+// @Router /books [get]
+func GetBookList(c *gin.Context) {
+	var pageInfo request.PageInfo
+	if err := c.ShouldBindQuery(&pageInfo); err != nil {
+		response.CommonFailed("Bind Query Error", CodeBindError, c)
+	}
+
+	if err, list, total := service.GetBookList(pageInfo); err != nil {
+		response.CommonFailed("Get Books Error", CodeDbErr, c)
+	} else {
+		response.CommonSuccess(0, response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "Get Books Success", c)
+	}
+
 }
 
 func getUserId(c *gin.Context) uint {

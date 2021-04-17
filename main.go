@@ -18,7 +18,7 @@ import (
 // @license.name MIT
 // @license.url MIT
 
-// @host 127.0.0.1:8000
+// @host localhost:8000
 // @BasePath /v1
 func main() {
 	//viper初始化配置

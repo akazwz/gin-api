@@ -103,7 +103,7 @@ definitions:
       msg:
         type: string
     type: object
-host: 127.0.0.1:8000
+host: localhost:8000
 info:
   contact:
     email: akaedison@icloud.com
@@ -117,7 +117,7 @@ info:
   title: Golang Restful Api
   version: "1.0"
 paths:
-  /book:
+  /books:
     delete:
       consumes:
       - application/json
@@ -148,6 +148,42 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Delete A Book
+    get:
+      consumes:
+      - application/json
+      description: get books
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: page_size
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Books
     post:
       consumes:
       - application/json
@@ -204,7 +240,7 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A Token
-  /user:
+  /users:
     post:
       consumes:
       - application/json

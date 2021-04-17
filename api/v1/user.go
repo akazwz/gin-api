@@ -28,7 +28,7 @@ func CreateToken(c *gin.Context) {
 	var login request.Login
 
 	if err := c.ShouldBindJSON(&login); err != nil {
-		response.CommonFailed("Bind Json Error", CodeBindJsonError, c)
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
 		return
 	}
 
@@ -80,12 +80,12 @@ func TokenNext(c *gin.Context, user model.User) {
 // @Param user body request.Register true "user"
 // @Success 201 {object} model.Book
 // @Failure 400 {object} response.Response
-// @Router /user [post]
+// @Router /users [post]
 func CreateUser(c *gin.Context) {
 	var register request.Register
 	err := c.ShouldBindJSON(&register)
 	if err != nil {
-		response.CommonFailed("Bind Json Error", CodeBindJsonError, c)
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
 		return
 	}
 
