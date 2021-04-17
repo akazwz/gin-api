@@ -12,14 +12,14 @@ func Routers() *gin.Engine {
 	var router = gin.Default()
 	router.Use(cors.Default())
 
-	router.Any("418", func(c *gin.Context) {
+	router.Any("teapot", func(c *gin.Context) {
 		c.JSON(http.StatusTeapot, gin.H{
 			"message": "I'm a teapot",
 			"story": "This code was defined in 1998 " +
 				"as one of the traditional IETF April Fools' jokes," +
 				" in RFC 2324, Hyper Text Coffee Pot Control Protocol," +
 				" and is not expected to be implemented by actual HTTP servers." +
-				" However, known implementations do exist.\n",
+				" However, known implementations do exist.",
 		})
 	})
 
