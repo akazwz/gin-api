@@ -11,16 +11,16 @@ func Routers() *gin.Engine {
 	var router = gin.Default()
 	router.Use(cors.Default())
 
-	publicRouter := router.Group("")
+	publicRouterV1 := router.Group("v1")
 	{
-		routers.InitBaseRouter(publicRouter)
+		routers.InitBaseRouter(publicRouterV1)
 	}
 
-	privateGroup := router.Group("")
-	privateGroup.Use(middleware.JWTAuth())
+	privateGroupV1 := router.Group("v1")
+	privateGroupV1.Use(middleware.JWTAuth())
 	{
-		routers.InitUserRouter(privateGroup)
-		routers.InitBookRouter(privateGroup)
+		routers.InitUserRouter(privateGroupV1)
+		routers.InitBookRouter(privateGroupV1)
 	}
 
 	return router

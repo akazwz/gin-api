@@ -12,32 +12,56 @@ import (
 	"time"
 )
 
+const (
+	CodeTokenNUll        = 4010
+	CodeTokenExpired     = 4011
+	CodeTokenNotValidYet = 4012
+	CodeTokenMalformed   = 4013
+	CodeTokenInvalid     = 4014
+	CodeNoSuchUser       = 4015
+)
+
 func JWTAuth() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		//jwt鉴权取头部信息 token,登录时返回token信息 前端进行存储
 		token := c.Request.Header.Get("token")
 		if token == "" {
-			response.FailWithMessage("Not Login", c)
+			response.Unauthorized(CodeTokenNUll, "no token", c)
 			c.Abort()
 			return
 		}
-		j := NewJWT()
 
+		j := NewJWT()
 		claims, err := j.ParseToken(token)
 		if err != nil {
-			if err == TokenExpired {
-				response.FailWithMessage("token expired", c)
+			switch err {
+			case TokenExpired:
+				response.Unauthorized(CodeTokenExpired, "Token Expired", c)
+				c.Abort()
+				return
+			case TokenNotValidYet:
+				response.Unauthorized(CodeTokenNotValidYet, "Token Not Valid Yet", c)
+				c.Abort()
+				return
+			case TokenMalformed:
+				response.Unauthorized(CodeTokenMalformed, "Token Malformed", c)
+				c.Abort()
+				return
+			case TokenInvalid:
+				response.Unauthorized(CodeTokenInvalid, "Token Invalid", c)
+				c.Abort()
+				return
+			default:
 				c.Abort()
 				return
 			}
-			response.FailWithMessage(err.Error(), c)
+		}
+
+		if err, _ = service.FindUserByUUID(claims.UUID.String()); err != nil {
+			response.Unauthorized(CodeNoSuchUser, "No Such User", c)
 			c.Abort()
 			return
 		}
-		if err, _ = service.FindUserByUUID(claims.UUID.String()); err != nil {
-			response.FailWithMessage(err.Error(), c)
-			c.Abort()
-		}
+
 		if claims.ExpiresAt-time.Now().Unix() < claims.BufferTime {
 			claims.ExpiresAt = time.Now().Unix() + global.CFG.JWT.ExpiresTime
 			newToken, _ := j.CreateToken(*claims)

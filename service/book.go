@@ -11,3 +11,9 @@ func AddBook(b *model.Book) (err error, bookInter *model.Book) {
 	err = global.GDB.Create(&b).Error
 	return err, b
 }
+
+func DeleteBook(id float64) (err error) {
+	var book model.Book
+	err = global.GDB.Where("id = ?", id).Delete(&book).Error
+	return err
+}

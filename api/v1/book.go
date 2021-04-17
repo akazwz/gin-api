@@ -30,22 +30,23 @@ func AddBook(c *gin.Context) {
 	}
 }
 
-func Delete(c *gin.Context) {
+func DeleteBook(c *gin.Context) {
 	var reqId request.GetById
 	if err := c.ShouldBindJSON(&reqId); err != nil {
 		response.FailWithMessage("Bind Error", c)
 		return
 	}
+
 	if reqId.Id == 0 {
-		response.FailWithMessage("id can not be null or 0", c)
-		return
-	}
-	jwtId := getUserId(c)
-	if jwtId == uint(reqId.Id) {
-		response.FailWithMessage("Delete Error, Cant not delete self", c)
+		response.FailWithMessage("ID can not be null or 0", c)
 		return
 	}
 
+	if err := service.DeleteBook(reqId.Id); err != nil {
+		response.FailWithMessage("Delete Error", c)
+	} else {
+		response.OkWithMessage("Delete Success", c)
+	}
 }
 
 func getUserId(c *gin.Context) uint {
