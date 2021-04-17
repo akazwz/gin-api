@@ -8,6 +8,6 @@ import (
 func InitUserRouter(Router *gin.RouterGroup) {
 	UserRouter := Router.Group("user")
 	{
-		UserRouter.POST("/register", v1.Register)
+		UserRouter.POST("", v1.CreateUser)
 	}
 }

@@ -8,7 +8,7 @@ import (
 func InitBookRouter(Router *gin.RouterGroup) {
 	BookRouter := Router.Group("book")
 	{
-		BookRouter.POST("", v1.AddBook)
+		BookRouter.POST("", v1.CreateBook)
 		BookRouter.DELETE("", v1.DeleteBook)
 	}
 }

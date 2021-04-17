@@ -6,9 +6,9 @@ import (
 )
 
 type Response struct {
-	Code int         `json:"code"`
-	Data interface{} `json:"data"`
-	Msg  string      `json:"msg"`
+	Code int         `json:"code,omitempty"`
+	Data interface{} `json:"data,omitempty"` //omitempty nil or default
+	Msg  string      `json:"msg,omitempty"`
 }
 
 const (
@@ -19,6 +19,39 @@ const (
 func Unauthorized(code int, message string, c *gin.Context) {
 	c.JSON(http.StatusUnauthorized, Response{
 		Code: code,
+		Msg:  message,
+	})
+}
+
+func Forbidden(c *gin.Context) {
+	c.JSON(http.StatusForbidden, Response{
+		Msg: "Permission Denied",
+	})
+}
+
+func DeleteSuccess(c *gin.Context) {
+	c.JSON(http.StatusNoContent, nil)
+}
+
+func CommonFailed(message string, code int, c *gin.Context) {
+	c.JSON(http.StatusBadRequest, Response{
+		Code: code,
+		Msg:  message,
+	})
+}
+
+func CommonSuccess(code int, data interface{}, message string, c *gin.Context) {
+	c.JSON(http.StatusOK, Response{
+		Code: code,
+		Data: data,
+		Msg:  message,
+	})
+}
+
+func Created(data interface{}, message string, c *gin.Context) {
+	c.JSON(http.StatusCreated, Response{
+		Code: SUCCESS,
+		Data: data,
 		Msg:  message,
 	})
 }

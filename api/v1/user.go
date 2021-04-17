@@ -12,17 +12,17 @@ import (
 	"time"
 )
 
-func Login(c *gin.Context) {
+func CreateSession(c *gin.Context) {
 	var login request.Login
-	err := c.ShouldBindJSON(&login)
-	if err != nil {
-		response.FailWithMessage("Login Error", c)
+
+	if err := c.ShouldBindJSON(&login); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindJsonError, c)
 		return
 	}
 
 	u := &model.User{Username: login.Username, Password: login.Password}
 	if err, user := service.Login(u); err != nil {
-		response.FailWithMessage("Username Or Password Wrong", c)
+		response.CommonFailed("Username Or Password Error", CodeDbErr, c)
 		return
 	} else {
 		TokenNext(c, *user)
@@ -46,22 +46,22 @@ func TokenNext(c *gin.Context, user model.User) {
 	}
 	token, err := j.CreateToken(claims)
 	if err != nil {
-		response.FailWithMessage("get token error", c)
+		response.CommonFailed("Create Token Error", CodeCreateTokenError, c)
 		return
 	}
 
-	response.OkWithDetail(response.LoginResponse{
+	response.Created(response.LoginResponse{
 		User:      user,
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
 	}, "Login Success", c)
 }
 
-func Register(c *gin.Context) {
+func CreateUser(c *gin.Context) {
 	var register request.Register
 	err := c.ShouldBindJSON(&register)
 	if err != nil {
-		response.FailWithMessage("Register Error", c)
+		response.CommonFailed("Bind Json Error", CodeBindJsonError, c)
 		return
 	}
 
@@ -73,8 +73,8 @@ func Register(c *gin.Context) {
 	}
 	err, _ = service.Register(*user)
 	if err != nil {
-		response.FailWithMessage("Register Failed", c)
+		response.CommonFailed("Register Failed", CodeDbErr, c)
 		return
 	}
-	response.OkWithDetail(register, "Register Success", c)
+	response.Created(register, "Register Success", c)
 }

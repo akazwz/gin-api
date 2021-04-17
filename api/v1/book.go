@@ -8,11 +8,11 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-func AddBook(c *gin.Context) {
+func CreateBook(c *gin.Context) {
 	var book request.Book
 	err := c.ShouldBindJSON(&book)
 	if err != nil {
-		response.FailWithMessage("Add Error err", c)
+		response.CommonFailed("Bind Json Error", CodeBindJsonError, c)
 		return
 	}
 
@@ -22,30 +22,30 @@ func AddBook(c *gin.Context) {
 		Price:        book.Price,
 		Introduction: book.Introduction,
 	}
-	if err, bookAdded := service.AddBook(b); err != nil {
-		response.FailWithMessage("Add Error", c)
+	if err, bookAdded := service.CreateBook(b); err != nil {
+		response.CommonFailed("Create Error", CodeDbErr, c)
 		return
 	} else {
-		response.OkWithDetail(bookAdded, "Add Success", c)
+		response.Created(bookAdded, "Create Book Success", c)
 	}
 }
 
 func DeleteBook(c *gin.Context) {
 	var reqId request.GetById
 	if err := c.ShouldBindJSON(&reqId); err != nil {
-		response.FailWithMessage("Bind Error", c)
+		response.CommonFailed("Bind Error", CodeBindJsonError, c)
 		return
 	}
 
 	if reqId.Id == 0 {
-		response.FailWithMessage("ID can not be null or 0", c)
+		response.CommonFailed("ID can not be null or 0", CodeCanNotBeNUll, c)
 		return
 	}
 
 	if err := service.DeleteBook(reqId.Id); err != nil {
-		response.FailWithMessage("Delete Error", c)
+		response.CommonFailed("Delete Error", CodeDbErr, c)
 	} else {
-		response.OkWithMessage("Delete Success", c)
+		response.DeleteSuccess(c)
 	}
 }
 

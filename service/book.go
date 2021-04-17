@@ -6,7 +6,7 @@ import (
 	uuid "github.com/satori/go.uuid"
 )
 
-func AddBook(b *model.Book) (err error, bookInter *model.Book) {
+func CreateBook(b *model.Book) (err error, bookInter *model.Book) {
 	b.UUID = uuid.NewV4()
 	err = global.GDB.Create(&b).Error
 	return err, b
