@@ -6,6 +6,18 @@ import (
 	"github.com/akaedison/go-gin-demo/initialize"
 )
 
+// @title Golang Restful Api
+// @version 1.0
+// @description Golang Restful Api Demo
+// @termsOfService https://akazwz.com
+
+// @contact.name API Support
+// @contact.url https://akazwz.com
+// @contact.email akaedison@icloud.com
+
+// @license.name MIT
+
+//@host 127.0.0.1:8000
 func main() {
 	//viper初始化配置
 	global.VP = initialize.InitViper()

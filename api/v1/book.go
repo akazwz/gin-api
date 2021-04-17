@@ -8,6 +8,14 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
+// @Title Create Book
+// @Author zwz
+// @Description create book
+// @Tag
+// @Accept json
+// @Produce json
+// @Param body body request.Book true "json"
+// @Router /v1/book [post]
 func CreateBook(c *gin.Context) {
 	var book request.Book
 	err := c.ShouldBindJSON(&book)

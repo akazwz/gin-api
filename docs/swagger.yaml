@@ -1,0 +1,42 @@
+definitions:
+  request.Book:
+    properties:
+      author:
+        type: string
+      book_name:
+        type: string
+      introduction:
+        type: string
+      price:
+        type: number
+    required:
+    - book_name
+    type: object
+host: 127.0.0.1:8000
+info:
+  contact:
+    email: akaedison@icloud.com
+    name: API Support
+    url: https://akazwz.com
+  description: Golang Restful Api Demo
+  license:
+    name: MIT
+  termsOfService: https://akazwz.com
+  title: Golang Restful Api
+  version: "1.0"
+paths:
+  /v1/book:
+    post:
+      consumes:
+      - application/json
+      description: create book
+      parameters:
+      - description: json
+        in: body
+        name: body
+        required: true
+        schema:
+          $ref: '#/definitions/request.Book'
+      produces:
+      - application/json
+swagger: "2.0"
