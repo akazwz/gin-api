@@ -12,8 +12,9 @@ type Response struct {
 }
 
 const (
-	SUCCESS = 0
-	ERROR   = 7
+	SUCCESS  = 2000
+	ERROR    = 4000
+	PROGRESS = 2020
 )
 
 func Unauthorized(code int, message string, c *gin.Context) {
@@ -53,6 +54,14 @@ func Created(data interface{}, message string, c *gin.Context) {
 		Code: SUCCESS,
 		Data: data,
 		Msg:  message,
+	})
+}
+
+func Accepted(fileUploadStatus interface{}, c *gin.Context) {
+	c.JSON(http.StatusAccepted, Response{
+		Code: PROGRESS,
+		Data: fileUploadStatus,
+		Msg:  "File is Uploading",
 	})
 }
 
