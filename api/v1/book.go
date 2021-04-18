@@ -14,7 +14,7 @@ import (
 // @Title Create Book
 // @Author zwz
 // @Description create book
-// @Tag book
+// @Tags book
 // @Accept json
 // @Produce json
 // @Param book body request.Book true "json"
@@ -49,7 +49,7 @@ func CreateBook(c *gin.Context) {
 // @Title Delete Book
 // @Author zwz
 // @Description delete book
-// @Tag book
+// @Tags book
 // @Accept json
 // @Produce json
 // @Param reqId body request.GetById true "id:2"
@@ -81,26 +81,20 @@ func DeleteBook(c *gin.Context) {
 // @Title Update Book
 // @Author zwz
 // @Description update book
-// @Tag book
+// @Tags book
 // @Accept json
 // @Produce json
-// @Param book body request.Book true "json"
+// @Param book body model.Book true "json"
 // @Param token header string true "token"
 // @Success 201 {object} request.Book
 // @Failure 400,401 {object} response.Response
 // @Router /books [put]
 func UpdateBook(c *gin.Context) {
-	var book request.Book
+	var book model.Book
 	if err := c.ShouldBindJSON(&book); err != nil {
 		response.CommonFailed("Bind Json Error", CodeBindError, c)
 	}
-	b := model.Book{
-		BookName:     book.BookName,
-		Author:       book.Author,
-		Price:        book.Price,
-		Introduction: book.Introduction,
-	}
-	if err, reqBook := service.UpdateBook(&b); err != nil {
+	if err, reqBook := service.UpdateBook(&book); err != nil {
 		response.CommonFailed("Update Book Error", CodeDbErr, c)
 	} else {
 		response.CommonSuccess(0, reqBook, "Update Success", c)
@@ -112,7 +106,7 @@ func UpdateBook(c *gin.Context) {
 // @Title Get Books
 // @Author zwz
 // @Description get books
-// @Tag book
+// @Tags book
 // @Accept json
 // @Produce json
 // @Param page query int true "page"

@@ -17,7 +17,7 @@ import (
 // @Title Create Token
 // @Author zwz
 // @Description create book
-// @Tag token
+// @Tags token
 // @Accept json
 // @Produce json
 // @Param login body request.Login true "login"
@@ -74,7 +74,7 @@ func TokenNext(c *gin.Context, user model.User) {
 // @Title Create User
 // @Author zwz
 // @Description create user
-// @Tag user
+// @Tags user
 // @Accept json
 // @Produce json
 // @Param user body request.Register true "user"

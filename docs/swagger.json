@@ -27,6 +27,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "book"
+                ],
                 "summary": "Get Books",
                 "parameters": [
                     {
@@ -80,6 +83,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "book"
+                ],
                 "summary": "Update Book",
                 "parameters": [
                     {
@@ -88,7 +94,7 @@
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.Book"
+                            "$ref": "#/definitions/model.Book"
                         }
                     },
                     {
@@ -127,6 +133,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "book"
                 ],
                 "summary": "Create A Book",
                 "parameters": [
@@ -176,6 +185,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "book"
+                ],
                 "summary": "Delete A Book",
                 "parameters": [
                     {
@@ -223,6 +235,9 @@
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "token"
+                ],
                 "summary": "Create A Token",
                 "parameters": [
                     {
@@ -259,6 +274,9 @@
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "user"
                 ],
                 "summary": "Create A User",
                 "parameters": [

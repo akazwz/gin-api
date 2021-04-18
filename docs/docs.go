@@ -42,6 +42,9 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "book"
+                ],
                 "summary": "Get Books",
                 "parameters": [
                     {
@@ -95,6 +98,9 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "book"
+                ],
                 "summary": "Update Book",
                 "parameters": [
                     {
@@ -103,7 +109,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.Book"
+                            "$ref": "#/definitions/model.Book"
                         }
                     },
                     {
@@ -142,6 +148,9 @@ var doc = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "book"
                 ],
                 "summary": "Create A Book",
                 "parameters": [
@@ -191,6 +200,9 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "book"
+                ],
                 "summary": "Delete A Book",
                 "parameters": [
                     {
@@ -238,6 +250,9 @@ var doc = `{
                 "produces": [
                     "application/json"
                 ],
+                "tags": [
+                    "token"
+                ],
                 "summary": "Create A Token",
                 "parameters": [
                     {
@@ -274,6 +289,9 @@ var doc = `{
                 ],
                 "produces": [
                     "application/json"
+                ],
+                "tags": [
+                    "user"
                 ],
                 "summary": "Create A User",
                 "parameters": [

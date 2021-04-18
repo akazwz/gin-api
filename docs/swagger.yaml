@@ -148,6 +148,8 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Delete A Book
+      tags:
+      - book
     get:
       consumes:
       - application/json
@@ -184,6 +186,8 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Get Books
+      tags:
+      - book
     post:
       consumes:
       - application/json
@@ -216,6 +220,8 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A Book
+      tags:
+      - book
     put:
       consumes:
       - application/json
@@ -226,7 +232,7 @@ paths:
         name: book
         required: true
         schema:
-          $ref: '#/definitions/request.Book'
+          $ref: '#/definitions/model.Book'
       - description: token
         in: header
         name: token
@@ -248,6 +254,8 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Update Book
+      tags:
+      - book
   /token:
     post:
       consumes:
@@ -272,6 +280,8 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A Token
+      tags:
+      - token
   /users:
     post:
       consumes:
@@ -296,4 +306,6 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A User
+      tags:
+      - user
 swagger: "2.0"
