@@ -216,6 +216,38 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A Book
+    put:
+      consumes:
+      - application/json
+      description: update book
+      parameters:
+      - description: json
+        in: body
+        name: book
+        required: true
+        schema:
+          $ref: '#/definitions/request.Book'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/request.Book'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+        "401":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Update Book
   /token:
     post:
       consumes:

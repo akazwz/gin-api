@@ -76,6 +76,37 @@ func DeleteBook(c *gin.Context) {
 	}
 }
 
+// UpdateBook
+// @Summary Update Book
+// @Title Update Book
+// @Author zwz
+// @Description update book
+// @Tag book
+// @Accept json
+// @Produce json
+// @Param book body request.Book true "json"
+// @Param token header string true "token"
+// @Success 201 {object} request.Book
+// @Failure 400,401 {object} response.Response
+// @Router /books [put]
+func UpdateBook(c *gin.Context) {
+	var book request.Book
+	if err := c.ShouldBindJSON(&book); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+	}
+	b := model.Book{
+		BookName:     book.BookName,
+		Author:       book.Author,
+		Price:        book.Price,
+		Introduction: book.Introduction,
+	}
+	if err, reqBook := service.UpdateBook(&b); err != nil {
+		response.CommonFailed("Update Book Error", CodeDbErr, c)
+	} else {
+		response.CommonSuccess(0, reqBook, "Update Success", c)
+	}
+}
+
 // GetBookList
 // @Summary Get Books
 // @Title Get Books

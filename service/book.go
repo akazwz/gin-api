@@ -19,6 +19,11 @@ func DeleteBook(id float64) (err error) {
 	return err
 }
 
+func UpdateBook(b *model.Book) (err error, book *model.Book) {
+	err = global.GDB.Updates(&b).Error
+	return err, b
+}
+
 func GetBookList(info request.PageInfo) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
