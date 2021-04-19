@@ -22,13 +22,13 @@ import (
 // @host localhost:8000
 // @BasePath /v1
 func main() {
-	gin.SetMode(global.CFG.Server.Mode)
 	//viper初始化配置
 	global.VP = initialize.InitViper()
 	if global.VP == nil {
 		fmt.Println("配置初始化失败")
 	}
 
+	gin.SetMode(global.CFG.Server.Mode)
 	//gorm初始化数据库
 	global.GDB = initialize.InitDB()
 	if global.GDB != nil {
