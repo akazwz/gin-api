@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"github.com/akaedison/go-gin-demo/global"
 	"github.com/akaedison/go-gin-demo/initialize"
+	"github.com/gin-gonic/gin"
 )
 
 // @title Golang Restful Api
@@ -21,6 +22,7 @@ import (
 // @host localhost:8000
 // @BasePath /v1
 func main() {
+	gin.SetMode(global.CFG.Server.Mode)
 	//viper初始化配置
 	global.VP = initialize.InitViper()
 	if global.VP == nil {
