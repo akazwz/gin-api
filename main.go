@@ -5,6 +5,8 @@ import (
 	"github.com/akaedison/go-gin-demo/global"
 	"github.com/akaedison/go-gin-demo/initialize"
 	"github.com/gin-gonic/gin"
+	"net/http"
+	"time"
 )
 
 // @title Golang Restful Api
@@ -39,7 +41,7 @@ func main() {
 		fmt.Println("数据库连接失败")
 		return
 	}
-
+	time.Sleep(10 * time.Microsecond)
 	str := `
 █████╗ ██╗  ██╗ █████╗ ███████╗██╗    ██╗███████╗                                      
 ██╔══██╗██║ ██╔╝██╔══██╗╚══███╔╝██║    ██║╚══███╔╝                                      
@@ -59,7 +61,16 @@ func main() {
 
 	routers := initialize.Routers()
 	addr := fmt.Sprintf(":%d", global.CFG.Server.Addr)
+	ReadTimeout := global.CFG.Server.ReadTimeout
+	WriteTimeout := global.CFG.Server.WriteTimeout
 
-	_ = routers.Run(addr)
+	s := &http.Server{
+		Addr:           addr,
+		Handler:        routers,
+		ReadTimeout:    ReadTimeout * time.Second,
+		WriteTimeout:   WriteTimeout * time.Second,
+		MaxHeaderBytes: 1 << 20,
+	}
+	_ = s.ListenAndServe()
 
 }

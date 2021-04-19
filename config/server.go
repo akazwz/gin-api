@@ -1,8 +1,10 @@
 package config
 
+import "time"
+
 type Server struct {
-	Mode         string `yaml:"mode"`
-	Addr         int    `yaml:"addr"`
-	ReadTimeout  int64  `yaml:"readTimeout"`
-	WriteTimeout int64  `yaml:"writeTimeout"`
+	Mode         string        `yaml:"mode"`
+	Addr         int           `yaml:"addr"`
+	ReadTimeout  time.Duration `yaml:"readTimeout"`
+	WriteTimeout time.Duration `yaml:"writeTimeout"`
 }
