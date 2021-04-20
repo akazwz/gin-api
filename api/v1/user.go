@@ -102,3 +102,30 @@ func CreateUser(c *gin.Context) {
 	}
 	response.Created(register, "Register Success", c)
 }
+
+// ChangePassword
+// @Summary Change Password
+// @Title Change Password
+// @Author zwz
+// @Description change password
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param changePassword body request.ChangePassword true "ChangePassword"
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Router /users/password [put]
+func ChangePassword(c *gin.Context) {
+	var changePassword request.ChangePassword
+	if err := c.ShouldBindJSON(&changePassword); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+	}
+	u := model.User{Username: changePassword.Username, Password: changePassword.OldPassword}
+	if err, _ := service.ChangePassword(&u, changePassword.NewPassword); err != nil {
+		response.CommonFailed("Change Password Error, Password Not Correct", CodeDbErr, c)
+	} else {
+		u = model.User{Username: changePassword.Username, Password: changePassword.NewPassword}
+		response.CommonSuccess(0, u, "Password Change Success", c)
+	}
+}

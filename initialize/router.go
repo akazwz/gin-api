@@ -38,6 +38,7 @@ func Routers() *gin.Engine {
 	{
 		routers.InitBookRouter(privateGroupV1)
 		routers.InitFileRouter(privateGroupV1)
+		routers.InitUserRouter(privateGroupV1)
 	}
 
 	return router

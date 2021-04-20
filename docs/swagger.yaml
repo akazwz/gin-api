@@ -55,6 +55,19 @@ definitions:
     required:
     - book_name
     type: object
+  request.ChangePassword:
+    properties:
+      new_password:
+        type: string
+      old_password:
+        type: string
+      username:
+        type: string
+    required:
+    - new_password
+    - old_password
+    - username
+    type: object
   request.GetById:
     properties:
       id:
@@ -340,6 +353,37 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A User
+      tags:
+      - user
+  /users/password:
+    put:
+      consumes:
+      - application/json
+      description: change password
+      parameters:
+      - description: ChangePassword
+        in: body
+        name: changePassword
+        required: true
+        schema:
+          $ref: '#/definitions/request.ChangePassword'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Change Password
       tags:
       - user
 swagger: "2.0"

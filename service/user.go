@@ -28,6 +28,13 @@ func Login(u *model.User) (err error, userInter *model.User) {
 	return err, &user
 }
 
+func ChangePassword(u *model.User, newPassword string) (err error, userInter *model.User) {
+	var user model.User
+	u.Password = util.MD5V([]byte(u.Password))
+	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Update("password", util.MD5V([]byte(newPassword))).Error
+	return err, u
+}
+
 func FindUserByID(id int) (err error, user *model.User) {
 	var u model.User
 	err = global.GDB.Where("`id` = ?", id).First(&u).Error
