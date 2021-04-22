@@ -1,6 +1,7 @@
 package main
 
 import (
+	"database/sql"
 	"fmt"
 	"github.com/akaedison/go-gin-demo/global"
 	"github.com/akaedison/go-gin-demo/initialize"
@@ -36,7 +37,12 @@ func main() {
 	if global.GDB != nil {
 		initialize.CreateTables(global.GDB)
 		db, _ := global.GDB.DB()
-		defer db.Close()
+		defer func(db *sql.DB) {
+			err := db.Close()
+			if err != nil {
+
+			}
+		}(db)
 	} else {
 		fmt.Println("数据库连接失败")
 		return
