@@ -1,7 +1,7 @@
 package v1
 
 import (
-	"github.com/akaedison/go-gin-demo/model/response"
+	"github.com/akazwz/go-gin-demo/model/response"
 	"github.com/gin-gonic/gin"
 )
 

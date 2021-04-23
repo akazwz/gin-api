@@ -119,7 +119,7 @@ definitions:
 host: localhost:8000
 info:
   contact:
-    email: akaedison@icloud.com
+    email: akazwz@icloud.com
     name: API Support
     url: https://akazwz.com
   description: Golang Restful Api Demo

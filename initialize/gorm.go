@@ -2,8 +2,8 @@ package initialize
 
 import (
 	"fmt"
-	"github.com/akaedison/go-gin-demo/global"
-	"github.com/akaedison/go-gin-demo/model"
+	"github.com/akazwz/go-gin-demo/global"
+	"github.com/akazwz/go-gin-demo/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"os"

@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/akaedison/go-gin-demo/global"
-	"github.com/akaedison/go-gin-demo/initialize"
+	"github.com/akazwz/go-gin-demo/global"
+	"github.com/akazwz/go-gin-demo/initialize"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"
@@ -17,7 +17,7 @@ import (
 
 // @contact.name API Support
 // @contact.url https://akazwz.com
-// @contact.email akaedison@icloud.com
+// @contact.email akazwz@icloud.com
 
 // @license.name MIT
 // @license.url MIT

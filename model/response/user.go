@@ -1,6 +1,6 @@
 package response
 
-import "github.com/akaedison/go-gin-demo/model"
+import "github.com/akazwz/go-gin-demo/model"
 
 type UserResponse struct {
 	User model.User `json:"user"`

@@ -22,7 +22,7 @@ var doc = `{
         "contact": {
             "name": "API Support",
             "url": "https://akazwz.com",
-            "email": "akaedison@icloud.com"
+            "email": "akazwz@icloud.com"
         },
         "license": {
             "name": "MIT",

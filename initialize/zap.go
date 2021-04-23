@@ -3,8 +3,8 @@ package initialize
 //
 //import (
 //	"fmt"
-//	"github.com/akaedison/go-gin-demo/global"
-//	"github.com/akaedison/go-gin-demo/pkg/util"
+//	"github.com/akazwz/go-gin-demo/global"
+//	"github.com/akazwz/go-gin-demo/pkg/util"
 //	"go.uber.org/zap"
 //	"go.uber.org/zap/zapcore"
 //	"os"

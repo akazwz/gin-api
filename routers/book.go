@@ -1,7 +1,7 @@
 package routers
 
 import (
-	v1 "github.com/akaedison/go-gin-demo/api/v1"
+	v1 "github.com/go-gin-demo/api/v1"
 	"github.com/gin-gonic/gin"
 )
 

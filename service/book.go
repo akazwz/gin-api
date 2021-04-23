@@ -1,9 +1,9 @@
 package service
 
 import (
-	"github.com/akaedison/go-gin-demo/global"
-	"github.com/akaedison/go-gin-demo/model"
-	"github.com/akaedison/go-gin-demo/model/request"
+	"github.com/akazwz/go-gin-demo/global"
+	"github.com/akazwz/go-gin-demo/model"
+	"github.com/akazwz/go-gin-demo/model/request"
 	uuid "github.com/satori/go.uuid"
 )
 
