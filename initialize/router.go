@@ -12,7 +12,10 @@ import (
 
 func Routers() *gin.Engine {
 	var router = gin.Default()
-	router.Use(cors.Default())
+	router.Use(cors.New(cors.Config{
+		AllowAllOrigins: true,
+		AllowHeaders:    []string{"*"},
+	}))
 
 	//go-swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))

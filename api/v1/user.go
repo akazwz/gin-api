@@ -62,8 +62,10 @@ func TokenNext(c *gin.Context, user model.User) {
 		return
 	}
 
+	u := model.User{Username: user.Username}
+
 	response.Created(response.LoginResponse{
-		User:      user,
+		User:      u,
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
 	}, "Login Success", c)
