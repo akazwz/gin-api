@@ -14,6 +14,7 @@ func Routers() *gin.Engine {
 	var router = gin.Default()
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins: true,
+		AllowMethods:    []string{"POST", "GET", "OPTIONS"},
 		AllowHeaders:    []string{"*"},
 	}))
 
