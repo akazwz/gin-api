@@ -7,4 +7,5 @@ type Server struct {
 	Addr         int           `yaml:"addr"`
 	ReadTimeout  time.Duration `yaml:"readTimeout"`
 	WriteTimeout time.Duration `yaml:"writeTimeout"`
+	AliOSS       AliOSS        `yaml:"aliOSS"`
 }
