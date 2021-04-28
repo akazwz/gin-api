@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"github.com/akazwz/go-gin-demo/model"
 	"github.com/akazwz/go-gin-demo/model/response"
 	"github.com/gin-gonic/gin"
 )
@@ -25,12 +26,20 @@ func CreateFile(c *gin.Context) {
 		return
 	}
 	filename := "public/file/" + file.Filename
-
 	if err := c.SaveUploadedFile(file, filename); err != nil {
 		response.CommonFailed("Upload File Error", CodeUploadFileError, c)
 		return
 	}
-	response.Created(nil, "File Upload Success", c)
+	name := file.Filename
+	size := file.Size
+	fileData := model.File{
+		URL:  filename,
+		MD5:  "",
+		Name: name,
+		Size: size,
+		Type: "",
+	}
+	response.Created(fileData, "File Upload Success", c)
 }
 
 func GetFileUploadStatus(c *gin.Context) {
