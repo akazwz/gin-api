@@ -3,7 +3,9 @@ package v1
 import (
 	"github.com/akazwz/go-gin-demo/model"
 	"github.com/akazwz/go-gin-demo/model/response"
+	"github.com/akazwz/go-gin-demo/pkg/util/upload"
 	"github.com/gin-gonic/gin"
+	"time"
 )
 
 // CreateFile
@@ -25,23 +27,33 @@ func CreateFile(c *gin.Context) {
 		response.CommonFailed("Get File Error", CodeGetFileError, c)
 		return
 	}
-	filename := "public/file/" + file.Filename
-	if err := c.SaveUploadedFile(file, filename); err != nil {
+
+	dirDate := time.Now().Format("2006-01-02")
+
+	fileNamePrefix := time.Now().Format("15:04:05.000")
+
+	fileName := fileNamePrefix + "-" + file.Filename
+
+	localFile := "public/file/" + dirDate + "/" + fileName
+
+	if err := c.SaveUploadedFile(file, localFile); err != nil {
 		response.CommonFailed("Upload File Error", CodeUploadFileError, c)
 		return
 	}
-	name := file.Filename
+
+	if err := upload.OSSUploadFile(file); err != nil {
+		response.CommonFailed("Upload OSS Error", CodeUploadFileError, c)
+		return
+	}
+
+	name := fileName
 	size := file.Size
 	fileData := model.File{
-		URL:  filename,
+		URL:  localFile,
 		MD5:  "",
 		Name: name,
 		Size: size,
 		Type: "",
 	}
 	response.Created(fileData, "File Upload Success", c)
-}
-
-func GetFileUploadStatus(c *gin.Context) {
-
 }

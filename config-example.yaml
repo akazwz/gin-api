@@ -4,6 +4,13 @@ server:
   readTimeout: 60
   writeTimeout: 60
 
+  aliOSS:
+    endpoint:
+    accessKeyId:
+    accessKeySecret:
+    bucketName:
+    bucketUrl:
+
 database:
   type: mysql
   user: root
