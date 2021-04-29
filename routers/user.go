@@ -10,6 +10,6 @@ func InitUserRouter(Router *gin.RouterGroup) {
 	UserRouter := Router.Group("users")
 	{
 		UserRouter.PUT("/password", v1.ChangePassword)
-		UserRouter.GET("", v1.GetUserList).Use(middleware.JWTAuthority())
+		UserRouter.Use(middleware.JWTAuthority777()).GET("", v1.GetUserList)
 	}
 }

@@ -24,6 +24,13 @@ func Unauthorized(code int, message string, c *gin.Context) {
 	})
 }
 
+func PermissionDenied(code int, message string, c *gin.Context) {
+	c.JSON(http.StatusForbidden, Response{
+		Code: code,
+		Msg:  message,
+	})
+}
+
 func Forbidden(c *gin.Context) {
 	c.JSON(http.StatusForbidden, Response{
 		Msg: "Permission Denied",

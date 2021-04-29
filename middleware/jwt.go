@@ -19,6 +19,7 @@ const (
 	CodeTokenMalformed   = 4013
 	CodeTokenInvalid     = 4014
 	CodeNoSuchUser       = 4015
+	CodePermissionDenied = 4016
 )
 
 func JWTAuth() gin.HandlerFunc {
@@ -70,17 +71,22 @@ func JWTAuth() gin.HandlerFunc {
 			c.Header("'new-expires-at", strconv.FormatInt(newClaims.ExpiresAt, 10))
 		}
 		c.Set("claims", claims)
+		c.Set("uuid", claims.UUID)
 		c.Next()
 	}
 }
 
-func JWTAuthority() gin.HandlerFunc {
+func JWTAuthority777() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		token := c.Request.Header.Get("token")
 		j := NewJWT()
 		claims, _ := j.ParseToken(token)
-		if claims.AuthorityId != "777" {
-			response.Unauthorized(CodeNoSuchUser, "Permission Denied", c)
+		uuid := claims.UUID.String()
+		_, user := service.FindUserByUUID(uuid)
+		if user.AuthorityId != "777" {
+			response.PermissionDenied(CodePermissionDenied, "Permission Denied", c)
+			c.Abort()
+			return
 		}
 		c.Next()
 	}
