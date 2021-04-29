@@ -23,7 +23,7 @@ func Routers() *gin.Engine {
 	//go-swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
-	router.Any("teapot", func(c *gin.Context) {
+	router.GET("teapot", func(c *gin.Context) {
 		c.JSON(http.StatusTeapot, gin.H{
 			"message": "I'm a teapot",
 			"story": "This code was defined in 1998 " +

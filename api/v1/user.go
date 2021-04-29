@@ -131,3 +131,36 @@ func ChangePassword(c *gin.Context) {
 		response.CommonSuccess(0, u, "Password Change Success", c)
 	}
 }
+
+// GetUserList
+// @Summary Get UserList
+// @Title Get UserList
+// @Author zwz
+// @Description get user list
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param page query int true "page"
+// @Param page_size query int true "page_size"
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Router /users [get]
+func GetUserList(c *gin.Context) {
+	var pageInfo request.PageInfo
+	if err := c.ShouldBindQuery(&pageInfo); err != nil {
+		response.CommonFailed("Bind Query Error", CodeBindError, c)
+		return
+	}
+
+	if err, list, total := service.GetUserInfoList(pageInfo); err != nil {
+		response.CommonFailed("Get UserList Error", CodeDbErr, c)
+	} else {
+		response.CommonSuccess(0, response.PageResult{
+			List:     list,
+			Total:    total,
+			Page:     pageInfo.Page,
+			PageSize: pageInfo.PageSize,
+		}, "Get UserList Success", c)
+	}
+}

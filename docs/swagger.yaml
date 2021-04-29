@@ -6,6 +6,8 @@ definitions:
         type: string
       book_name:
         type: string
+      cover:
+        type: string
       created_at:
         type: string
       deleted_at:
@@ -330,6 +332,40 @@ paths:
       tags:
       - token
   /users:
+    get:
+      consumes:
+      - application/json
+      description: get user list
+      parameters:
+      - description: page
+        in: query
+        name: page
+        required: true
+        type: integer
+      - description: page_size
+        in: query
+        name: page_size
+        required: true
+        type: integer
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get UserList
+      tags:
+      - user
     post:
       consumes:
       - application/json

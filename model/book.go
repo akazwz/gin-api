@@ -8,6 +8,7 @@ type Book struct {
 	BookName     string    `json:"book_name" gorm:"comment:图书名"`
 	Author       string    `json:"author" gorm:"comment:作者"`
 	Price        float64   `json:"price" gorm:"comment:价格"`
+	Cover        string    `json:"cover" gorm:"comment:封面图片"`
 	Introduction string    `json:"introduction" gorm:"comment: 简介"`
 }
 

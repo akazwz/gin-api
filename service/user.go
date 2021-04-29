@@ -4,6 +4,7 @@ import (
 	"errors"
 	"github.com/akazwz/go-gin-demo/global"
 	"github.com/akazwz/go-gin-demo/model"
+	"github.com/akazwz/go-gin-demo/model/request"
 	"github.com/akazwz/go-gin-demo/pkg/util"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
@@ -33,6 +34,16 @@ func ChangePassword(u *model.User, newPassword string) (err error, userInter *mo
 	u.Password = util.MD5V([]byte(u.Password))
 	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Update("password", util.MD5V([]byte(newPassword))).Error
 	return err, u
+}
+
+func GetUserInfoList(info request.PageInfo) (err error, list interface{}, total int64) {
+	limit := info.PageSize
+	offset := info.PageSize * (info.Page - 1)
+	db := global.GDB.Model(&model.User{})
+	var userList []model.User
+	err = db.Count(&total).Error
+	err = db.Limit(limit).Offset(offset).Find(&userList).Error
+	return err, userList, total
 }
 
 func FindUserByID(id int) (err error, user *model.User) {
