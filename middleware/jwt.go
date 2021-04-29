@@ -74,6 +74,18 @@ func JWTAuth() gin.HandlerFunc {
 	}
 }
 
+func JWTAuthority() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		token := c.Request.Header.Get("token")
+		j := NewJWT()
+		claims, _ := j.ParseToken(token)
+		if claims.AuthorityId != "777" {
+			response.Unauthorized(CodeNoSuchUser, "Permission Denied", c)
+		}
+		c.Next()
+	}
+}
+
 type JWT struct {
 	SigningKey []byte
 }
