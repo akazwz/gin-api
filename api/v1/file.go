@@ -5,6 +5,7 @@ import (
 	"github.com/akazwz/go-gin-demo/model/response"
 	"github.com/akazwz/go-gin-demo/pkg/util/upload"
 	"github.com/gin-gonic/gin"
+	"os"
 	"time"
 )
 
@@ -30,11 +31,23 @@ func CreateFile(c *gin.Context) {
 
 	dirDate := time.Now().Format("2006-01-02")
 
-	fileNamePrefix := time.Now().Format("15:04:05.000")
+	dir := "public/file/" + dirDate + "/"
+
+	// 判断目录是否存在,不存在创建目录
+	_, err = os.Stat(dir)
+	if err != nil {
+		err = os.Mkdir(dir, os.ModePerm)
+		if err != nil {
+			response.CommonFailed("Create DIR Error", CodeUploadFileError, c)
+			return
+		}
+	}
+
+	fileNamePrefix := time.Now().Format("15-04-05")
 
 	fileName := fileNamePrefix + "-" + file.Filename
 
-	localFile := "public/file/" + dirDate + "/" + fileName
+	localFile := dir + fileName
 
 	if err := c.SaveUploadedFile(file, localFile); err != nil {
 		response.CommonFailed("Upload File Error", CodeUploadFileError, c)

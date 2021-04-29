@@ -20,7 +20,7 @@ func OSSUploadFile(file *multipart.FileHeader) error {
 	}
 
 	dirDate := time.Now().Format("2006-01-02")
-	fileNamePrefix := time.Now().Format("15:04:05.000")
+	fileNamePrefix := time.Now().Format("15:04:05")
 	objectKey := dirDate + "/" + fileNamePrefix + "-" + file.Filename
 	err = bucket.PutObject(objectKey, fileReader)
 	if err != nil {
