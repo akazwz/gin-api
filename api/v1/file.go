@@ -82,6 +82,7 @@ func CreateFile(c *gin.Context) {
 	// md5 file db data
 	FileMD5Data := model.FileMD5{
 		MD5:      md5File,
+		UserUuid: userUuid,
 		Location: location,
 		Size:     size,
 		Type:     fileType,
