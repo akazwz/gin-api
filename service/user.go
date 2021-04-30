@@ -46,6 +46,11 @@ func GetUserInfoList(info request.PageInfo) (err error, list interface{}, total 
 	return err, userList, total
 }
 
+func SetUserAuthority(uuid uuid.UUID, authorityId string) (err error) {
+	err = global.GDB.Where("uuid = ?", uuid).First(&model.User{}).Update("authority_id", authorityId).Error
+	return err
+}
+
 func FindUserByID(id int) (err error, user *model.User) {
 	var u model.User
 	err = global.GDB.Where("`id` = ?", id).First(&u).Error

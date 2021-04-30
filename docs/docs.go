@@ -422,8 +422,55 @@ var doc = `{
                 }
             }
         },
+        "/users/authority": {
+            "patch": {
+                "description": "set userAuthority",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "Set UserAuthority",
+                "parameters": [
+                    {
+                        "description": "setUserAuth",
+                        "name": "setUserAuth",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SetUserAuth"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users/password": {
-            "put": {
+            "patch": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -486,9 +533,6 @@ var doc = `{
                 "created_at": {
                     "type": "string"
                 },
-                "deleted_at": {
-                    "type": "string"
-                },
                 "id": {
                     "type": "integer"
                 },
@@ -509,10 +553,10 @@ var doc = `{
         "model.User": {
             "type": "object",
             "properties": {
-                "created_at": {
+                "authority_id": {
                     "type": "string"
                 },
-                "deleted_at": {
+                "created_at": {
                     "type": "string"
                 },
                 "header_img": {
@@ -617,6 +661,21 @@ var doc = `{
                     "type": "string"
                 },
                 "username": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.SetUserAuth": {
+            "type": "object",
+            "required": [
+                "authority_id",
+                "uuid"
+            ],
+            "properties": {
+                "authority_id": {
+                    "type": "string"
+                },
+                "uuid": {
                     "type": "string"
                 }
             }

@@ -117,7 +117,7 @@ func CreateUser(c *gin.Context) {
 // @Param token header string true "token"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
-// @Router /users/password [put]
+// @Router /users/password [patch]
 func ChangePassword(c *gin.Context) {
 	var changePassword request.ChangePassword
 	if err := c.ShouldBindJSON(&changePassword); err != nil {
@@ -128,7 +128,7 @@ func ChangePassword(c *gin.Context) {
 		response.CommonFailed("Change Password Error, Password Not Correct", CodeDbErr, c)
 	} else {
 		u = model.User{Username: changePassword.Username, Password: changePassword.NewPassword}
-		response.CommonSuccess(0, u, "Password Change Success", c)
+		response.SuccessWithMessage("Password Change Success", c)
 	}
 }
 
@@ -163,4 +163,32 @@ func GetUserList(c *gin.Context) {
 			PageSize: pageInfo.PageSize,
 		}, "Get UserList Success", c)
 	}
+}
+
+// SetUserAuthority
+// @Summary Set UserAuthority
+// @Title Set UserAuthority
+// @Author zwz
+// @Description set userAuthority
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param setUserAuth body request.SetUserAuth true "setUserAuth"
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Router /users/authority [patch]
+func SetUserAuthority(c *gin.Context) {
+	var sua request.SetUserAuth
+	if err := c.ShouldBindJSON(&sua); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+		return
+	}
+
+	if err := service.SetUserAuthority(sua.UUID, sua.AuthorityId); err != nil {
+		response.CommonFailed("Set User Authority Error", CodeDbErr, c)
+	} else {
+		response.SuccessWithMessage("Set User Authority Success", c)
+	}
+
 }
