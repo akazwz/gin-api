@@ -5,7 +5,7 @@ import (
 	"github.com/akazwz/go-gin-demo/global"
 	"github.com/akazwz/go-gin-demo/model"
 	"github.com/akazwz/go-gin-demo/model/request"
-	"github.com/akazwz/go-gin-demo/pkg/util"
+	"github.com/akazwz/go-gin-demo/pkg/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )
@@ -16,7 +16,7 @@ func Register(u model.User) (err error, userInter model.User) {
 		return errors.New("username already exist"), userInter
 	}
 	// md5 register
-	u.Password = util.MD5V([]byte(u.Password))
+	u.Password = utils.MD5V([]byte(u.Password))
 	u.UUID = uuid.NewV4()
 	err = global.GDB.Create(&u).Error
 	return err, u
@@ -24,15 +24,15 @@ func Register(u model.User) (err error, userInter model.User) {
 
 func Login(u *model.User) (err error, userInter *model.User) {
 	var user model.User
-	u.Password = util.MD5V([]byte(u.Password))
+	u.Password = utils.MD5V([]byte(u.Password))
 	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Error
 	return err, &user
 }
 
 func ChangePassword(u *model.User, newPassword string) (err error, userInter *model.User) {
 	var user model.User
-	u.Password = util.MD5V([]byte(u.Password))
-	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Update("password", util.MD5V([]byte(newPassword))).Error
+	u.Password = utils.MD5V([]byte(u.Password))
+	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Update("password", utils.MD5V([]byte(newPassword))).Error
 	return err, u
 }
 

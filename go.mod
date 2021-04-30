@@ -4,7 +4,7 @@ go 1.16
 
 replace (
 	github.com/akazwz/go-gin-demo/model => ./model
-	github.com/akazwz/go-gin-demo/pkg/util => ../go-gin-demo/pkg/util
+	github.com/akazwz/go-gin-demo/pkg/utils => ../go-gin-demo/pkg/utils
 	github.com/akazwz/go-gin-demo/routers => ../go-gin-demo/routers
 	github.com/akazwz/go-gin-demo/service => ../go-gin-demo/service
 )

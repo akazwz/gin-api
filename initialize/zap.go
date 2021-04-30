@@ -4,7 +4,7 @@ package initialize
 //import (
 //	"fmt"
 //	"github.com/akazwz/go-gin-demo/global"
-//	"github.com/akazwz/go-gin-demo/pkg/util"
+//	"github.com/akazwz/go-gin-demo/pkg/utils"
 //	"go.uber.org/zap"
 //	"go.uber.org/zap/zapcore"
 //	"os"
@@ -14,7 +14,7 @@ package initialize
 //var level zapcore.Level
 //
 //func Zap() (logger zap.Logger) {
-//	if ok, _ := util.PathExist(global.CFG.Zap.Director); !ok {
+//	if ok, _ := utils.PathExist(global.CFG.Zap.Director); !ok {
 //		fmt.Printf("create %v directory\n", global.CFG.Zap.Director)
 //		_ = os.Mkdir(global.CFG.Zap.Director, os.ModePerm)
 //	}

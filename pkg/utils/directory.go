@@ -1,4 +1,4 @@
-package util
+package utils
 
 /*func PathExist(path string) (bool, error) {
 	_, err := os.Stat(path)

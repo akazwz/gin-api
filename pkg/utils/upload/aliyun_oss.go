@@ -5,10 +5,9 @@ import (
 	"github.com/akazwz/go-gin-demo/global"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"mime/multipart"
-	"time"
 )
 
-func OSSUploadFile(file *multipart.FileHeader) error {
+func OSSUploadFile(file *multipart.FileHeader, objectKey string) error {
 	bucket, err := NewBucket()
 	if err != nil {
 		return errors.New("NewBucket() Failed:" + err.Error())
@@ -19,9 +18,6 @@ func OSSUploadFile(file *multipart.FileHeader) error {
 		return errors.New("file.Open() Failed:" + err.Error())
 	}
 
-	dirDate := time.Now().Format("2006-01-02")
-	fileNamePrefix := time.Now().Format("15:04:05")
-	objectKey := dirDate + "/" + fileNamePrefix + "-" + file.Filename
 	err = bucket.PutObject(objectKey, fileReader)
 	if err != nil {
 		return errors.New("PutObject() Failed:" + err.Error())

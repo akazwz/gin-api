@@ -9,7 +9,7 @@ import (
 	"os"
 )
 
-//初始化数据库连接
+// InitDB 初始化数据库连接
 func InitDB() *gorm.DB {
 	m := global.CFG.Database
 
@@ -38,6 +38,8 @@ func CreateTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		model.User{},
 		model.Book{},
+		model.File{},
+		model.FileMD5{},
 	)
 	if err != nil {
 		os.Exit(0)
