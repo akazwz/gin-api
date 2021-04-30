@@ -2,6 +2,7 @@ package v1
 
 import (
 	"github.com/akazwz/go-gin-demo/model"
+	"github.com/akazwz/go-gin-demo/model/request"
 	"github.com/akazwz/go-gin-demo/model/response"
 	"github.com/akazwz/go-gin-demo/pkg/util/upload"
 	"github.com/gin-gonic/gin"
@@ -23,12 +24,14 @@ import (
 // @Failure 400,401 {object} response.Response
 // @Router /file [post]
 func CreateFile(c *gin.Context) {
+	claims, _ := c.Get("claims")
+	customClaims := claims.(*request.CustomClaims)
+	_ = customClaims.UUID.String()
 	file, err := c.FormFile("file")
 	if err != nil {
 		response.CommonFailed("Get File Error", CodeGetFileError, c)
 		return
 	}
-
 	dirDate := time.Now().Format("2006-01-02")
 
 	dir := "public/file/" + dirDate + "/"

@@ -71,7 +71,6 @@ func JWTAuth() gin.HandlerFunc {
 			c.Header("'new-expires-at", strconv.FormatInt(newClaims.ExpiresAt, 10))
 		}
 		c.Set("claims", claims)
-		c.Set("uuid", claims.UUID)
 		c.Next()
 	}
 }
