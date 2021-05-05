@@ -80,14 +80,14 @@ func CreateFile(c *gin.Context) {
 		return
 	}
 	// md5 file db data
-	FileMD5Data := model.FileMD5{
+	fileMD5Data := model.FileMD5{
 		MD5:      md5File,
 		UserUuid: userUuid,
 		Location: location,
 		Size:     size,
 		Type:     fileType,
 	}
-	if err := service.CreateMD5File(&FileMD5Data); err != nil {
+	if err := service.CreateMD5File(&fileMD5Data); err != nil {
 		response.CommonFailed("Save MD5 File To DB Error", CodeDbErr, c)
 		return
 	}
@@ -105,4 +105,8 @@ func CreateFile(c *gin.Context) {
 		return
 	}
 	response.Created(userFileData, "File Upload Success", c)
+}
+
+func GetFile(c *gin.Context) {
+
 }
