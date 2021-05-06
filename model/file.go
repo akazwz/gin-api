@@ -15,7 +15,7 @@ type File struct {
 
 type FileMD5 struct {
 	Model
-	MD5      string    `json:"md5" gorm:"comment:文件MD5"`
+	MD5      string    `json:"md5" gorm:"unique;comment:文件MD5"`
 	UUID     uuid.UUID `json:"uuid"`
 	Location string    `json:"location" gorm:"comment:文件储存位置"`
 	Size     int64     `json:"size" gorm:"comment:文件大小"`

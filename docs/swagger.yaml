@@ -48,6 +48,8 @@ definitions:
         type: string
       book_name:
         type: string
+      cover:
+        type: string
       introduction:
         type: string
       price:
@@ -290,6 +292,11 @@ paths:
         name: file
         required: true
         type: file
+      - description: md5
+        in: formData
+        name: md5
+        required: true
+        type: string
       - description: token
         in: header
         name: token

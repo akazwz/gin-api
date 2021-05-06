@@ -12,7 +12,7 @@ import (
 
 func Routers() *gin.Engine {
 	var router = gin.Default()
-	// router.Static("/public", "./public")
+	router.Static("/public", "./public")
 	//cors
 	router.Use(cors.New(cors.Config{
 		AllowAllOrigins: true,
@@ -22,7 +22,7 @@ func Routers() *gin.Engine {
 
 	//go-swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-
+	//Teapot
 	router.GET("teapot", func(c *gin.Context) {
 		c.JSON(http.StatusTeapot, gin.H{
 			"message": "I'm a teapot",

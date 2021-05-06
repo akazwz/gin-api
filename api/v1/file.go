@@ -22,6 +22,7 @@ import (
 // @Accept multipart/form-data
 // @Produce json
 // @Param file formData file true "file"
+// @Param md5 formData string true "md5"
 // @Param token header string true "token"
 // @Success 201 {object} response.Response
 // @Failure 400,401 {object} response.Response
@@ -33,6 +34,25 @@ func CreateFile(c *gin.Context) {
 	customClaims := claims.(*request.CustomClaims)
 	// get user uuid to store who upload this file
 	userUuid := customClaims.UUID.String()
+	// md5 a pass
+	md5 := c.PostForm("md5")
+	err, fileExisted := utils.MD5Existed(md5)
+	if err == nil {
+		userFileData := model.File{
+			UserUuid: userUuid,
+			URL:      fileExisted.URL,
+			MD5:      fileExisted.MD5,
+			Name:     fileExisted.Name,
+			Size:     fileExisted.Size,
+			Type:     fileExisted.Type,
+		}
+		if err := service.CreateUserFile(&userFileData); err != nil {
+			response.CommonFailed("Save User File To DB Error", CodeDbErr, c)
+			return
+		}
+		response.Created(userFileData, "A Pass Success", c)
+		return
+	}
 	// get file from form
 	file, err := c.FormFile("file")
 	if err != nil {
@@ -53,17 +73,21 @@ func CreateFile(c *gin.Context) {
 		}
 	}
 	// user file name prefix
-	fileNamePrefix := time.Now().Format("15-04-05")
+	fileNamePrefix := uuid.NewV4().String()
 	// user full file name
 	fileName := fileNamePrefix + "-" + file.Filename
 	// user get file by this url
 	url := dir + fileName
 	// the local file real complete store path
-	location := dir + uuid.NewV4().String() + "-" + file.Filename
+	location := dir + fileName
 	// the file oss store path
-	objectKey := dirDate + "/" + uuid.NewV4().String() + "-" + file.Filename
+	objectKey := dirDate + "/" + fileName
 	// get file md5
 	md5File := utils.GetFileMD5(file)
+	if md5File != md5 {
+		response.CommonFailed("Upload File Damaged", CodeUploadFileError, c)
+		return
+	}
 	// get file real type
 	fileType := utils.GetFileType(file)
 
@@ -105,8 +129,4 @@ func CreateFile(c *gin.Context) {
 		return
 	}
 	response.Created(userFileData, "File Upload Success", c)
-}
-
-func GetFile(c *gin.Context) {
-
 }

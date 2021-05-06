@@ -264,6 +264,13 @@ var doc = `{
                     },
                     {
                         "type": "string",
+                        "description": "md5",
+                        "name": "md5",
+                        "in": "formData",
+                        "required": true
+                    },
+                    {
+                        "type": "string",
                         "description": "token",
                         "name": "token",
                         "in": "header",
@@ -592,6 +599,9 @@ var doc = `{
                     "type": "string"
                 },
                 "book_name": {
+                    "type": "string"
+                },
+                "cover": {
                     "type": "string"
                 },
                 "introduction": {
