@@ -2,7 +2,7 @@ package initialize
 
 import (
 	"fmt"
-	"github.com/akazwz/go-gin-demo/global"
+	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )

@@ -2,10 +2,10 @@ package service
 
 import (
 	"errors"
-	"github.com/akazwz/go-gin-demo/global"
-	"github.com/akazwz/go-gin-demo/model"
-	"github.com/akazwz/go-gin-demo/model/request"
-	"github.com/akazwz/go-gin-demo/pkg/utils"
+	"github.com/akazwz/go-gin-restful-api/global"
+	"github.com/akazwz/go-gin-restful-api/model"
+	"github.com/akazwz/go-gin-restful-api/model/request"
+	"github.com/akazwz/go-gin-restful-api/pkg/utils"
 	uuid "github.com/satori/go.uuid"
 	"gorm.io/gorm"
 )

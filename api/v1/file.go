@@ -1,12 +1,12 @@
 package v1
 
 import (
-	"github.com/akazwz/go-gin-demo/model"
-	"github.com/akazwz/go-gin-demo/model/request"
-	"github.com/akazwz/go-gin-demo/model/response"
-	"github.com/akazwz/go-gin-demo/pkg/utils"
-	"github.com/akazwz/go-gin-demo/pkg/utils/upload"
-	"github.com/akazwz/go-gin-demo/service"
+	"github.com/akazwz/go-gin-restful-api/model"
+	"github.com/akazwz/go-gin-restful-api/model/request"
+	"github.com/akazwz/go-gin-restful-api/model/response"
+	"github.com/akazwz/go-gin-restful-api/pkg/utils"
+	"github.com/akazwz/go-gin-restful-api/pkg/utils/upload"
+	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
 	"os"

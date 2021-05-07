@@ -3,8 +3,8 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/akazwz/go-gin-demo/global"
-	"github.com/akazwz/go-gin-demo/initialize"
+	"github.com/akazwz/go-gin-restful-api/global"
+	"github.com/akazwz/go-gin-restful-api/initialize"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"time"

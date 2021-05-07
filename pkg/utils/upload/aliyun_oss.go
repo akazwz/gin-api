@@ -2,7 +2,7 @@ package upload
 
 import (
 	"errors"
-	"github.com/akazwz/go-gin-demo/global"
+	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
 	"mime/multipart"
 )

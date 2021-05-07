@@ -1,12 +1,12 @@
-module github.com/akazwz/go-gin-demo
+module github.com/akazwz/go-gin-restful-api
 
 go 1.16
 
 replace (
-	github.com/akazwz/go-gin-demo/model => ./model
-	github.com/akazwz/go-gin-demo/pkg/utils => ../go-gin-demo/pkg/utils
-	github.com/akazwz/go-gin-demo/routers => ../go-gin-demo/routers
-	github.com/akazwz/go-gin-demo/service => ../go-gin-demo/service
+	github.com/akazwz/go-gin-restful-api/model => ./model
+	github.com/akazwz/go-gin-restful-api/pkg/utils => ../go-gin-restful-api/pkg/utils
+	github.com/akazwz/go-gin-restful-api/routers => ../go-gin-restful-api/routers
+	github.com/akazwz/go-gin-restful-api/service => ../go-gin-restful-api/service
 )
 
 require (

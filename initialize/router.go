@@ -1,8 +1,8 @@
 package initialize
 
 import (
-	"github.com/akazwz/go-gin-demo/middleware"
-	"github.com/akazwz/go-gin-demo/routers"
+	"github.com/akazwz/go-gin-restful-api/middleware"
+	"github.com/akazwz/go-gin-restful-api/routers"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"

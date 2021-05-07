@@ -1,8 +1,8 @@
 package routers
 
 import (
-	v1 "github.com/akazwz/go-gin-demo/api/v1"
-	"github.com/akazwz/go-gin-demo/middleware"
+	v1 "github.com/akazwz/go-gin-restful-api/api/v1"
+	"github.com/akazwz/go-gin-restful-api/middleware"
 	"github.com/gin-gonic/gin"
 )
 

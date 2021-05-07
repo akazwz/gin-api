@@ -1,12 +1,12 @@
 package v1
 
 import (
-	"github.com/akazwz/go-gin-demo/global"
-	"github.com/akazwz/go-gin-demo/middleware"
-	"github.com/akazwz/go-gin-demo/model"
-	"github.com/akazwz/go-gin-demo/model/request"
-	"github.com/akazwz/go-gin-demo/model/response"
-	"github.com/akazwz/go-gin-demo/service"
+	"github.com/akazwz/go-gin-restful-api/global"
+	"github.com/akazwz/go-gin-restful-api/middleware"
+	"github.com/akazwz/go-gin-restful-api/model"
+	"github.com/akazwz/go-gin-restful-api/model/request"
+	"github.com/akazwz/go-gin-restful-api/model/response"
+	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 	"time"
