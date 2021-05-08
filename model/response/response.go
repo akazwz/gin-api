@@ -31,6 +31,13 @@ func PermissionDenied(code int, message string, c *gin.Context) {
 	})
 }
 
+func NotFound(c *gin.Context) {
+	c.JSON(http.StatusNotFound, Response{
+		Code: ERROR,
+		Msg:  "404 not found",
+	})
+}
+
 func Forbidden(c *gin.Context) {
 	c.JSON(http.StatusForbidden, Response{
 		Msg: "Permission Denied",
