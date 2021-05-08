@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"github.com/akazwz/go-gin-restful-api/api"
 	"github.com/akazwz/go-gin-restful-api/middleware"
 	"github.com/akazwz/go-gin-restful-api/model/response"
 	"github.com/akazwz/go-gin-restful-api/routers"
@@ -35,7 +36,7 @@ func Routers() *gin.Engine {
 				" However, known implementations do exist.",
 		})
 	})
-
+	router.GET("/", api.GetApiList)
 	publicRouterV1 := router.Group("v1")
 	{
 		routers.InitBaseRouter(publicRouterV1)
