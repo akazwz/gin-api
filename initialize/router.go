@@ -1,7 +1,9 @@
 package initialize
 
 import (
+	"github.com/akazwz/go-gin-restful-api/api"
 	"github.com/akazwz/go-gin-restful-api/middleware"
+	"github.com/akazwz/go-gin-restful-api/model/response"
 	"github.com/akazwz/go-gin-restful-api/routers"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -20,6 +22,7 @@ func Routers() *gin.Engine {
 		AllowHeaders:    []string{"*"},
 	}))
 
+	router.NoRoute(response.NotFound)
 	//go-swagger
 	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 	//Teapot
@@ -33,7 +36,7 @@ func Routers() *gin.Engine {
 				" However, known implementations do exist.",
 		})
 	})
-
+	router.GET("/", api.GetApiList)
 	publicRouterV1 := router.Group("v1")
 	{
 		routers.InitBaseRouter(publicRouterV1)
