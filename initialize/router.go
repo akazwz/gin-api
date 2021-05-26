@@ -17,9 +17,10 @@ func Routers() *gin.Engine {
 	router.Static("/public", "./public")
 	//cors
 	router.Use(cors.New(cors.Config{
-		AllowAllOrigins: true,
-		AllowMethods:    []string{"POST", "GET", "OPTIONS"},
-		AllowHeaders:    []string{"*"},
+		AllowCredentials: true,
+		AllowAllOrigins:  true,
+		AllowMethods:     []string{"*"},
+		AllowHeaders:     []string{"*"},
 	}))
 
 	router.NoRoute(response.NotFound)
