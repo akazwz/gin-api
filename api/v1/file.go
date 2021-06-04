@@ -28,12 +28,16 @@ import (
 // @Failure 400,401 {object} response.Response
 // @Router /file [post]
 func CreateFile(c *gin.Context) {
-	// get claims from middleware
-	claims, _ := c.Get("claims")
-	// convent claims to type *request.CustomClaims
-	customClaims := claims.(*request.CustomClaims)
-	// get user uuid to store who upload this file
-	userUuid := customClaims.UUID.String()
+	fullPath := c.FullPath()
+	userUuid := ""
+	if fullPath != "/v1/avatar" {
+		// get claims from middleware
+		claims, _ := c.Get("claims")
+		// convent claims to type *request.CustomClaims
+		customClaims := claims.(*request.CustomClaims)
+		// get user uuid to store who upload this file
+		userUuid = customClaims.UUID.String()
+	}
 	// md5 a pass
 	md5 := c.PostForm("md5")
 	err, fileExisted := utils.MD5Existed(md5)
