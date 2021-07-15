@@ -19,4 +19,3 @@
 ### 2.fill ur own config
 ### 3.go mod tidy
 ### 4.go run main.go
-test
