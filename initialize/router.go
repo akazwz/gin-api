@@ -10,6 +10,7 @@ import (
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
 	"net/http"
+	"time"
 )
 
 func Routers() *gin.Engine {
@@ -22,6 +23,9 @@ func Routers() *gin.Engine {
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"*"},
 	}))
+
+	// rate limit
+	router.Use(middleware.RateLimitMiddleware(time.Millisecond*10, 100))
 
 	router.NoRoute(response.NotFound)
 	//go-swagger
