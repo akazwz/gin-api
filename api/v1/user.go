@@ -1,6 +1,8 @@
 package v1
 
 import (
+	"time"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/akazwz/go-gin-restful-api/middleware"
 	"github.com/akazwz/go-gin-restful-api/model"
@@ -9,7 +11,6 @@ import (
 	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"time"
 )
 
 // CreateToken
@@ -39,7 +40,6 @@ func CreateToken(c *gin.Context) {
 	} else {
 		TokenNext(c, *user)
 	}
-
 }
 
 func TokenNext(c *gin.Context, user model.User) {
