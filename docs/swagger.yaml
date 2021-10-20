@@ -35,6 +35,8 @@ definitions:
         type: string
       password:
         type: string
+      phone:
+        type: string
       updated_at:
         type: string
       username:
@@ -93,11 +95,17 @@ definitions:
         type: string
       password:
         type: string
+      phone:
+        type: string
       username:
+        type: string
+      verification_code:
         type: string
     required:
     - password
+    - phone
     - username
+    - verification_code
     type: object
   request.SetUserAuth:
     properties:

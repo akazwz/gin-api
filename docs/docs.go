@@ -612,6 +612,9 @@ var doc = `{
                 "password": {
                     "type": "string"
                 },
+                "phone": {
+                    "type": "string"
+                },
                 "updated_at": {
                     "type": "string"
                 },
@@ -692,7 +695,9 @@ var doc = `{
             "type": "object",
             "required": [
                 "password",
-                "username"
+                "phone",
+                "username",
+                "verification_code"
             ],
             "properties": {
                 "header_img": {
@@ -704,7 +709,13 @@ var doc = `{
                 "password": {
                     "type": "string"
                 },
+                "phone": {
+                    "type": "string"
+                },
                 "username": {
+                    "type": "string"
+                },
+                "verification_code": {
                     "type": "string"
                 }
             }
