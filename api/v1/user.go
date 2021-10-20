@@ -8,6 +8,7 @@ import (
 	"github.com/akazwz/go-gin-restful-api/model"
 	"github.com/akazwz/go-gin-restful-api/model/request"
 	"github.com/akazwz/go-gin-restful-api/model/response"
+	"github.com/akazwz/go-gin-restful-api/pkg/utils"
 	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
@@ -48,6 +49,7 @@ func TokenNext(c *gin.Context, user model.User) {
 		UUID:       user.UUID,
 		ID:         user.ID,
 		Username:   user.Username,
+		Phone:      user.Phone,
 		NickName:   user.NickName,
 		BufferTime: global.CFG.JWT.BufferTime,
 		StandardClaims: jwt.StandardClaims{
@@ -96,8 +98,16 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
+	// verification code check
+	passed := utils.GetVerificationStatus(register.Phone, register.VerificationCode, c.Request.Context())
+	if !passed {
+		response.CommonFailed("verification code error", CodeVerificationCodeError, c)
+		return
+	}
+
 	user := &model.User{
 		Username:  register.Username,
+		Phone:     register.Phone,
 		Password:  register.Password,
 		NickName:  register.NickName,
 		HeaderImg: register.HeaderImg,

@@ -3,10 +3,12 @@ package request
 import uuid "github.com/satori/go.uuid"
 
 type Register struct {
-	Username  string `json:"username" form:"username" binding:"required"`
-	Password  string `json:"password" form:"password" binding:"required"`
-	NickName  string `json:"nick_name" form:"nick_name"`
-	HeaderImg string `json:"header_img" form:"header"`
+	Username         string `json:"username" form:"username" binding:"required"`
+	Password         string `json:"password" form:"password" binding:"required"`
+	NickName         string `json:"nick_name" form:"nick_name"`
+	HeaderImg        string `json:"header_img" form:"header"`
+	Phone            string `json:"phone" form:"phone" binding:"required"`
+	VerificationCode string `json:"verification_code" form:"verification_code" binding:"required"`
 }
 
 type Login struct {

@@ -9,6 +9,7 @@ type CustomClaims struct {
 	UUID        uuid.UUID
 	ID          uint
 	Username    string
+	Phone       string
 	NickName    string
 	AuthorityId string
 	BufferTime  int64

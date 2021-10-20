@@ -8,6 +8,7 @@ type User struct {
 	Model
 	UUID        uuid.UUID `json:"uuid" gorm:"comment:用户uuid"`
 	Username    string    `json:"username" gorm:"comment:用户登陆名"`
+	Phone       string    `json:"phone" gorm:"comment:手机号"`
 	Password    string    `json:"password" gorm:"comment:用户登陆密码"`
 	NickName    string    `json:"nick_name" gorm:"comment:用户昵称"`
 	HeaderImg   string    `json:"header_img" gorm:"default:http://qmplusimg.henrongyi.top/head.png;comment:用户头像"`

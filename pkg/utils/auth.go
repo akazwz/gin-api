@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"math/rand"
@@ -49,4 +50,13 @@ func SendVerifyMessage(phone, verificationCode string) bool {
 		return false
 	}
 	return true
+}
+
+func GetVerificationStatus(phone, code string, c context.Context) bool {
+	val, err := global.GRDB.Get(c, phone).Result()
+	if err != nil {
+		log.Println(err)
+		return false
+	}
+	return val == code
 }
