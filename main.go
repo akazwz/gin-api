@@ -48,11 +48,13 @@ func main() {
 		fmt.Println("数据库连接失败")
 		return
 	}
+
 	global.GRDB = initialize.InitRDB()
-	if global.GRDB != nil {
+	if global.GRDB == nil {
 		log.Println("Redis数据库连接失败")
 		return
 	}
+
 	time.Sleep(10 * time.Microsecond)
 	str := `
  █████╗ ██╗  ██╗ █████╗ ███████╗██╗    ██╗███████╗                                                                                

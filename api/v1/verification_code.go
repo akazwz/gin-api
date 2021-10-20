@@ -29,10 +29,10 @@ func GetVerificationCode(c *gin.Context) {
 	verificationCode := utils.CreateRandomVerificationCode()
 
 	// save phone and code in redis and set ex 5 minutes
-	err := global.GRDB.Set(c, phone, verificationCode, time.Minute*5).Err()
+	err := global.GRDB.Set(c.Request.Context(), phone, verificationCode, time.Minute*5).Err()
 	if err != nil {
-		response.CommonFailed("redis error", CodeRedisError, c)
 		log.Println(err)
+		response.CommonFailed("redis error", CodeRedisError, c)
 		return
 	}
 	// send sms
