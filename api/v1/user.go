@@ -62,7 +62,12 @@ func TokenNext(c *gin.Context, user model.User) {
 		return
 	}
 
-	u := model.User{Username: user.Username}
+	u := model.User{
+		Username:    user.Username,
+		HeaderImg:   user.HeaderImg,
+		NickName:    user.NickName,
+		AuthorityId: user.AuthorityId,
+	}
 
 	response.Created(response.LoginResponse{
 		User:      u,
