@@ -6,6 +6,7 @@ import (
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/akazwz/go-gin-restful-api/initialize"
 	"github.com/gin-gonic/gin"
+	"log"
 	"net/http"
 	"time"
 )
@@ -45,6 +46,11 @@ func main() {
 		}(db)
 	} else {
 		fmt.Println("数据库连接失败")
+		return
+	}
+	global.GRDB = initialize.InitRDB()
+	if global.GRDB != nil {
+		log.Println("Redis数据库连接失败")
 		return
 	}
 	time.Sleep(10 * time.Microsecond)

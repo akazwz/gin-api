@@ -190,5 +190,4 @@ func SetUserAuthority(c *gin.Context) {
 	} else {
 		response.SuccessWithMessage("Set User Authority Success", c)
 	}
-
 }

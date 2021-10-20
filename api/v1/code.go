@@ -7,4 +7,6 @@ const (
 	CodeCreateTokenError = 4004
 	CodeGetFileError     = 4005
 	CodeUploadFileError  = 4006
+	CodeParamsError      = 4006
+	CodeSendSMSError     = 4007
 )
