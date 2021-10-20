@@ -169,7 +169,7 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
         "401":
-          description: Bad Request
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.Response'
       summary: Delete A Book
@@ -207,7 +207,7 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
         "401":
-          description: Bad Request
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.Response'
       summary: Get Books
@@ -241,7 +241,7 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
         "401":
-          description: Bad Request
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create A Book
@@ -275,7 +275,7 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
         "401":
-          description: Bad Request
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.Response'
       summary: Update Book
@@ -314,7 +314,7 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
         "401":
-          description: Bad Request
+          description: Unauthorized
           schema:
             $ref: '#/definitions/response.Response'
       summary: Create File
@@ -468,4 +468,27 @@ paths:
       summary: Change Password
       tags:
       - user
+  /verification/sms:
+    get:
+      description: Get Verification Code
+      parameters:
+      - description: phone number
+        in: query
+        name: phone
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Get Verification Code
+      tags:
+      - verification
 swagger: "2.0"

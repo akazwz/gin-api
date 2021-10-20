@@ -45,6 +45,7 @@ func Routers() *gin.Engine {
 	publicRouterV1 := router.Group("v1")
 	{
 		routers.InitBaseRouter(publicRouterV1)
+		routers.InitVerificationCodeRouter(publicRouterV1)
 	}
 
 	privateGroupV1 := router.Group("v1")

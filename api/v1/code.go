@@ -9,4 +9,5 @@ const (
 	CodeUploadFileError  = 4006
 	CodeParamsError      = 4006
 	CodeSendSMSError     = 4007
+	CodeRedisError       = 4008
 )

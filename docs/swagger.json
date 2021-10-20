@@ -68,7 +68,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad Request",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
                         }
@@ -119,7 +119,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad Request",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
                         }
@@ -170,7 +170,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad Request",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
                         }
@@ -218,7 +218,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad Request",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
                         }
@@ -276,7 +276,7 @@
                         }
                     },
                     "401": {
-                        "description": "Bad Request",
+                        "description": "Unauthorized",
                         "schema": {
                             "$ref": "#/definitions/response.Response"
                         }
@@ -489,6 +489,41 @@
                         "description": "token",
                         "name": "token",
                         "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/verification/sms": {
+            "get": {
+                "description": "Get Verification Code",
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "verification"
+                ],
+                "summary": "Get Verification Code",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "phone number",
+                        "name": "phone",
+                        "in": "query",
                         "required": true
                     }
                 ],
