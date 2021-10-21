@@ -77,7 +77,17 @@ definitions:
       id:
         type: number
     type: object
-  request.Login:
+  request.LoginByPhonePwd:
+    properties:
+      password:
+        type: string
+      phone:
+        type: string
+    required:
+    - password
+    - phone
+    type: object
+  request.LoginByUsernamePwd:
     properties:
       password:
         type: string
@@ -328,18 +338,18 @@ paths:
       summary: Create File
       tags:
       - file
-  /token:
+  /token/phone-pwd:
     post:
       consumes:
       - application/json
-      description: create book
+      description: create token
       parameters:
-      - description: login
+      - description: login by phone pwd
         in: body
-        name: login
+        name: loginByUp
         required: true
         schema:
-          $ref: '#/definitions/request.Login'
+          $ref: '#/definitions/request.LoginByPhonePwd'
       produces:
       - application/json
       responses:
@@ -351,7 +361,33 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Create A Token
+      summary: Create A Token By Phone Pwd
+      tags:
+      - token
+  /token/username-pwd:
+    post:
+      consumes:
+      - application/json
+      description: create token
+      parameters:
+      - description: login by username pwd
+        in: body
+        name: loginByUp
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginByUsernamePwd'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create A Token By Username Pwd
       tags:
       - token
   /users:

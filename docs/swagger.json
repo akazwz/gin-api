@@ -284,9 +284,9 @@
                 }
             }
         },
-        "/token": {
+        "/token/phone-pwd": {
             "post": {
-                "description": "create book",
+                "description": "create token",
                 "consumes": [
                     "application/json"
                 ],
@@ -296,15 +296,55 @@
                 "tags": [
                     "token"
                 ],
-                "summary": "Create A Token",
+                "summary": "Create A Token By Phone Pwd",
                 "parameters": [
                     {
-                        "description": "login",
-                        "name": "login",
+                        "description": "login by phone pwd",
+                        "name": "loginByUp",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/request.Login"
+                            "$ref": "#/definitions/request.LoginByPhonePwd"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/token/username-pwd": {
+            "post": {
+                "description": "create token",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "token"
+                ],
+                "summary": "Create A Token By Username Pwd",
+                "parameters": [
+                    {
+                        "description": "login by username pwd",
+                        "name": "loginByUp",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoginByUsernamePwd"
                         }
                     }
                 ],
@@ -662,7 +702,22 @@
                 }
             }
         },
-        "request.Login": {
+        "request.LoginByPhonePwd": {
+            "type": "object",
+            "required": [
+                "password",
+                "phone"
+            ],
+            "properties": {
+                "password": {
+                    "type": "string"
+                },
+                "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.LoginByUsernamePwd": {
             "type": "object",
             "required": [
                 "password",

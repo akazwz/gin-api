@@ -11,9 +11,19 @@ type Register struct {
 	VerificationCode string `json:"verification_code" form:"verification_code" binding:"required"`
 }
 
-type Login struct {
+type LoginByUsernamePwd struct {
 	Username string `form:"username" json:"username" binding:"required"`
 	Password string `form:"password" json:"password" binding:"required"`
+}
+
+type LoginByPhonePwd struct {
+	Phone    string `form:"phone" json:"phone" binding:"required"`
+	Password string `form:"password" json:"password" binding:"required"`
+}
+
+type LoginByPhoneCode struct {
+	Phone string `form:"phone" json:"phone" binding:"required"`
+	Code  string `form:"code" json:"code" binding:"code"`
 }
 
 type ChangePassword struct {

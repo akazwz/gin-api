@@ -14,20 +14,20 @@ import (
 	"github.com/gin-gonic/gin"
 )
 
-// CreateToken
-// @Summary Create A Token
+// CreateTokenByUsernamePwd
+// @Summary Create A Token By Username Pwd
 // @Title Create Token
 // @Author zwz
-// @Description create book
+// @Description create token
 // @Tags token
 // @Accept json
 // @Produce json
-// @Param login body request.Login true "login"
+// @Param loginByUp body request.LoginByUsernamePwd true "login by username pwd"
 // @Success 201 {object} response.LoginResponse
 // @Failure 400 {object} response.Response
-// @Router /token [post]
-func CreateToken(c *gin.Context) {
-	var login request.Login
+// @Router /token/username-pwd [post]
+func CreateTokenByUsernamePwd(c *gin.Context) {
+	var login request.LoginByUsernamePwd
 
 	if err := c.ShouldBindJSON(&login); err != nil {
 		response.CommonFailed("Bind Json Error", CodeBindError, c)
@@ -35,7 +35,7 @@ func CreateToken(c *gin.Context) {
 	}
 
 	u := &model.User{Username: login.Username, Password: login.Password}
-	if err, user := service.Login(u); err != nil {
+	if err, user := service.LoginByUsernamePwd(u); err != nil {
 		response.CommonFailed("Username Or Password Error", CodeDbErr, c)
 		return
 	} else {
@@ -43,6 +43,41 @@ func CreateToken(c *gin.Context) {
 	}
 }
 
+// CreateTokenByPhonePwd
+// @Summary Create A Token By Phone Pwd
+// @Title Create Token
+// @Author zwz
+// @Description create token
+// @Tags token
+// @Accept json
+// @Produce json
+// @Param loginByUp body request.LoginByPhonePwd true "login by phone pwd"
+// @Success 201 {object} response.LoginResponse
+// @Failure 400 {object} response.Response
+// @Router /token/phone-pwd [post]
+func CreateTokenByPhonePwd(c *gin.Context) {
+	var login request.LoginByPhonePwd
+
+	if err := c.ShouldBindJSON(&login); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+		return
+	}
+
+	u := &model.User{Phone: login.Phone, Password: login.Password}
+	if err, user := service.LoginByPhonePwd(u); err != nil {
+		response.CommonFailed("Phone Or Password Error", CodeDbErr, c)
+		return
+	} else {
+		TokenNext(c, *user)
+	}
+}
+
+func CreateTokenByPhoneVerificationCode() {
+
+}
+
+// TokenNext
+// generate and return token
 func TokenNext(c *gin.Context, user model.User) {
 	j := &middleware.JWT{SigningKey: []byte(global.CFG.JWT.SigningKey)}
 	claims := request.CustomClaims{
