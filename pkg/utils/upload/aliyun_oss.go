@@ -2,9 +2,10 @@ package upload
 
 import (
 	"errors"
+	"mime/multipart"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/aliyun/aliyun-oss-go-sdk/oss"
-	"mime/multipart"
 )
 
 func OSSUploadFile(file *multipart.FileHeader, objectKey string) error {

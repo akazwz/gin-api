@@ -2,9 +2,10 @@ package initialize
 
 import (
 	"context"
+	"log"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/go-redis/redis/v8"
-	"log"
 )
 
 func InitRDB() *redis.Client {

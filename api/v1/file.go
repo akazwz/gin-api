@@ -1,6 +1,9 @@
 package v1
 
 import (
+	"os"
+	"time"
+
 	"github.com/akazwz/go-gin-restful-api/model"
 	"github.com/akazwz/go-gin-restful-api/model/request"
 	"github.com/akazwz/go-gin-restful-api/model/response"
@@ -9,8 +12,6 @@ import (
 	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/gin-gonic/gin"
 	uuid "github.com/satori/go.uuid"
-	"os"
-	"time"
 )
 
 // CreateFile

@@ -3,6 +3,7 @@ package utils
 import (
 	"crypto/md5"
 	"encoding/hex"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/akazwz/go-gin-restful-api/model"
 )

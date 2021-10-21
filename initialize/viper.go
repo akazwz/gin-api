@@ -2,12 +2,14 @@ package initialize
 
 import (
 	"fmt"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/fsnotify/fsnotify"
 	"github.com/spf13/viper"
 )
 
-//初始化配置
+// InitViper
+// 初始化配置
 func InitViper() (config *viper.Viper) {
 	config = viper.New()
 	config.AddConfigPath("./")

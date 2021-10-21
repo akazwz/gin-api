@@ -1,12 +1,13 @@
 package v1
 
 import (
+	"log"
+	"time"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/akazwz/go-gin-restful-api/model/response"
 	"github.com/akazwz/go-gin-restful-api/pkg/utils"
 	"github.com/gin-gonic/gin"
-	"log"
-	"time"
 )
 
 // GetVerificationCode

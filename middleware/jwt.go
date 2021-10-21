@@ -2,14 +2,15 @@ package middleware
 
 import (
 	"errors"
+	"strconv"
+	"time"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/akazwz/go-gin-restful-api/model/request"
 	"github.com/akazwz/go-gin-restful-api/model/response"
 	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
-	"strconv"
-	"time"
 )
 
 const (

@@ -1,6 +1,9 @@
 package initialize
 
 import (
+	"net/http"
+	"time"
+
 	"github.com/akazwz/go-gin-restful-api/api"
 	"github.com/akazwz/go-gin-restful-api/middleware"
 	"github.com/akazwz/go-gin-restful-api/model/response"
@@ -9,8 +12,6 @@ import (
 	"github.com/gin-gonic/gin"
 	swaggerFiles "github.com/swaggo/files"
 	ginSwagger "github.com/swaggo/gin-swagger"
-	"net/http"
-	"time"
 )
 
 func Routers() *gin.Engine {

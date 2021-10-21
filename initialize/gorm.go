@@ -2,11 +2,12 @@ package initialize
 
 import (
 	"fmt"
+	"os"
+
 	"github.com/akazwz/go-gin-restful-api/global"
 	"github.com/akazwz/go-gin-restful-api/model"
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
-	"os"
 )
 
 // InitDB 初始化数据库连接
@@ -44,5 +45,4 @@ func CreateTables(db *gorm.DB) {
 	if err != nil {
 		os.Exit(0)
 	}
-
 }

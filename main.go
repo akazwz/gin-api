@@ -3,12 +3,13 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"github.com/akazwz/go-gin-restful-api/global"
-	"github.com/akazwz/go-gin-restful-api/initialize"
-	"github.com/gin-gonic/gin"
 	"log"
 	"net/http"
 	"time"
+
+	"github.com/akazwz/go-gin-restful-api/global"
+	"github.com/akazwz/go-gin-restful-api/initialize"
+	"github.com/gin-gonic/gin"
 )
 
 // @title Golang Restful Api
