@@ -9,7 +9,6 @@ import (
 )
 
 func InitRDB() *redis.Client {
-	log.Println("init redis")
 	c := global.CFG.RedisDB
 
 	if c.Addr == "" {
