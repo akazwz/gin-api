@@ -21,9 +21,9 @@ type LoginByPhonePwd struct {
 	Password string `form:"password" json:"password" binding:"required"`
 }
 
-type LoginByPhoneCode struct {
-	Phone string `form:"phone" json:"phone" binding:"required"`
-	Code  string `form:"code" json:"code" binding:"code"`
+type LoginByPhoneVerificationCode struct {
+	Phone            string `form:"phone" json:"phone" binding:"required"`
+	VerificationCode string `form:"verification_code" json:"verification_code" binding:"required"`
 }
 
 type ChangePassword struct {

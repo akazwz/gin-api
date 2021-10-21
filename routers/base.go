@@ -8,6 +8,7 @@ import (
 func InitBaseRouter(Router *gin.RouterGroup) {
 	Router.POST("/token/username-pwd", v1.CreateTokenByUsernamePwd)
 	Router.POST("/token/phone-pwd", v1.CreateTokenByPhonePwd)
+	Router.POST("/token/phone-code", v1.CreateTokenByPhoneVerificationCode)
 	Router.POST("/users", v1.CreateUser)
 	Router.POST("/avatar", v1.CreateFile)
 }

@@ -298,6 +298,46 @@ var doc = `{
                 }
             }
         },
+        "/token/phone-code": {
+            "post": {
+                "description": "create token by phone code",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "token"
+                ],
+                "summary": "Create A Token By Phone Code",
+                "parameters": [
+                    {
+                        "description": "login by phone verification code",
+                        "name": "loginByPc",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoginByPhoneVerificationCode"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/token/phone-pwd": {
             "post": {
                 "description": "create token",
@@ -727,6 +767,21 @@ var doc = `{
                     "type": "string"
                 },
                 "phone": {
+                    "type": "string"
+                }
+            }
+        },
+        "request.LoginByPhoneVerificationCode": {
+            "type": "object",
+            "required": [
+                "phone",
+                "verification_code"
+            ],
+            "properties": {
+                "phone": {
+                    "type": "string"
+                },
+                "verification_code": {
                     "type": "string"
                 }
             }

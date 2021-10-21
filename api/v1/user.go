@@ -63,8 +63,15 @@ func CreateTokenByPhonePwd(c *gin.Context) {
 		return
 	}
 
-	u := &model.User{Phone: login.Phone, Password: login.Password}
-	if err, user := service.LoginByPhonePwd(u); err != nil {
+	// 判断手机号是否存在
+	exist, user := service.IsPhoneExist(login.Phone)
+	if !exist {
+		response.CommonFailed("No Such Phone", CodeNoSuchPhoneError, c)
+		return
+	}
+
+	// 判断密码是否正确
+	if user.Password != login.Password {
 		response.CommonFailed("Phone Or Password Error", CodeDbErr, c)
 		return
 	} else {
@@ -72,8 +79,40 @@ func CreateTokenByPhonePwd(c *gin.Context) {
 	}
 }
 
-func CreateTokenByPhoneVerificationCode() {
+// CreateTokenByPhoneVerificationCode
+// @Summary Create A Token By Phone Code
+// @Title Create Token
+// @Author zwz
+// @Description create token by phone code
+// @Tags token
+// @Accept json
+// @Produce json
+// @Param loginByPc body request.LoginByPhoneVerificationCode true "login by phone verification code"
+// @Success 201 {object} response.LoginResponse
+// @Failure 400 {object} response.Response
+// @Router /token/phone-code [post]
+func CreateTokenByPhoneVerificationCode(c *gin.Context) {
+	var login request.LoginByPhoneVerificationCode
 
+	if err := c.ShouldBindJSON(&login); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+		return
+	}
+
+	// 判断手机号是否存在
+	exist, user := service.IsPhoneExist(login.Phone)
+	if !exist {
+		response.CommonFailed("No Such Phone", CodeNoSuchPhoneError, c)
+		return
+	}
+
+	passed := utils.GetVerificationStatus(login.Phone, login.VerificationCode, c.Request.Context())
+	if !passed {
+		response.CommonFailed("verification code error", CodeVerificationCodeError, c)
+		return
+	} else {
+		TokenNext(c, *user)
+	}
 }
 
 // TokenNext
@@ -130,6 +169,13 @@ func CreateUser(c *gin.Context) {
 	err := c.ShouldBindJSON(&register)
 	if err != nil {
 		response.CommonFailed("Bind Json Error", CodeBindError, c)
+		return
+	}
+
+	// check phone exists
+	existPhone, _ := service.IsPhoneExist(register.Phone)
+	if existPhone {
+		response.CommonFailed("Phone Already Exits", CodePhoneAlreadyExitsError, c)
 		return
 	}
 
