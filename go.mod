@@ -2,15 +2,7 @@ module github.com/akazwz/go-gin-restful-api
 
 go 1.16
 
-replace (
-	github.com/akazwz/go-gin-restful-api/model => ./model
-	github.com/akazwz/go-gin-restful-api/pkg/utils => ../go-gin-restful-api/pkg/utils
-	github.com/akazwz/go-gin-restful-api/routers => ../go-gin-restful-api/routers
-	github.com/akazwz/go-gin-restful-api/service => ../go-gin-restful-api/service
-)
-
 require (
-	github.com/alecthomas/template v0.0.0-20190718012654-fb15b899a751
 	github.com/aliyun/aliyun-oss-go-sdk v2.1.8+incompatible
 	github.com/baiyubin/aliyun-sts-go-sdk v0.0.0-20180326062324-cfa1a18b161f // indirect
 	github.com/dgrijalva/jwt-go v3.2.0+incompatible
