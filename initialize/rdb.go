@@ -21,11 +21,10 @@ func InitRDB() *redis.Client {
 		Password: c.Password, // no password set
 		DB:       0,          // use default DB
 	})
-	pong, err := rdb.Ping(context.Background()).Result()
+	_, err := rdb.Ping(context.Background()).Result()
 	if err != nil {
 		log.Println("connect redis error")
 		return nil
 	}
-	log.Printf("redis ping result: %s\n", pong)
 	return rdb
 }
