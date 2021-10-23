@@ -84,7 +84,7 @@ func GetSessionByCode(code string) (session auth.ResCode2Session, err error) {
 	return
 }
 
-func GetMiniUserInfo(sessionKey, Encrypt, Iv string) (UserInfo *encryptor.PlainData, err error) {
+func GetMiniUserInfo(sessionKey, encrypt, iv string) (UserInfo *encryptor.PlainData, err error) {
 	wc := wechat.NewWechat()
 	memory := cache.NewMemory()
 	cfg := &config.Config{
@@ -94,7 +94,7 @@ func GetMiniUserInfo(sessionKey, Encrypt, Iv string) (UserInfo *encryptor.PlainD
 	}
 	mini := wc.GetMiniProgram(cfg)
 	e := mini.GetEncryptor()
-	UserInfo, err = e.Decrypt(sessionKey, Encrypt, Iv)
+	UserInfo, err = e.Decrypt(sessionKey, encrypt, iv)
 	if err != nil {
 		log.Println("解密数据错误")
 		return

@@ -22,6 +22,17 @@ func Register(u model.User) (err error, userInter *model.User) {
 	return err, &u
 }
 
+func RegisterByOpenId(u model.User) (err error, userInter *model.User) {
+	var user model.User
+	global.GDB.Where("open_id = ?", u.OpenId).First(&user)
+	if len(user.OpenId) > 1 {
+		return errors.New("open id already exist"), userInter
+	}
+	u.UUID = uuid.NewV4()
+	err = global.GDB.Create(&u).Error
+	return err, &u
+}
+
 func IsPhoneExist(phone string) (bool, *model.User) {
 	var user model.User
 	err := global.GDB.Where("phone = ?", phone).First(&user).Error

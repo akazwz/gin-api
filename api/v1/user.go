@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"log"
 	"time"
 
 	"github.com/akazwz/go-gin-restful-api/global"
@@ -148,13 +149,14 @@ func CreateTokenByOpenId(c *gin.Context) {
 			return
 		}
 		userNew := &model.User{
-			Username:  userInfo.OpenID,
+			Username:  session.OpenID,
 			NickName:  userInfo.NickName,
 			AvatarUrl: userInfo.AvatarURL,
-			OpenId:    userInfo.OpenID,
+			OpenId:    session.OpenID,
 		}
-		err, _ = service.Register(*userNew)
+		err, _ = service.RegisterByOpenId(*userNew)
 		if err != nil {
+			log.Println(err)
 			response.CommonFailed("Register Failed", CodeDbErr, c)
 			return
 		}
