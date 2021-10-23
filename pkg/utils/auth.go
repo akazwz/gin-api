@@ -66,7 +66,7 @@ func GetVerificationStatus(phone, code string, c context.Context) bool {
 	return val == code
 }
 
-func GetSessionByCode(code string) (session auth.ResCode2Session) {
+func GetSessionByCode(code string) (session auth.ResCode2Session, err error) {
 	wc := wechat.NewWechat()
 	memory := cache.NewMemory()
 	cfg := &config.Config{
@@ -76,7 +76,7 @@ func GetSessionByCode(code string) (session auth.ResCode2Session) {
 	}
 	mini := wc.GetMiniProgram(cfg)
 	a := mini.GetAuth()
-	session, err := a.Code2Session(code)
+	session, err = a.Code2Session(code)
 	if err != nil {
 		log.Println("获取 session 错误")
 		return
@@ -84,7 +84,7 @@ func GetSessionByCode(code string) (session auth.ResCode2Session) {
 	return
 }
 
-func GetMiniUserInfo(sessionKey, Encrypt, Iv string) (UserInfo *encryptor.PlainData) {
+func GetMiniUserInfo(sessionKey, Encrypt, Iv string) (UserInfo *encryptor.PlainData, err error) {
 	wc := wechat.NewWechat()
 	memory := cache.NewMemory()
 	cfg := &config.Config{
@@ -94,7 +94,7 @@ func GetMiniUserInfo(sessionKey, Encrypt, Iv string) (UserInfo *encryptor.PlainD
 	}
 	mini := wc.GetMiniProgram(cfg)
 	e := mini.GetEncryptor()
-	UserInfo, err := e.Decrypt(sessionKey, Encrypt, Iv)
+	UserInfo, err = e.Decrypt(sessionKey, Encrypt, Iv)
 	if err != nil {
 		log.Println("解密数据错误")
 		return

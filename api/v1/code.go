@@ -13,4 +13,6 @@ const (
 	CodeVerificationCodeError  = 4009
 	CodePhoneAlreadyExitsError = 4010
 	CodeNoSuchPhoneError       = 4011
+	CodeGenerateSessionError   = 4012
+	CodeGetMiniUserInfoError   = 4013
 )

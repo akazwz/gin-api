@@ -298,6 +298,46 @@ var doc = `{
                 }
             }
         },
+        "/token/open-id": {
+            "post": {
+                "description": "create token by open id",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "token"
+                ],
+                "summary": "Create token by openid",
+                "parameters": [
+                    {
+                        "description": "code",
+                        "name": "code",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.LoginByOpenId"
+                        }
+                    }
+                ],
+                "responses": {
+                    "201": {
+                        "description": "Created",
+                        "schema": {
+                            "$ref": "#/definitions/response.LoginResponse"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/token/phone-code": {
             "post": {
                 "description": "create token by phone code",
@@ -677,16 +717,19 @@ var doc = `{
                 "authority_id": {
                     "type": "string"
                 },
-                "created_at": {
+                "avatar_url": {
                     "type": "string"
                 },
-                "header_img": {
+                "created_at": {
                     "type": "string"
                 },
                 "id": {
                     "type": "integer"
                 },
                 "nick_name": {
+                    "type": "string"
+                },
+                "open_id": {
                     "type": "string"
                 },
                 "password": {
@@ -756,6 +799,23 @@ var doc = `{
                 }
             }
         },
+        "request.LoginByOpenId": {
+            "type": "object",
+            "required": [
+                "code"
+            ],
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "encrypt": {
+                    "type": "string"
+                },
+                "iv": {
+                    "type": "string"
+                }
+            }
+        },
         "request.LoginByPhonePwd": {
             "type": "object",
             "required": [
@@ -810,7 +870,7 @@ var doc = `{
                 "verification_code"
             ],
             "properties": {
-                "header_img": {
+                "avatar_url": {
                     "type": "string"
                 },
                 "nick_name": {
@@ -866,8 +926,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "data": {
-                    "description": "omitempty nil or default",
-                    "type": "object"
+                    "description": "omitempty nil or default"
                 },
                 "msg": {
                     "type": "string"

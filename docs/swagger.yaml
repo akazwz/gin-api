@@ -25,13 +25,15 @@ definitions:
     properties:
       authority_id:
         type: string
-      created_at:
+      avatar_url:
         type: string
-      header_img:
+      created_at:
         type: string
       id:
         type: integer
       nick_name:
+        type: string
+      open_id:
         type: string
       password:
         type: string
@@ -77,6 +79,17 @@ definitions:
       id:
         type: number
     type: object
+  request.LoginByOpenId:
+    properties:
+      code:
+        type: string
+      encrypt:
+        type: string
+      iv:
+        type: string
+    required:
+    - code
+    type: object
   request.LoginByPhonePwd:
     properties:
       password:
@@ -109,7 +122,7 @@ definitions:
     type: object
   request.Register:
     properties:
-      header_img:
+      avatar_url:
         type: string
       nick_name:
         type: string
@@ -152,7 +165,6 @@ definitions:
         type: integer
       data:
         description: omitempty nil or default
-        type: object
       msg:
         type: string
     type: object
@@ -348,6 +360,32 @@ paths:
       summary: Create File
       tags:
       - file
+  /token/open-id:
+    post:
+      consumes:
+      - application/json
+      description: create token by open id
+      parameters:
+      - description: code
+        in: body
+        name: code
+        required: true
+        schema:
+          $ref: '#/definitions/request.LoginByOpenId'
+      produces:
+      - application/json
+      responses:
+        "201":
+          description: Created
+          schema:
+            $ref: '#/definitions/response.LoginResponse'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: Create token by openid
+      tags:
+      - token
   /token/phone-code:
     post:
       consumes:

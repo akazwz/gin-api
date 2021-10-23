@@ -115,24 +115,54 @@ func CreateTokenByPhoneVerificationCode(c *gin.Context) {
 	}
 }
 
+// CreateTokenByOpenId
+// @Summary Create token by openid
+// @Title Create Token
+// @Author zwz
+// @Description create token by open id
+// @Tags token
+// @Accept json
+// @Produce json
+// @Param code body request.LoginByOpenId true "code"
+// @Success 201 {object} response.LoginResponse
+// @Failure 400 {object} response.Response
+// @Router /token/open-id [post]
 func CreateTokenByOpenId(c *gin.Context) {
 	var login request.LoginByOpenId
-
 	if err := c.ShouldBindJSON(&login); err != nil {
 		response.CommonFailed("Bind Json Error", CodeBindError, c)
 		return
 	}
-
-	session := utils.GetSessionByCode(login.Code)
-
+	session, err := utils.GetSessionByCode(login.Code)
+	if err != nil {
+		response.CommonFailed("Generate Session Error", CodeGenerateSessionError, c)
+		return
+	}
 	// 判断OpenId是否存在
 	exist, user := service.IsOpenIdExist(session.OpenID)
 	if !exist {
 		// 不存在新建用户
-		response.CommonFailed("No Such Phone", CodeNoSuchPhoneError, c)
+		userInfo, err := utils.GetMiniUserInfo(session.SessionKey, login.Encrypt, login.Iv)
+		if err != nil {
+			response.CommonFailed("Get Mini Userinfo error", CodeGetMiniUserInfoError, c)
+			return
+		}
+		userNew := &model.User{
+			Username:  userInfo.OpenID,
+			NickName:  userInfo.NickName,
+			AvatarUrl: userInfo.AvatarURL,
+			OpenId:    userInfo.OpenID,
+		}
+		err, _ = service.Register(*userNew)
+		if err != nil {
+			response.CommonFailed("Register Failed", CodeDbErr, c)
+			return
+		}
+		// 返回token
+		TokenNext(c, *userNew)
 		return
 	} else {
-		// 存在返回token
+		// 存在直接返回token
 		TokenNext(c, *user)
 	}
 }
