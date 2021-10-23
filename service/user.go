@@ -28,6 +28,12 @@ func IsPhoneExist(phone string) (bool, *model.User) {
 	return err == nil, &user
 }
 
+func IsOpenIdExist(openId string) (bool, *model.User) {
+	var user model.User
+	err := global.GDB.Where("open_id = ?", openId).First(&user).Error
+	return err == nil, &user
+}
+
 func LoginByUsernamePwd(u *model.User) (err error, userInter *model.User) {
 	var user model.User
 	u.Password = utils.MD5V([]byte(u.Password))

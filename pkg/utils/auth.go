@@ -3,11 +3,16 @@ package utils
 import (
 	"context"
 	"fmt"
+	"github.com/silenceper/wechat/v2"
+	"github.com/silenceper/wechat/v2/cache"
+	"github.com/silenceper/wechat/v2/miniprogram/auth"
+	"github.com/silenceper/wechat/v2/miniprogram/encryptor"
 	"log"
 	"math/rand"
 	"time"
 
 	"github.com/akazwz/go-gin-restful-api/global"
+	"github.com/silenceper/wechat/v2/miniprogram/config"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/errors"
 	"github.com/tencentcloud/tencentcloud-sdk-go/tencentcloud/common/profile"
@@ -59,4 +64,40 @@ func GetVerificationStatus(phone, code string, c context.Context) bool {
 		return false
 	}
 	return val == code
+}
+
+func GetSessionByCode(code string) (session auth.ResCode2Session) {
+	wc := wechat.NewWechat()
+	memory := cache.NewMemory()
+	cfg := &config.Config{
+		AppID:     global.CFG.MiniProgram.AppId,
+		AppSecret: global.CFG.MiniProgram.AppSecret,
+		Cache:     memory,
+	}
+	mini := wc.GetMiniProgram(cfg)
+	a := mini.GetAuth()
+	session, err := a.Code2Session(code)
+	if err != nil {
+		log.Println("获取 session 错误")
+		return
+	}
+	return
+}
+
+func GetMiniUserInfo(sessionKey, Encrypt, Iv string) (UserInfo *encryptor.PlainData) {
+	wc := wechat.NewWechat()
+	memory := cache.NewMemory()
+	cfg := &config.Config{
+		AppID:     global.CFG.MiniProgram.AppId,
+		AppSecret: global.CFG.MiniProgram.AppSecret,
+		Cache:     memory,
+	}
+	mini := wc.GetMiniProgram(cfg)
+	e := mini.GetEncryptor()
+	UserInfo, err := e.Decrypt(sessionKey, Encrypt, Iv)
+	if err != nil {
+		log.Println("解密数据错误")
+		return
+	}
+	return
 }

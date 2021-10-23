@@ -115,6 +115,28 @@ func CreateTokenByPhoneVerificationCode(c *gin.Context) {
 	}
 }
 
+func CreateTokenByOpenId(c *gin.Context) {
+	var login request.LoginByOpenId
+
+	if err := c.ShouldBindJSON(&login); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+		return
+	}
+
+	session := utils.GetSessionByCode(login.Code)
+
+	// 判断OpenId是否存在
+	exist, user := service.IsOpenIdExist(session.OpenID)
+	if !exist {
+		// 不存在新建用户
+		response.CommonFailed("No Such Phone", CodeNoSuchPhoneError, c)
+		return
+	} else {
+		// 存在返回token
+		TokenNext(c, *user)
+	}
+}
+
 // TokenNext
 // generate and return token
 func TokenNext(c *gin.Context, user model.User) {
@@ -140,7 +162,7 @@ func TokenNext(c *gin.Context, user model.User) {
 
 	u := model.User{
 		Username:    user.Username,
-		HeaderImg:   user.HeaderImg,
+		AvatarUrl:   user.AvatarUrl,
 		NickName:    user.NickName,
 		AuthorityId: user.AuthorityId,
 	}
@@ -191,7 +213,7 @@ func CreateUser(c *gin.Context) {
 		Phone:     register.Phone,
 		Password:  register.Password,
 		NickName:  register.NickName,
-		HeaderImg: register.HeaderImg,
+		AvatarUrl: register.AvatarUrl,
 	}
 	err, _ = service.Register(*user)
 	if err != nil {

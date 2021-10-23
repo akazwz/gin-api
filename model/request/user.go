@@ -6,7 +6,7 @@ type Register struct {
 	Username         string `json:"username" form:"username" binding:"required"`
 	Password         string `json:"password" form:"password" binding:"required"`
 	NickName         string `json:"nick_name" form:"nick_name"`
-	HeaderImg        string `json:"header_img" form:"header"`
+	AvatarUrl        string `json:"avatar_url" form:"avatar_url"`
 	Phone            string `json:"phone" form:"phone" binding:"required"`
 	VerificationCode string `json:"verification_code" form:"verification_code" binding:"required"`
 }
@@ -24,6 +24,12 @@ type LoginByPhonePwd struct {
 type LoginByPhoneVerificationCode struct {
 	Phone            string `form:"phone" json:"phone" binding:"required"`
 	VerificationCode string `form:"verification_code" json:"verification_code" binding:"required"`
+}
+
+type LoginByOpenId struct {
+	Code    string `json:"code" form:"code"  binding:"required"`
+	Encrypt string `json:"encrypt" form:"encrypt"`
+	Iv      string `json:"iv" form:"iv"`
 }
 
 type ChangePassword struct {
