@@ -8,6 +8,7 @@ import (
 	"github.com/akazwz/go-gin-restful-api/service"
 	"github.com/gin-gonic/gin"
 	"gorm.io/datatypes"
+	"gorm.io/gorm"
 	"log"
 )
 
@@ -37,6 +38,12 @@ func GetUserSub(c *gin.Context) {
 	userUuid := customClaims.UUID
 	err, sub := service.GetUserSub(userUuid)
 	if err != nil {
+		// 为空
+		if err == gorm.ErrRecordNotFound {
+			log.Println("no record")
+			response.CommonSuccess(0, nil, "get sub words success", c)
+			return
+		}
 		log.Println(err)
 		response.CommonFailed("Get User Sub Error", CodeDbErr, c)
 		return
@@ -65,21 +72,25 @@ func CreateSub(c *gin.Context) {
 	userUuid := customClaims.UUID
 
 	err, subAlready := service.GetUserSub(userUuid)
+	var subsAdd []string
 	if err != nil {
 		log.Println(err)
-		response.CommonFailed("Get User Sub Error", CodeDbErr, c)
-		return
-	}
-
-	var subsAdd []string
-	err = json.Unmarshal(subAlready.SubWords, &subsAdd)
-	if err != nil {
-		log.Println("unmarshal error")
-		return
+		// 为空
+		if err != gorm.ErrRecordNotFound {
+			log.Println("no record")
+			response.CommonFailed("Get User Sub Error", CodeDbErr, c)
+			return
+		}
+	} else {
+		err = json.Unmarshal(subAlready.SubWords, &subsAdd)
+		if err != nil {
+			log.Println("unmarshal error")
+			return
+		}
 	}
 
 	subsAdd = append(subsAdd, sub.SubWord)
-	// 元素去除
+	// 元素去重
 	subsAdd = RemoveReplicaSliceString(subsAdd)
 	marshal, err := json.Marshal(subsAdd)
 	if err != nil {
@@ -91,6 +102,7 @@ func CreateSub(c *gin.Context) {
 		UserUUID: userUuid,
 		SubWords: datatypes.JSON(marshal),
 	}
+
 	if err, subAdded := service.CreateSub(s); err != nil {
 		response.CommonFailed("Create Error", CodeDbErr, c)
 		return

@@ -36,13 +36,13 @@ func RegisterByOpenId(u model.User) (err error, userInter *model.User) {
 func IsPhoneExist(phone string) (bool, *model.User) {
 	var user model.User
 	err := global.GDB.Where("phone = ?", phone).First(&user).Error
-	return err == nil, &user
+	return err != gorm.ErrRecordNotFound, &user
 }
 
 func IsOpenIdExist(openId string) (bool, *model.User) {
 	var user model.User
 	err := global.GDB.Where("open_id = ?", openId).First(&user).Error
-	return err == nil, &user
+	return err != gorm.ErrRecordNotFound, &user
 }
 
 func LoginByUsernamePwd(u *model.User) (err error, userInter *model.User) {
