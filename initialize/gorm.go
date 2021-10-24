@@ -41,6 +41,8 @@ func CreateTables(db *gorm.DB) {
 		model.Book{},
 		model.File{},
 		model.FileMD5{},
+		model.Sub{},
+		model.AllSubWords{},
 	)
 	if err != nil {
 		os.Exit(0)

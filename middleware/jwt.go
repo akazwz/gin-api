@@ -141,5 +141,4 @@ func (j *JWT) ParseToken(tokenString string) (*request.CustomClaims, error) {
 	} else {
 		return nil, TokenInvalid
 	}
-
 }
