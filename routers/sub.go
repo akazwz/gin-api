@@ -10,7 +10,6 @@ func InitSubRouter(Router *gin.RouterGroup) {
 	{
 		subsRouter.GET("", v1.GetUserSub)
 		subsRouter.POST("", v1.CreateSub)
-		subsRouter.DELETE("", v1.DeleteBook)
-		subsRouter.PUT("", v1.UpdateBook)
+		subsRouter.DELETE("", v1.DeleteSub)
 	}
 }

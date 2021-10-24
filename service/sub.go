@@ -33,3 +33,13 @@ func CreateSub(s *model.Sub) (err error, subI *model.Sub) {
 	err = global.GDB.Create(&s).Error
 	return err, s
 }
+
+func DeleteSub(s *model.Sub) (err error, subI *model.Sub) {
+	var sub model.Sub
+	errHas := global.GDB.Where("`user_uuid` = ?", s.UserUUID).First(&sub).Error
+	if errHas == nil {
+		err = global.GDB.Where("`user_uuid` = ?", s.UserUUID).Updates(&s).Error
+		return
+	}
+	return err, s
+}

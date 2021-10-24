@@ -79,6 +79,8 @@ func CreateSub(c *gin.Context) {
 	}
 
 	subsAdd = append(subsAdd, sub.SubWord)
+	// 元素去除
+	subsAdd = RemoveReplicaSliceString(subsAdd)
 	marshal, err := json.Marshal(subsAdd)
 	if err != nil {
 		log.Println("json marshall error")
@@ -95,4 +97,72 @@ func CreateSub(c *gin.Context) {
 	} else {
 		response.Created(subAdded, "Create Sub Success", c)
 	}
+}
+
+func DeleteSub(c *gin.Context) {
+	var sub request.Sub
+	err := c.ShouldBindJSON(&sub)
+	if err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+		return
+	}
+	// 获取 user uuid
+	claims, _ := c.Get("claims")
+	// convent claims to type *request.CustomClaims
+	customClaims := claims.(*request.CustomClaims)
+	// get user uuid to store who upload this file
+	userUuid := customClaims.UUID
+
+	err, subAlready := service.GetUserSub(userUuid)
+	if err != nil {
+		log.Println(err)
+		response.CommonFailed("Get User Sub Error", CodeDbErr, c)
+		return
+	}
+
+	var subsDelete []string
+	err = json.Unmarshal(subAlready.SubWords, &subsDelete)
+	if err != nil {
+		log.Println("unmarshal error")
+		return
+	}
+	subsDelete = delItem(subsDelete, sub.SubWord)
+	marshal, err := json.Marshal(subsDelete)
+	if err != nil {
+		log.Println("json marshall error")
+		return
+	}
+
+	s := &model.Sub{
+		UserUUID: userUuid,
+		SubWords: datatypes.JSON(marshal),
+	}
+	if err, _ = service.DeleteSub(s); err != nil {
+		response.CommonFailed("Create Error", CodeDbErr, c)
+		return
+	} else {
+		response.DeleteSuccess(c)
+	}
+}
+
+func delItem(vs []string, s string) []string {
+	for i := 0; i < len(vs); i++ {
+		if s == vs[i] {
+			vs = append(vs[:i], vs[i+1:]...)
+			i = i - 1
+		}
+	}
+	return vs
+}
+
+func RemoveReplicaSliceString(slc []string) []string {
+	result := make([]string, 0)
+	tempMap := make(map[string]bool, len(slc))
+	for _, e := range slc {
+		if tempMap[e] == false {
+			tempMap[e] = true
+			result = append(result, e)
+		}
+	}
+	return result
 }
