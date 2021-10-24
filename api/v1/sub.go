@@ -1,6 +1,7 @@
 package v1
 
 import (
+	"encoding/json"
 	"github.com/akazwz/go-gin-restful-api/model"
 	"github.com/akazwz/go-gin-restful-api/model/request"
 	"github.com/akazwz/go-gin-restful-api/model/response"
@@ -40,7 +41,13 @@ func GetUserSub(c *gin.Context) {
 		response.CommonFailed("Get User Sub Error", CodeDbErr, c)
 		return
 	}
-	log.Println(sub.SubWords)
+	var s []string
+	err = json.Unmarshal(sub.SubWords, &s)
+	if err != nil {
+		log.Println("unmarshal error")
+		return
+	}
+	response.CommonSuccess(0, s, "get sub words success", c)
 }
 
 func CreateSub(c *gin.Context) {
@@ -56,9 +63,31 @@ func CreateSub(c *gin.Context) {
 	customClaims := claims.(*request.CustomClaims)
 	// get user uuid to store who upload this file
 	userUuid := customClaims.UUID
+
+	err, subAlready := service.GetUserSub(userUuid)
+	if err != nil {
+		log.Println(err)
+		response.CommonFailed("Get User Sub Error", CodeDbErr, c)
+		return
+	}
+
+	var subsAdd []string
+	err = json.Unmarshal(subAlready.SubWords, &subsAdd)
+	if err != nil {
+		log.Println("unmarshal error")
+		return
+	}
+
+	subsAdd = append(subsAdd, sub.SubWord)
+	marshal, err := json.Marshal(subsAdd)
+	if err != nil {
+		log.Println("json marshall error")
+		return
+	}
+
 	s := &model.Sub{
 		UserUUID: userUuid,
-		SubWords: datatypes.JSON(sub.SubWord),
+		SubWords: datatypes.JSON(marshal),
 	}
 	if err, subAdded := service.CreateSub(s); err != nil {
 		response.CommonFailed("Create Error", CodeDbErr, c)

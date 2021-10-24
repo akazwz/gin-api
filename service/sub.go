@@ -24,6 +24,12 @@ func GetUserSub(userUuid uuid.UUID) (err error, subI *model.Sub) {
 }
 
 func CreateSub(s *model.Sub) (err error, subI *model.Sub) {
+	var sub model.Sub
+	errHas := global.GDB.Where("`user_uuid` = ?", s.UserUUID).First(&sub).Error
+	if errHas == nil {
+		err = global.GDB.Where("`user_uuid` = ?", s.UserUUID).Updates(&s).Error
+		return
+	}
 	err = global.GDB.Create(&s).Error
 	return err, s
 }
