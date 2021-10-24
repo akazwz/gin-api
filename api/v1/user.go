@@ -154,14 +154,14 @@ func CreateTokenByOpenId(c *gin.Context) {
 			AvatarUrl: userInfo.AvatarURL,
 			OpenId:    session.OpenID,
 		}
-		err, _ = service.RegisterByOpenId(*userNew)
+		err, u := service.RegisterByOpenId(*userNew)
 		if err != nil {
 			log.Println(err)
 			response.CommonFailed("Register Failed", CodeDbErr, c)
 			return
 		}
 		// 返回token
-		TokenNext(c, *userNew)
+		TokenNext(c, *u)
 		return
 	} else {
 		// 存在直接返回token
