@@ -121,6 +121,7 @@ func CreateTokenByPhoneVerificationCode(c *gin.Context) {
 			}
 			// 新建成功,返回token
 			TokenNext(c, *userRegister)
+			return
 		}
 		// 存在返回token
 		TokenNext(c, *user)
