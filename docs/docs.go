@@ -310,7 +310,7 @@ var doc = `{
                 "tags": [
                     "token"
                 ],
-                "summary": "Create token by openid",
+                "summary": "小程序 openid 登录",
                 "parameters": [
                     {
                         "description": "code",
@@ -350,7 +350,7 @@ var doc = `{
                 "tags": [
                     "token"
                 ],
-                "summary": "Create A Token By Phone Code",
+                "summary": "手机号验证码登录",
                 "parameters": [
                     {
                         "description": "login by phone verification code",
@@ -390,7 +390,7 @@ var doc = `{
                 "tags": [
                     "token"
                 ],
-                "summary": "Create A Token By Phone Pwd",
+                "summary": "手机号密码登录",
                 "parameters": [
                     {
                         "description": "login by phone pwd",
@@ -430,7 +430,7 @@ var doc = `{
                 "tags": [
                     "token"
                 ],
-                "summary": "Create A Token By Username Pwd",
+                "summary": "用户名密码登录",
                 "parameters": [
                     {
                         "description": "login by username pwd",
@@ -520,7 +520,7 @@ var doc = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Create A User",
+                "summary": "普通注册",
                 "parameters": [
                     {
                         "description": "user",
@@ -607,7 +607,7 @@ var doc = `{
                 "tags": [
                     "user"
                 ],
-                "summary": "Change Password",
+                "summary": "新旧密码普通修改密码",
                 "parameters": [
                     {
                         "description": "ChangePassword",
@@ -616,6 +616,53 @@ var doc = `{
                         "required": true,
                         "schema": {
                             "$ref": "#/definitions/request.ChangePassword"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
+        "/users/password/phone-code": {
+            "patch": {
+                "description": "change password",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "手机号验证码修改密码",
+                "parameters": [
+                    {
+                        "description": "ChangePassword",
+                        "name": "changePassword",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.ChangePasswordByPhoneVerificationCode"
                         }
                     },
                     {
@@ -711,44 +758,6 @@ var doc = `{
                 }
             }
         },
-        "model.User": {
-            "type": "object",
-            "properties": {
-                "authority_id": {
-                    "type": "string"
-                },
-                "avatar_url": {
-                    "type": "string"
-                },
-                "created_at": {
-                    "type": "string"
-                },
-                "id": {
-                    "type": "integer"
-                },
-                "nick_name": {
-                    "type": "string"
-                },
-                "open_id": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                },
-                "phone": {
-                    "type": "string"
-                },
-                "updated_at": {
-                    "type": "string"
-                },
-                "username": {
-                    "type": "string"
-                },
-                "uuid": {
-                    "type": "string"
-                }
-            }
-        },
         "request.Book": {
             "type": "object",
             "required": [
@@ -776,8 +785,7 @@ var doc = `{
             "type": "object",
             "required": [
                 "new_password",
-                "old_password",
-                "username"
+                "old_password"
             ],
             "properties": {
                 "new_password": {
@@ -785,8 +793,24 @@ var doc = `{
                 },
                 "old_password": {
                     "type": "string"
+                }
+            }
+        },
+        "request.ChangePasswordByPhoneVerificationCode": {
+            "type": "object",
+            "required": [
+                "new_password",
+                "phone",
+                "verification_code"
+            ],
+            "properties": {
+                "new_password": {
+                    "type": "string"
                 },
-                "username": {
+                "phone": {
+                    "type": "string"
+                },
+                "verification_code": {
                     "type": "string"
                 }
             }
@@ -915,7 +939,7 @@ var doc = `{
                     "type": "string"
                 },
                 "user": {
-                    "$ref": "#/definitions/model.User"
+                    "$ref": "#/definitions/response.UserResponse"
                 }
             }
         },
@@ -926,9 +950,27 @@ var doc = `{
                     "type": "integer"
                 },
                 "data": {
-                    "description": "omitempty nil or default"
+                    "description": "omitempty nil or default",
+                    "type": "object"
                 },
                 "msg": {
+                    "type": "string"
+                }
+            }
+        },
+        "response.UserResponse": {
+            "type": "object",
+            "properties": {
+                "authority_id": {
+                    "type": "string"
+                },
+                "avatar_url": {
+                    "type": "string"
+                },
+                "nick_name": {
+                    "type": "string"
+                },
+                "username": {
                     "type": "string"
                 }
             }

@@ -21,31 +21,6 @@ definitions:
       uuid:
         type: string
     type: object
-  model.User:
-    properties:
-      authority_id:
-        type: string
-      avatar_url:
-        type: string
-      created_at:
-        type: string
-      id:
-        type: integer
-      nick_name:
-        type: string
-      open_id:
-        type: string
-      password:
-        type: string
-      phone:
-        type: string
-      updated_at:
-        type: string
-      username:
-        type: string
-      uuid:
-        type: string
-    type: object
   request.Book:
     properties:
       author:
@@ -67,12 +42,22 @@ definitions:
         type: string
       old_password:
         type: string
-      username:
-        type: string
     required:
     - new_password
     - old_password
-    - username
+    type: object
+  request.ChangePasswordByPhoneVerificationCode:
+    properties:
+      new_password:
+        type: string
+      phone:
+        type: string
+      verification_code:
+        type: string
+    required:
+    - new_password
+    - phone
+    - verification_code
     type: object
   request.GetById:
     properties:
@@ -157,7 +142,7 @@ definitions:
       token:
         type: string
       user:
-        $ref: '#/definitions/model.User'
+        $ref: '#/definitions/response.UserResponse'
     type: object
   response.Response:
     properties:
@@ -165,7 +150,19 @@ definitions:
         type: integer
       data:
         description: omitempty nil or default
+        type: object
       msg:
+        type: string
+    type: object
+  response.UserResponse:
+    properties:
+      authority_id:
+        type: string
+      avatar_url:
+        type: string
+      nick_name:
+        type: string
+      username:
         type: string
     type: object
 host: localhost:8000
@@ -383,7 +380,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Create token by openid
+      summary: 小程序 openid 登录
       tags:
       - token
   /token/phone-code:
@@ -409,7 +406,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Create A Token By Phone Code
+      summary: 手机号验证码登录
       tags:
       - token
   /token/phone-pwd:
@@ -435,7 +432,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Create A Token By Phone Pwd
+      summary: 手机号密码登录
       tags:
       - token
   /token/username-pwd:
@@ -461,7 +458,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Create A Token By Username Pwd
+      summary: 用户名密码登录
       tags:
       - token
   /users:
@@ -521,7 +518,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Create A User
+      summary: 普通注册
       tags:
       - user
   /users/authority:
@@ -583,7 +580,38 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Change Password
+      summary: 新旧密码普通修改密码
+      tags:
+      - user
+  /users/password/phone-code:
+    patch:
+      consumes:
+      - application/json
+      description: change password
+      parameters:
+      - description: ChangePassword
+        in: body
+        name: changePassword
+        required: true
+        schema:
+          $ref: '#/definitions/request.ChangePasswordByPhoneVerificationCode'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 手机号验证码修改密码
       tags:
       - user
   /verification/sms:
