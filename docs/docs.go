@@ -698,7 +698,7 @@ var doc = `{
                 "tags": [
                     "verification"
                 ],
-                "summary": "Get Verification Code",
+                "summary": "手机号获取验证码",
                 "parameters": [
                     {
                         "type": "string",

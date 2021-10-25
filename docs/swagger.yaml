@@ -634,7 +634,7 @@ paths:
           description: Bad Request
           schema:
             $ref: '#/definitions/response.Response'
-      summary: Get Verification Code
+      summary: 手机号获取验证码
       tags:
       - verification
 swagger: "2.0"

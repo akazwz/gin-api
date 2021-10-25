@@ -11,7 +11,7 @@ import (
 )
 
 // GetVerificationCode
-// @Summary Get Verification Code
+// @Summary 手机号获取验证码
 // @Title Get Verification Code
 // @Author zwz
 // @Description Get Verification Code
