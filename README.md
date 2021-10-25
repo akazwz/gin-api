@@ -1,6 +1,17 @@
 # go-gin-restful-api
 
-## 一个gin的项目Demo,主要用于RESTFul Api和 gin的实践.项目结构和代码用于新项目的参考项目采用了 gorm作为 orm, viper作为配置读取, swagger作为api文档生成测试工具,集成了JWT, 阿里云OSS,腾讯云短信等
+### 一个gin的项目Demo,主要用于RESTFul Api和 gin的实践.项目结构和代码用于新项目的参考项目
+
+1. #### RESTful api路由
+2. #### gorm 作为 mysql orm
+3. #### redis 数据库
+4. #### ratelimit 限流
+5. #### Viper 配置文件,动态修改生效
+6. #### swagger api文档生成
+7. #### jwt 登录鉴权
+8. #### 集成阿里云OSS对象存储
+9. #### 集成腾讯云SMS 发送短信验证码
+10. #### 集成 wechat SDK,小程序登录,发送通知等
 
 ````
  ██████╗  ██████╗        ██████╗ ██╗███╗   ██╗      ██████╗ ███████╗███████╗████████╗███████╗██╗   ██╗██╗       █████╗ ██████╗ ██╗
@@ -11,13 +22,13 @@
  ╚═════╝  ╚═════╝        ╚═════╝ ╚═╝╚═╝  ╚═══╝      ╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
  ````
 
-### 使用步骤
+### 一.使用步骤
 
 1. 复制 config-example.yaml 并重命名为 config.yaml,填上自己的配置
 2. go run main.go
 3. 访问 http://localhost:8000/swagger/index.html 即可看到接口文档
 
-### 接口列表,路由参考
+### 二.接口列表,路由参考
 
 #### token
 
@@ -38,7 +49,7 @@
 
 1. GET /verification/sms 手机号获取短信验证码
 
-### 配置文件
+### 三.配置文件
 
 ````yaml
 app:
@@ -90,5 +101,6 @@ zap:
   logInConsole: true
 ````
 
-### 鸣谢
+### 四.鸣谢
+
 [![jetbrains](./public/jetbrains.png)](https://www.jetbrains.com/?from=go-gin-restful-api)
