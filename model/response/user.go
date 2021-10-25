@@ -1,13 +1,16 @@
 package response
 
-import "github.com/akazwz/go-gin-restful-api/model"
-
+// UserResponse 返回的user, 去除敏感字段
 type UserResponse struct {
-	User model.User `json:"user"`
+	Username    string `json:"username"`
+	NickName    string `json:"nick_name"`
+	AvatarUrl   string `json:"avatar_url"`
+	AuthorityId string `json:"authority_id"`
 }
 
+// LoginResponse 登录返回,user token 和过期时间
 type LoginResponse struct {
-	User      model.User `json:"user"`
-	Token     string     `json:"token"`
-	ExpiresAt int64      `json:"expires_at"`
+	User      UserResponse `json:"user"`
+	Token     string       `json:"token"`
+	ExpiresAt int64        `json:"expires_at"`
 }

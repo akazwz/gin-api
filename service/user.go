@@ -22,6 +22,17 @@ func Register(u model.User) (err error, userInter *model.User) {
 	return err, &u
 }
 
+func RegisterByPhoneVerificationCode(u model.User) (err error, userInter *model.User) {
+	var user model.User
+	global.GDB.Where("phone = ?", u.Phone).First(&user)
+	if len(user.Phone) > 1 {
+		return errors.New("phone already exist"), userInter
+	}
+	u.UUID = uuid.NewV4()
+	err = global.GDB.Create(&u).Error
+	return err, &u
+}
+
 func RegisterByOpenId(u model.User) (err error, userInter *model.User) {
 	var user model.User
 	global.GDB.Where("open_id = ?", u.OpenId).First(&user)
@@ -35,14 +46,20 @@ func RegisterByOpenId(u model.User) (err error, userInter *model.User) {
 
 func IsPhoneExist(phone string) (bool, *model.User) {
 	var user model.User
-	err := global.GDB.Where("phone = ?", phone).First(&user).Error
-	return err != gorm.ErrRecordNotFound, &user
+	_ = global.GDB.Where("phone = ?", phone).First(&user).Error
+	if len(user.Phone) > 1 {
+		return true, &user
+	}
+	return false, &user
 }
 
 func IsOpenIdExist(openId string) (bool, *model.User) {
 	var user model.User
-	err := global.GDB.Where("open_id = ?", openId).First(&user).Error
-	return err != gorm.ErrRecordNotFound, &user
+	_ = global.GDB.Where("open_id = ?", openId).First(&user).Error
+	if len(user.OpenId) > 1 {
+		return true, &user
+	}
+	return false, &user
 }
 
 func LoginByUsernamePwd(u *model.User) (err error, userInter *model.User) {
@@ -69,7 +86,14 @@ func LoginByPhonePwd(u *model.User) (err error, userInter *model.User) {
 func ChangePassword(u *model.User, newPassword string) (err error, userInter *model.User) {
 	var user model.User
 	u.Password = utils.MD5V([]byte(u.Password))
-	err = global.GDB.Where("username = ? AND password = ?", u.Username, u.Password).First(&user).Update("password", utils.MD5V([]byte(newPassword))).Error
+	err = global.GDB.Where("uuid = ? AND password = ?", u.UUID, u.Password).First(&user).Update("password", utils.MD5V([]byte(newPassword))).Error
+	return err, u
+}
+
+func ChangePasswordByPhoneVerificationCode(u *model.User, newPassword string) (err error, userInter *model.User) {
+	var user model.User
+	u.Password = utils.MD5V([]byte(u.Password))
+	err = global.GDB.Where("uuid = ?", u.UUID).First(&user).Update("password", utils.MD5V([]byte(newPassword))).Error
 	return err, u
 }
 

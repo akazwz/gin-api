@@ -10,6 +10,7 @@ type CustomClaims struct {
 	ID          uint
 	Username    string
 	Phone       string
+	OpenId      string
 	NickName    string
 	AuthorityId string
 	BufferTime  int64

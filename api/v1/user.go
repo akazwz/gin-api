@@ -16,7 +16,7 @@ import (
 )
 
 // CreateTokenByUsernamePwd
-// @Summary Create A Token By Username Pwd
+// @Summary 用户名密码登录
 // @Title Create Token
 // @Author zwz
 // @Description create token
@@ -45,7 +45,7 @@ func CreateTokenByUsernamePwd(c *gin.Context) {
 }
 
 // CreateTokenByPhonePwd
-// @Summary Create A Token By Phone Pwd
+// @Summary 手机号密码登录
 // @Title Create Token
 // @Author zwz
 // @Description create token
@@ -81,7 +81,7 @@ func CreateTokenByPhonePwd(c *gin.Context) {
 }
 
 // CreateTokenByPhoneVerificationCode
-// @Summary Create A Token By Phone Code
+// @Summary 手机号验证码登录
 // @Title Create Token
 // @Author zwz
 // @Description create token by phone code
@@ -100,24 +100,35 @@ func CreateTokenByPhoneVerificationCode(c *gin.Context) {
 		return
 	}
 
-	// 判断手机号是否存在
-	exist, user := service.IsPhoneExist(login.Phone)
-	if !exist {
-		response.CommonFailed("No Such Phone", CodeNoSuchPhoneError, c)
-		return
-	}
-
+	// 检查验证码是否正确
 	passed := utils.GetVerificationStatus(login.Phone, login.VerificationCode, c.Request.Context())
 	if !passed {
 		response.CommonFailed("verification code error", CodeVerificationCodeError, c)
 		return
 	} else {
+		// 判断手机号是否存在
+		exist, user := service.IsPhoneExist(login.Phone)
+		if !exist {
+			// 不存在新建用户
+			userNew := model.User{
+				Username: login.Phone,
+				Phone:    login.Phone,
+			}
+			err, userRegister := service.RegisterByPhoneVerificationCode(userNew)
+			if err != nil {
+				response.CommonFailed("Register Error", CodeDbErr, c)
+				return
+			}
+			// 新建成功,返回token
+			TokenNext(c, *userRegister)
+		}
+		// 存在返回token
 		TokenNext(c, *user)
 	}
 }
 
 // CreateTokenByOpenId
-// @Summary Create token by openid
+// @Summary 小程序 openid 登录
 // @Title Create Token
 // @Author zwz
 // @Description create token by open id
@@ -145,6 +156,7 @@ func CreateTokenByOpenId(c *gin.Context) {
 		// 不存在新建用户
 		userInfo, err := utils.GetMiniUserInfo(session.SessionKey, login.Encrypt, login.Iv)
 		if err != nil {
+			log.Println(err)
 			response.CommonFailed("Get Mini Userinfo error", CodeGetMiniUserInfoError, c)
 			return
 		}
@@ -154,14 +166,14 @@ func CreateTokenByOpenId(c *gin.Context) {
 			AvatarUrl: userInfo.AvatarURL,
 			OpenId:    session.OpenID,
 		}
-		err, u := service.RegisterByOpenId(*userNew)
+		err, userRegister := service.RegisterByOpenId(*userNew)
 		if err != nil {
 			log.Println(err)
 			response.CommonFailed("Register Failed", CodeDbErr, c)
 			return
 		}
 		// 返回token
-		TokenNext(c, *u)
+		TokenNext(c, *userRegister)
 		return
 	} else {
 		// 存在直接返回token
@@ -169,7 +181,7 @@ func CreateTokenByOpenId(c *gin.Context) {
 	}
 }
 
-// TokenNext
+// TokenNext 生成返回token
 // generate and return token
 func TokenNext(c *gin.Context, user model.User) {
 	j := &middleware.JWT{SigningKey: []byte(global.CFG.JWT.SigningKey)}
@@ -178,6 +190,7 @@ func TokenNext(c *gin.Context, user model.User) {
 		ID:         user.ID,
 		Username:   user.Username,
 		Phone:      user.Phone,
+		OpenId:     user.OpenId,
 		NickName:   user.NickName,
 		BufferTime: global.CFG.JWT.BufferTime,
 		StandardClaims: jwt.StandardClaims{
@@ -192,7 +205,7 @@ func TokenNext(c *gin.Context, user model.User) {
 		return
 	}
 
-	u := model.User{
+	userResponse := response.UserResponse{
 		Username:    user.Username,
 		AvatarUrl:   user.AvatarUrl,
 		NickName:    user.NickName,
@@ -200,14 +213,14 @@ func TokenNext(c *gin.Context, user model.User) {
 	}
 
 	response.Created(response.LoginResponse{
-		User:      u,
+		User:      userResponse,
 		Token:     token,
 		ExpiresAt: claims.StandardClaims.ExpiresAt * 1000,
 	}, "Login Success", c)
 }
 
 // CreateUser
-// @Summary Create A User
+// @Summary 普通注册
 // @Title Create User
 // @Author zwz
 // @Description create user
@@ -226,16 +239,18 @@ func CreateUser(c *gin.Context) {
 		return
 	}
 
-	// check phone exists
+	// 检查手机号是否存在
 	existPhone, _ := service.IsPhoneExist(register.Phone)
 	if existPhone {
+		// 手机号已经存在,返回
 		response.CommonFailed("Phone Already Exits", CodePhoneAlreadyExitsError, c)
 		return
 	}
 
-	// verification code check
+	// 检查验证码
 	passed := utils.GetVerificationStatus(register.Phone, register.VerificationCode, c.Request.Context())
 	if !passed {
+		// 验证码错误
 		response.CommonFailed("verification code error", CodeVerificationCodeError, c)
 		return
 	}
@@ -247,16 +262,22 @@ func CreateUser(c *gin.Context) {
 		NickName:  register.NickName,
 		AvatarUrl: register.AvatarUrl,
 	}
+	// 注册
 	err, _ = service.Register(*user)
 	if err != nil {
 		response.CommonFailed("Register Failed", CodeDbErr, c)
 		return
 	}
-	response.Created(register, "Register Success", c)
+	userResponse := response.UserResponse{
+		Username:  register.Username,
+		NickName:  register.NickName,
+		AvatarUrl: register.AvatarUrl,
+	}
+	response.Created(userResponse, "Register Success", c)
 }
 
 // ChangePassword
-// @Summary Change Password
+// @Summary 新旧密码普通修改密码
 // @Title Change Password
 // @Author zwz
 // @Description change password
@@ -273,11 +294,59 @@ func ChangePassword(c *gin.Context) {
 	if err := c.ShouldBindJSON(&changePassword); err != nil {
 		response.CommonFailed("Bind Json Error", CodeBindError, c)
 	}
-	u := model.User{Username: changePassword.Username, Password: changePassword.OldPassword}
+	// 获取 user uuid
+	claims, _ := c.Get("claims")
+	// convent claims to type *request.CustomClaims
+	customClaims := claims.(*request.CustomClaims)
+	// get user uuid to store who upload this file
+	userUUID := customClaims.UUID
+	u := model.User{UUID: userUUID, Password: changePassword.OldPassword}
+	// 通过 user uuid 新旧密码修改密码
 	if err, _ := service.ChangePassword(&u, changePassword.NewPassword); err != nil {
 		response.CommonFailed("Change Password Error, Password Not Correct", CodeDbErr, c)
 	} else {
-		u = model.User{Username: changePassword.Username, Password: changePassword.NewPassword}
+		response.SuccessWithMessage("Password Change Success", c)
+	}
+}
+
+// ChangePasswordByPhoneVerificationCode
+// @Summary 手机号验证码修改密码
+// @Title Change Password
+// @Author zwz
+// @Description change password
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param changePassword body request.ChangePasswordByPhoneVerificationCode true "ChangePassword"
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Router /users/password/phone-code [patch]
+func ChangePasswordByPhoneVerificationCode(c *gin.Context) {
+	var changePassword request.ChangePasswordByPhoneVerificationCode
+	if err := c.ShouldBindJSON(&changePassword); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+	}
+	// 检查验证码
+	passed := utils.GetVerificationStatus(changePassword.Phone, changePassword.VerificationCode, c.Request.Context())
+	if !passed {
+		// 验证码错误
+		response.CommonFailed("verification code error", CodeVerificationCodeError, c)
+		return
+	}
+
+	// 获取 user uuid
+	claims, _ := c.Get("claims")
+	// convent claims to type *request.CustomClaims
+	customClaims := claims.(*request.CustomClaims)
+	// get user uuid to store who upload this file
+	userUUID := customClaims.UUID
+	u := model.User{UUID: userUUID}
+
+	// 通过 uuid 直接修改密码
+	if err, _ := service.ChangePasswordByPhoneVerificationCode(&u, changePassword.NewPassword); err != nil {
+		response.CommonFailed("Change Password Error, Password Not Correct", CodeDbErr, c)
+	} else {
 		response.SuccessWithMessage("Password Change Success", c)
 	}
 }
