@@ -50,6 +50,14 @@ type ChangePasswordByPhoneVerificationCode struct {
 	VerificationCode string `json:"verification_code" form:"verification_code" binding:"required"`
 }
 
+// UpdateUserProfile 修改账户信息
+type UpdateUserProfile struct {
+	NickName  string `json:"nick_name" form:"nick_name"`
+	AvatarURL string `json:"avatar_url" form:"avatar_url"`
+	Gender    int    `json:"gender" form:"avatar_url"`
+	Bio       string `json:"bio" form:"bio"`
+}
+
 // SetUserAuth 设置用户权限
 type SetUserAuth struct {
 	UUID        uuid.UUID `json:"uuid" binding:"required"`

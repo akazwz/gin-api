@@ -352,6 +352,45 @@ func ChangePasswordByPhoneVerificationCode(c *gin.Context) {
 	}
 }
 
+// UpdateUserProfile 修改账户资料
+// @Summary 修改账号资料
+// @Title 修改账户资料
+// @Author zwz
+// @Description change password
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param 修改账户资料 body request.UpdateUserProfile true "修改账户资料"
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Router /users/profile [patch]
+func UpdateUserProfile(c *gin.Context) {
+	var profile request.UpdateUserProfile
+	if err := c.ShouldBindJSON(&profile); err != nil {
+		response.CommonFailed("Bind Json Error", CodeBindError, c)
+	}
+	// 获取 user uuid
+	claims, _ := c.Get("claims")
+	// convent claims to type *request.CustomClaims
+	customClaims := claims.(*request.CustomClaims)
+	// get user uuid to store who upload this file
+	userUUID := customClaims.UUID
+	userUpdate := model.User{
+		UUID:      userUUID,
+		NickName:  profile.NickName,
+		AvatarUrl: profile.AvatarURL,
+		Gender:    profile.Gender,
+		Bio:       profile.Bio,
+	}
+	// 修改账户资料
+	if err, _ := service.UpdateUserProfileByUser(&userUpdate); err != nil {
+		response.CommonFailed("Update UserProfile Error", CodeDbErr, c)
+	} else {
+		response.SuccessWithMessage("Update User Profile Success", c)
+	}
+}
+
 // GetUserList
 // @Summary Get UserList
 // @Title Get UserList

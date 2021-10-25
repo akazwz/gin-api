@@ -97,6 +97,18 @@ func ChangePasswordByPhoneVerificationCode(u *model.User, newPassword string) (e
 	return err, u
 }
 
+func UpdateUserProfileByUser(u *model.User) (err error, userInter *model.User) {
+	var user model.User
+	u.Password = utils.MD5V([]byte(u.Password))
+	err = global.GDB.Where("uuid = ?", u.UUID).First(&user).Updates(model.User{
+		NickName:  u.NickName,
+		AvatarUrl: u.AvatarUrl,
+		Gender:    u.Gender,
+		Bio:       u.Bio,
+	}).Error
+	return err, u
+}
+
 func GetUserInfoList(info request.PageInfo) (err error, list interface{}, total int64) {
 	limit := info.PageSize
 	offset := info.PageSize * (info.Page - 1)
