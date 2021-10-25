@@ -214,6 +214,7 @@ func TokenNext(c *gin.Context, user model.User) {
 		AvatarUrl:   user.AvatarUrl,
 		NickName:    user.NickName,
 		Phone:       user.Phone,
+		Gender:      user.Gender,
 		Bio:         user.Bio,
 		AuthorityId: user.AuthorityId,
 	}

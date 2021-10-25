@@ -5,8 +5,9 @@ type UserResponse struct {
 	Username    string `json:"username"`
 	NickName    string `json:"nick_name"`
 	AvatarUrl   string `json:"avatar_url"`
-	Bio         string `json:"bio"`
 	Phone       string `json:"phone"`
+	Gender      int    `json:"gender"`
+	Bio         string `json:"bio"`
 	AuthorityId string `json:"authority_id"`
 }
 
