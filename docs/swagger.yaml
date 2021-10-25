@@ -135,6 +135,17 @@ definitions:
     - authority_id
     - uuid
     type: object
+  request.UpdateUserProfile:
+    properties:
+      avatar_url:
+        type: string
+      bio:
+        type: string
+      gender:
+        type: integer
+      nick_name:
+        type: string
+    type: object
   response.LoginResponse:
     properties:
       expires_at:
@@ -612,6 +623,37 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: 手机号验证码修改密码
+      tags:
+      - user
+  /users/profile:
+    patch:
+      consumes:
+      - application/json
+      description: change password
+      parameters:
+      - description: 修改账户资料
+        in: body
+        name: 修改账户资料
+        required: true
+        schema:
+          $ref: '#/definitions/request.UpdateUserProfile'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 修改账号资料
       tags:
       - user
   /verification/sms:
