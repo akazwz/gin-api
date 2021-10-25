@@ -156,7 +156,6 @@ func CreateTokenByOpenId(c *gin.Context) {
 	// 不存在新建用户
 	if !exist {
 		// 获取 userInfo
-		time.Sleep(1 * time.Second)
 		userInfo, err := utils.GetMiniUserInfo(session.SessionKey, login.Encrypt, login.Iv)
 		if err != nil {
 			log.Println(err)
