@@ -17,9 +17,26 @@
 2. go run main.go
 3. 访问 http://localhost:8000/swagger/index.html 即可看到接口文档
 
-### 接口列表
+### 接口列表,路由参考
 
-![api list](./public/api_list.png)
+#### token
+
+1. POST /token/username-pwd 用户名密码登录
+2. POST /token/phone-pwd 手机号密码登录
+3. POST /token/phone-code 手机号验证码登录
+4. POST /token/open-id 小程序 openid 登录
+
+#### user
+
+1. POST /users 用户普通注册
+2. PATCH /users/password 新旧密码修改密码
+3. PATCH /users/password/phone-code 手机号验证码修改密码
+4. PATCH /users/authority 更改用户权限
+5. GET /users 获取用户列表
+
+#### verification
+
+1. GET /verification/sms 手机号获取短信验证码
 
 ### 配置文件
 
@@ -74,5 +91,4 @@ zap:
 ````
 
 ### 鸣谢
-
 [![jetbrains](./public/jetbrains.png)](https://www.jetbrains.com/?from=go-gin-restful-api)
