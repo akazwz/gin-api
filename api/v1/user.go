@@ -153,14 +153,17 @@ func CreateTokenByOpenId(c *gin.Context) {
 	}
 	// 判断OpenId是否存在
 	exist, user := service.IsOpenIdExist(session.OpenID)
+	// 不存在新建用户
 	if !exist {
-		// 不存在新建用户
+		// 获取 userInfo
 		userInfo, err := utils.GetMiniUserInfo(session.SessionKey, login.Encrypt, login.Iv)
 		if err != nil {
 			log.Println(err)
+			log.Println("get mini userinfo error")
 			response.CommonFailed("Get Mini Userinfo error", CodeGetMiniUserInfoError, c)
 			return
 		}
+		log.Println("phone" + userInfo.PhoneNumber)
 		userNew := &model.User{
 			Username:  session.OpenID,
 			NickName:  userInfo.NickName,
