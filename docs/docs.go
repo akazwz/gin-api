@@ -595,6 +595,53 @@ var doc = `{
                 }
             }
         },
+        "/users/notify": {
+            "post": {
+                "description": "设置通知间隔和次数",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "user"
+                ],
+                "summary": "通知设置",
+                "parameters": [
+                    {
+                        "description": "notify",
+                        "name": "notify",
+                        "in": "body",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/definitions/request.SetNotify"
+                        }
+                    },
+                    {
+                        "type": "string",
+                        "description": "token",
+                        "name": "token",
+                        "in": "header",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/response.Response"
+                        }
+                    }
+                }
+            }
+        },
         "/users/password": {
             "patch": {
                 "description": "change password",
@@ -958,6 +1005,17 @@ var doc = `{
                 },
                 "verification_code": {
                     "type": "string"
+                }
+            }
+        },
+        "request.SetNotify": {
+            "type": "object",
+            "properties": {
+                "notify_count": {
+                    "type": "integer"
+                },
+                "notify_gap": {
+                    "type": "integer"
                 }
             }
         },

@@ -125,6 +125,13 @@ definitions:
     - username
     - verification_code
     type: object
+  request.SetNotify:
+    properties:
+      notify_count:
+        type: integer
+      notify_gap:
+        type: integer
+    type: object
   request.SetUserAuth:
     properties:
       authority_id:
@@ -561,6 +568,37 @@ paths:
           schema:
             $ref: '#/definitions/response.Response'
       summary: Set UserAuthority
+      tags:
+      - user
+  /users/notify:
+    post:
+      consumes:
+      - application/json
+      description: 设置通知间隔和次数
+      parameters:
+      - description: notify
+        in: body
+        name: notify
+        required: true
+        schema:
+          $ref: '#/definitions/request.SetNotify'
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 通知设置
       tags:
       - user
   /users/password:
