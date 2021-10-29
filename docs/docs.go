@@ -549,7 +549,7 @@ var doc = `{
             }
         },
         "/users/authority": {
-            "patch": {
+            "put": {
                 "description": "set userAuthority",
                 "consumes": [
                     "application/json"
@@ -643,7 +643,7 @@ var doc = `{
             }
         },
         "/users/password": {
-            "patch": {
+            "put": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -690,7 +690,7 @@ var doc = `{
             }
         },
         "/users/password/phone-code": {
-            "patch": {
+            "put": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -737,7 +737,7 @@ var doc = `{
             }
         },
         "/users/profile": {
-            "patch": {
+            "put": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -1072,8 +1072,7 @@ var doc = `{
                     "type": "integer"
                 },
                 "data": {
-                    "description": "omitempty nil or default",
-                    "type": "object"
+                    "description": "omitempty nil or default"
                 },
                 "msg": {
                     "type": "string"
@@ -1089,7 +1088,16 @@ var doc = `{
                 "avatar_url": {
                     "type": "string"
                 },
+                "bio": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "integer"
+                },
                 "nick_name": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 },
                 "username": {

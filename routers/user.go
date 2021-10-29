@@ -9,11 +9,11 @@ import (
 func InitUserRouter(Router *gin.RouterGroup) {
 	UserRouter := Router.Group("users")
 	{
-		UserRouter.PATCH("/password", v1.ChangePassword)
-		UserRouter.PATCH("/password/phone-code", v1.ChangePasswordByPhoneVerificationCode)
-		UserRouter.PATCH("/profile", v1.UpdateUserProfile)
+		UserRouter.PUT("/password", v1.ChangePassword)
+		UserRouter.PUT("/password/phone-code", v1.ChangePasswordByPhoneVerificationCode)
+		UserRouter.PUT("/profile", v1.UpdateUserProfile)
 		UserRouter.POST("/notify", v1.SetNotify)
-		UserRouter.Use(middleware.JWTAuthority777()).PATCH("/authority", v1.SetUserAuthority)
+		UserRouter.Use(middleware.JWTAuthority777()).PUT("/authority", v1.SetUserAuthority)
 		UserRouter.Use(middleware.JWTAuthority777()).GET("", v1.GetUserList)
 	}
 }

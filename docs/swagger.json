@@ -535,7 +535,7 @@
             }
         },
         "/users/authority": {
-            "patch": {
+            "put": {
                 "description": "set userAuthority",
                 "consumes": [
                     "application/json"
@@ -629,7 +629,7 @@
             }
         },
         "/users/password": {
-            "patch": {
+            "put": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -676,7 +676,7 @@
             }
         },
         "/users/password/phone-code": {
-            "patch": {
+            "put": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -723,7 +723,7 @@
             }
         },
         "/users/profile": {
-            "patch": {
+            "put": {
                 "description": "change password",
                 "consumes": [
                     "application/json"
@@ -1058,8 +1058,7 @@
                     "type": "integer"
                 },
                 "data": {
-                    "description": "omitempty nil or default",
-                    "type": "object"
+                    "description": "omitempty nil or default"
                 },
                 "msg": {
                     "type": "string"
@@ -1075,7 +1074,16 @@
                 "avatar_url": {
                     "type": "string"
                 },
+                "bio": {
+                    "type": "string"
+                },
+                "gender": {
+                    "type": "integer"
+                },
                 "nick_name": {
+                    "type": "string"
+                },
+                "phone": {
                     "type": "string"
                 },
                 "username": {

@@ -168,7 +168,6 @@ definitions:
         type: integer
       data:
         description: omitempty nil or default
-        type: object
       msg:
         type: string
     type: object
@@ -178,7 +177,13 @@ definitions:
         type: string
       avatar_url:
         type: string
+      bio:
+        type: string
+      gender:
+        type: integer
       nick_name:
+        type: string
+      phone:
         type: string
       username:
         type: string
@@ -540,7 +545,7 @@ paths:
       tags:
       - user
   /users/authority:
-    patch:
+    put:
       consumes:
       - application/json
       description: set userAuthority
@@ -602,7 +607,7 @@ paths:
       tags:
       - user
   /users/password:
-    patch:
+    put:
       consumes:
       - application/json
       description: change password
@@ -633,7 +638,7 @@ paths:
       tags:
       - user
   /users/password/phone-code:
-    patch:
+    put:
       consumes:
       - application/json
       description: change password
@@ -664,7 +669,7 @@ paths:
       tags:
       - user
   /users/profile:
-    patch:
+    put:
       consumes:
       - application/json
       description: change password

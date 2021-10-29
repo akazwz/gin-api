@@ -295,7 +295,7 @@ func CreateUser(c *gin.Context) {
 // @Param token header string true "token"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
-// @Router /users/password [patch]
+// @Router /users/password [put]
 func ChangePassword(c *gin.Context) {
 	var changePassword request.ChangePassword
 	if err := c.ShouldBindJSON(&changePassword); err != nil {
@@ -328,7 +328,7 @@ func ChangePassword(c *gin.Context) {
 // @Param token header string true "token"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
-// @Router /users/password/phone-code [patch]
+// @Router /users/password/phone-code [put]
 func ChangePasswordByPhoneVerificationCode(c *gin.Context) {
 	var changePassword request.ChangePasswordByPhoneVerificationCode
 	if err := c.ShouldBindJSON(&changePassword); err != nil {
@@ -370,7 +370,7 @@ func ChangePasswordByPhoneVerificationCode(c *gin.Context) {
 // @Param token header string true "token"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
-// @Router /users/profile [patch]
+// @Router /users/profile [put]
 func UpdateUserProfile(c *gin.Context) {
 	var profile request.UpdateUserProfile
 	if err := c.ShouldBindJSON(&profile); err != nil {
@@ -442,7 +442,7 @@ func GetUserList(c *gin.Context) {
 // @Param token header string true "token"
 // @Success 200 {object} response.Response
 // @Failure 400 {object} response.Response
-// @Router /users/authority [patch]
+// @Router /users/authority [put]
 func SetUserAuthority(c *gin.Context) {
 	var sua request.SetUserAuth
 	if err := c.ShouldBindJSON(&sua); err != nil {
