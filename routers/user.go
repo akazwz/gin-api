@@ -13,6 +13,7 @@ func InitUserRouter(Router *gin.RouterGroup) {
 		UserRouter.PUT("/password/phone-code", v1.ChangePasswordByPhoneVerificationCode)
 		UserRouter.PUT("/profile", v1.UpdateUserProfile)
 		UserRouter.POST("/notify", v1.SetNotify)
+		UserRouter.GET("/notify", v1.GetNotify)
 		UserRouter.Use(middleware.JWTAuthority777()).PUT("/authority", v1.SetUserAuthority)
 		UserRouter.Use(middleware.JWTAuthority777()).GET("", v1.GetUserList)
 	}

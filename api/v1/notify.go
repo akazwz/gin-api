@@ -11,6 +11,57 @@ import (
 	"time"
 )
 
+// GetNotify
+// @Summary 获取通知设置
+// @Title 获取设置通知间隔和次数
+// @Author zwz
+// @Description 获取设置通知间隔和次数
+// @Tags user
+// @Accept json
+// @Produce json
+// @Param token header string true "token"
+// @Success 200 {object} response.Response
+// @Failure 400 {object} response.Response
+// @Router /users/notify [get]
+func GetNotify(c *gin.Context) {
+	// 获取 user uuid
+	claims, _ := c.Get("claims")
+	// convent claims to type *request.CustomClaims
+	customClaims := claims.(*request.CustomClaims)
+	// get user uuid to store who upload this file
+	userUUID := customClaims.UUID
+
+	var notify model.Notify
+	err := global.GDB.Where("user_uuid = ?", userUUID).First(&notify).Error
+
+	if err != nil {
+		// 错误
+		if err != gorm.ErrRecordNotFound {
+			log.Println(err)
+			response.CommonFailed("Get Notify Fail", CodeDbErr, c)
+			return
+		}
+		// 没有记录,新建
+		err = global.GDB.Create(&model.Notify{
+			UserUUID:         userUUID,
+			NotifyGap:        10,
+			NotifyCount:      0,
+			NotifyLimitCount: 1000,
+			LastNotify:       time.Now(),
+		}).Error
+
+		if err != nil {
+			response.CommonFailed("Set Notify Fail", CodeDbErr, c)
+			return
+		}
+
+		notify.NotifyGap = 10
+		notify.NotifyCount = 0
+		notify.NotifyLimitCount = 1000
+	}
+	response.CommonSuccess(2000, notify, "Get Notify Success", c)
+}
+
 // SetNotify
 // @Summary 通知设置
 // @Title 设置通知间隔和次数

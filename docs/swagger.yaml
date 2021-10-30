@@ -576,6 +576,30 @@ paths:
       tags:
       - user
   /users/notify:
+    get:
+      consumes:
+      - application/json
+      description: 获取设置通知间隔和次数
+      parameters:
+      - description: token
+        in: header
+        name: token
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.Response'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/response.Response'
+      summary: 获取通知设置
+      tags:
+      - user
     post:
       consumes:
       - application/json
