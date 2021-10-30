@@ -54,12 +54,22 @@ func GetNotify(c *gin.Context) {
 			response.CommonFailed("Set Notify Fail", CodeDbErr, c)
 			return
 		}
-
-		notify.NotifyGap = 10
-		notify.NotifyCount = 0
-		notify.NotifyLimitCount = 1000
+		resNotify := response.Notify{
+			NotifyGap:        10,
+			NotifyCount:      0,
+			AllNotifyCount:   0,
+			NotifyLimitCount: 1000,
+		}
+		response.CommonSuccess(2000, resNotify, "Get Notify Success", c)
 	}
-	response.CommonSuccess(2000, notify, "Get Notify Success", c)
+	resNotify := response.Notify{
+		NotifyGap:        notify.NotifyGap,
+		NotifyCount:      notify.NotifyCount,
+		AllNotifyCount:   notify.AllNotifyCount,
+		LastNotify:       notify.LastNotify,
+		NotifyLimitCount: notify.NotifyLimitCount,
+	}
+	response.CommonSuccess(2000, resNotify, "Get Notify Success", c)
 }
 
 // SetNotify
