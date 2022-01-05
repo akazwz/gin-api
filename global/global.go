@@ -13,5 +13,5 @@ var (
 	GRDB *redis.Client
 	VP   *viper.Viper
 	CFG  config.Conf
-	LOG  *zap.Logger
+	_    *zap.Logger
 )

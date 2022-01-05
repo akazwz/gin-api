@@ -14,7 +14,7 @@ func RateLimitMiddleware(fillInterval time.Duration, cap int64) func(c *gin.Cont
 		if bucket.TakeAvailable(1) < 1 {
 			c.JSON(http.StatusServiceUnavailable, gin.H{
 				"code": 5030,
-				"msg":  "系统繁忙",
+				"msg":  "System Busy",
 			})
 			c.Abort()
 			return
