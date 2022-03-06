@@ -3,7 +3,6 @@ package main
 import (
 	"database/sql"
 	"fmt"
-	"log"
 	"net/http"
 	"time"
 
@@ -50,11 +49,11 @@ func main() {
 		return
 	}
 
-	global.GRDB = initialize.InitRDB()
+	/*global.GRDB = initialize.InitRDB()
 	if global.GRDB == nil {
 		log.Println("Redis数据库连接失败")
 		return
-	}
+	}*/
 
 	time.Sleep(10 * time.Microsecond)
 	str := `
