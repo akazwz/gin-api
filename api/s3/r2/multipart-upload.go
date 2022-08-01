@@ -2,10 +2,12 @@ package r2
 
 import (
 	"context"
+	"github.com/akazwz/gin-api/global"
+	"os"
+
 	"github.com/akazwz/gin-api/api"
 	"github.com/akazwz/gin-api/model/request"
 	"github.com/akazwz/gin-api/model/response"
-	"github.com/akazwz/gin-api/utils"
 	"github.com/aws/aws-sdk-go-v2/aws"
 	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"github.com/gin-gonic/gin"
@@ -14,16 +16,10 @@ import (
 // CreateMultipartUpload 创建多块上传
 func CreateMultipartUpload(c *gin.Context) {
 	key := c.Param("key")
-	// 生成 s3 client
-	client, err := utils.GenerateR2Client(accountId, accessKeyId, accessKeySecret)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
 
 	// 创建 multipart upload
-	multiUpload, err := client.CreateMultipartUpload(context.TODO(), &s3.CreateMultipartUploadInput{
-		Bucket: aws.String(bucketName),
+	multiUpload, err := global.R2C.CreateMultipartUpload(context.TODO(), &s3.CreateMultipartUploadInput{
+		Bucket: aws.String(os.Getenv("R2_BUCKET_NAME")),
 		Key:    aws.String(key),
 	})
 
@@ -68,15 +64,8 @@ func UploadPart(c *gin.Context) {
 		return
 	}
 
-	// 生成 s3 client
-	client, err := utils.GenerateR2Client(accountId, accessKeyId, accessKeySecret)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
-
-	_, err = client.UploadPart(context.TODO(), &s3.UploadPartInput{
-		Bucket:     aws.String(bucketName),
+	_, err = global.R2C.UploadPart(context.TODO(), &s3.UploadPartInput{
+		Bucket:     aws.String(os.Getenv("R2_BUCKET_NAME")),
 		UploadId:   aws.String(uploadId),
 		Key:        aws.String(partUploadParams.Key),
 		PartNumber: partUploadParams.PartNumber,
@@ -91,14 +80,7 @@ func UploadPart(c *gin.Context) {
 
 // CompleteMultipartUpload 完成多块上传
 func CompleteMultipartUpload(c *gin.Context) {
-	// 生成 s3 client
-	client, err := utils.GenerateR2Client(accountId, accessKeyId, accessKeySecret)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
-
-	_, err = client.CompleteMultipartUpload(context.TODO(), &s3.CompleteMultipartUploadInput{
+	_, err := global.R2C.CompleteMultipartUpload(context.TODO(), &s3.CompleteMultipartUploadInput{
 		Bucket:   nil,
 		Key:      nil,
 		UploadId: nil,
@@ -112,13 +94,7 @@ func CompleteMultipartUpload(c *gin.Context) {
 
 // AbortMultipartUpload 放弃多块上传
 func AbortMultipartUpload(c *gin.Context) {
-	// 生成 s3 client
-	client, err := utils.GenerateR2Client(accountId, accessKeyId, accessKeySecret)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
-	_, err = client.AbortMultipartUpload(context.TODO(), &s3.AbortMultipartUploadInput{
+	_, err := global.R2C.AbortMultipartUpload(context.TODO(), &s3.AbortMultipartUploadInput{
 		Bucket:   nil,
 		Key:      nil,
 		UploadId: nil,
@@ -132,13 +108,7 @@ func AbortMultipartUpload(c *gin.Context) {
 
 // ListParts 列出分块
 func ListParts(c *gin.Context) {
-	// 生成 s3 client
-	client, err := utils.GenerateR2Client(accountId, accessKeyId, accessKeySecret)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
-	_, err = client.ListParts(context.TODO(), &s3.ListPartsInput{
+	_, err := global.R2C.ListParts(context.TODO(), &s3.ListPartsInput{
 		Bucket:   nil,
 		Key:      nil,
 		UploadId: nil,
@@ -151,13 +121,7 @@ func ListParts(c *gin.Context) {
 }
 
 func ListMultipartUploads(c *gin.Context) {
-	// 生成 s3 client
-	client, err := utils.GenerateR2Client(accountId, accessKeyId, accessKeySecret)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
-	_, err = client.ListMultipartUploads(context.TODO(), &s3.ListMultipartUploadsInput{
+	_, err := global.R2C.ListMultipartUploads(context.TODO(), &s3.ListMultipartUploadsInput{
 		Bucket: nil,
 	})
 	if err != nil {

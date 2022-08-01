@@ -16,23 +16,17 @@ func main() {
 	InitEnvConfig()
 	// 初始化路由
 	r := initialize.InitRouter()
+	// 初始化 R2
+	global.R2C = initialize.InitR2Client()
 	// 初始化 gorm
 	global.GDB = initialize.InitGorm()
-	if global.GDB != nil {
-		db, _ := global.GDB.DB()
-		err := initialize.RegisterTables(global.GDB)
+	db, _ := global.GDB.DB()
+	initialize.RegisterTables(global.GDB)
+	defer func(db *sql.DB) {
+		err := db.Close()
 		if err != nil {
-			log.Fatalln("数据库表迁移失败")
 		}
-		defer func(db *sql.DB) {
-			err := db.Close()
-			if err != nil {
-			}
-		}(db)
-	} else {
-		// gorm 初始化失败
-		log.Fatalln("gorm 初始化失败")
-	}
+	}(db)
 
 	// 端口地址
 	port := os.Getenv("API_PORT")

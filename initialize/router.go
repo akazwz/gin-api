@@ -63,6 +63,7 @@ func InitRouter() *gin.Engine {
 	// s3
 	s3Group := r.Group("/s3").Use(middleware.LimitByRequest(3))
 	{
+		// 直传
 		s3Group.POST("/r2/upload", r2.Upload)
 		// https://docs.aws.amazon.com/amazonglacier/latest/dev/uploading-an-archive-mpu-using-rest.html
 		s3Group.POST("/r2/upload/:key", r2.CreateMultipartUpload)
