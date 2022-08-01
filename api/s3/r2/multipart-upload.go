@@ -2,10 +2,10 @@ package r2
 
 import (
 	"context"
-	"github.com/akazwz/gin-api/global"
 	"os"
 
 	"github.com/akazwz/gin-api/api"
+	"github.com/akazwz/gin-api/global"
 	"github.com/akazwz/gin-api/model/request"
 	"github.com/akazwz/gin-api/model/response"
 	"github.com/aws/aws-sdk-go-v2/aws"
