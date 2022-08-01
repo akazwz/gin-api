@@ -2,85 +2,56 @@ package main
 
 import (
 	"database/sql"
-	"fmt"
+	"log"
 	"net/http"
-	"time"
+	"os"
 
-	"github.com/akazwz/go-gin-restful-api/global"
-	"github.com/akazwz/go-gin-restful-api/initialize"
-	"github.com/gin-gonic/gin"
+	"github.com/akazwz/gin-api/global"
+	"github.com/akazwz/gin-api/initialize"
+	"github.com/joho/godotenv"
 )
 
-// @title Golang Restful Api
-// @version 1.0
-// @description Golang Restful Api Demo
-// @termsOfService https://akazwz.com
-
-// @contact.name API Support
-// @contact.url https://akazwz.com
-// @contact.email akazwz@icloud.com
-
-// @license.name MIT
-// @license.url MIT
-
-// @host localhost:8000
-// @BasePath /v1
 func main() {
-	//viper初始化配置
-	global.VP = initialize.InitViper()
-	if global.VP == nil {
-		fmt.Println("配置初始化失败")
-	}
-
-	gin.SetMode(global.CFG.Server.Mode)
-	//gorm初始化数据库
-	global.GDB = initialize.InitDB()
+	// 读取环境变量配置
+	InitEnvConfig()
+	// 初始化路由
+	r := initialize.InitRouter()
+	// 初始化 gorm
+	global.GDB = initialize.InitGorm()
 	if global.GDB != nil {
-		initialize.CreateTables(global.GDB)
 		db, _ := global.GDB.DB()
+		err := initialize.RegisterTables(global.GDB)
+		if err != nil {
+			log.Fatalln("数据库表迁移失败")
+		}
 		defer func(db *sql.DB) {
 			err := db.Close()
 			if err != nil {
-
 			}
 		}(db)
 	} else {
-		fmt.Println("数据库连接失败")
-		return
+		// gorm 初始化失败
+		log.Fatalln("gorm 初始化失败")
 	}
 
-	/*global.GRDB = initialize.InitRDB()
-	if global.GRDB == nil {
-		log.Println("Redis数据库连接失败")
-		return
-	}*/
-
-	time.Sleep(10 * time.Microsecond)
-	str := `
- ██████╗  ██████╗        ██████╗ ██╗███╗   ██╗      ██████╗ ███████╗███████╗████████╗███████╗██╗   ██╗██╗       █████╗ ██████╗ ██╗
-██╔════╝ ██╔═══██╗      ██╔════╝ ██║████╗  ██║      ██╔══██╗██╔════╝██╔════╝╚══██╔══╝██╔════╝██║   ██║██║      ██╔══██╗██╔══██╗██║
-██║  ███╗██║   ██║█████╗██║  ███╗██║██╔██╗ ██║█████╗██████╔╝█████╗  ███████╗   ██║   █████╗  ██║   ██║██║█████╗███████║██████╔╝██║
-██║   ██║██║   ██║╚════╝██║   ██║██║██║╚██╗██║╚════╝██╔══██╗██╔══╝  ╚════██║   ██║   ██╔══╝  ██║   ██║██║╚════╝██╔══██║██╔═══╝ ██║
-╚██████╔╝╚██████╔╝      ╚██████╔╝██║██║ ╚████║      ██║  ██║███████╗███████║   ██║   ██║     ╚██████╔╝███████╗ ██║  ██║██║     ██║
- ╚═════╝  ╚═════╝        ╚═════╝ ╚═╝╚═╝  ╚═══╝      ╚═╝  ╚═╝╚══════╝╚══════╝   ╚═╝   ╚═╝      ╚═════╝ ╚══════╝ ╚═╝  ╚═╝╚═╝     ╚═╝
-                                                                                                                                  
-                                                                                        `
-	fmt.Println(str)
-
-	routers := initialize.Routers()
-	addr := fmt.Sprintf(":%d", global.CFG.Server.Addr)
-	ReadTimeout := global.CFG.Server.ReadTimeout
-	WriteTimeout := global.CFG.Server.WriteTimeout
-
+	// 端口地址
+	port := os.Getenv("API_PORT")
 	s := &http.Server{
-		Addr:           addr,
-		Handler:        routers,
-		ReadTimeout:    ReadTimeout * time.Second,
-		WriteTimeout:   WriteTimeout * time.Second,
-		MaxHeaderBytes: 1 << 20,
+		Addr:    port,
+		Handler: r,
 	}
 	if err := s.ListenAndServe(); err != nil {
-		fmt.Println(`System Serve Start Error`)
+		log.Fatalln("Api启动失败")
 	}
+}
 
+// InitEnvConfig 读取 env 配置文件
+func InitEnvConfig() {
+	// 非生产环境读取配置文件
+	if os.Getenv("GIN_MODE") != "release" {
+		err := godotenv.Load(".env.local")
+		if err != nil {
+			log.Fatalln("读取配置文件失败")
+		}
+	}
 }

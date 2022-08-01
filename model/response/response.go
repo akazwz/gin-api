@@ -8,89 +8,56 @@ import (
 
 type Response struct {
 	Code int         `json:"code,omitempty"`
-	Data interface{} `json:"data,omitempty"` //omitempty nil or default
+	Data interface{} `json:"data,omitempty"`
 	Msg  string      `json:"msg,omitempty"`
 }
 
 const (
-	SUCCESS  = 2000
-	ERROR    = 4000
-	PROGRESS = 2020
+	SUCCESS = 2000
+	ERROR   = 4000
 )
 
-func Unauthorized(code int, message string, c *gin.Context) {
-	c.JSON(http.StatusUnauthorized, Response{
+func Ok(code int, data interface{}, msg string, c *gin.Context) {
+	c.JSON(http.StatusOK, Response{
 		Code: code,
-		Msg:  message,
+		Data: data,
+		Msg:  msg,
 	})
 }
 
-func PermissionDenied(code int, message string, c *gin.Context) {
-	c.JSON(http.StatusForbidden, Response{
+func Created(code int, data interface{}, msg string, c *gin.Context) {
+	c.JSON(http.StatusCreated, Response{
 		Code: code,
-		Msg:  message,
+		Data: data,
+		Msg:  msg,
 	})
 }
 
-func NotFound(c *gin.Context) {
-	c.JSON(http.StatusNotFound, Response{
-		Code: ERROR,
-		Msg:  "404 not found",
-	})
-}
-
-func Forbidden(c *gin.Context) {
-	c.JSON(http.StatusForbidden, Response{
-		Msg: "Permission Denied",
-	})
-}
-
-func DeleteSuccess(c *gin.Context) {
-	c.JSON(http.StatusNoContent, nil)
-}
-
-func CommonFailed(message string, code int, c *gin.Context) {
+func BadRequest(code int, data interface{}, msg string, c *gin.Context) {
 	c.JSON(http.StatusBadRequest, Response{
 		Code: code,
-		Msg:  message,
+		Data: data,
+		Msg:  msg,
 	})
 }
 
-func CommonSuccess(code int, data interface{}, message string, c *gin.Context) {
-	c.JSON(http.StatusOK, Response{
+func Unauthorized(code int, msg string, c *gin.Context) {
+	c.JSON(http.StatusUnauthorized, Response{
 		Code: code,
-		Data: data,
-		Msg:  message,
+		Msg:  msg,
 	})
 }
 
-func SuccessWithMessage(message string, c *gin.Context) {
-	c.JSON(http.StatusOK, Response{
-		Code: SUCCESS,
-		Msg:  message,
+func Forbidden(code int, msg string, c *gin.Context) {
+	c.JSON(http.StatusForbidden, Response{
+		Code: code,
+		Msg:  msg,
 	})
 }
 
-func Created(data interface{}, message string, c *gin.Context) {
-	c.JSON(http.StatusCreated, Response{
-		Code: SUCCESS,
-		Data: data,
-		Msg:  message,
-	})
-}
-
-func Accepted(fileUploadStatus interface{}, c *gin.Context) {
-	c.JSON(http.StatusAccepted, Response{
-		Code: PROGRESS,
-		Data: fileUploadStatus,
-		Msg:  "File is Uploading",
-	})
-}
-
-func Result(code int, data interface{}, msg string, c *gin.Context) {
-	c.JSON(http.StatusOK, Response{
-		code,
-		data,
-		msg,
+func NotFound(code int, msg string, c *gin.Context) {
+	c.JSON(http.StatusNotFound, Response{
+		Code: code,
+		Msg:  msg,
 	})
 }

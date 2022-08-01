@@ -1,50 +1,22 @@
 package initialize
 
 import (
-	"fmt"
-	"os"
-
-	"github.com/akazwz/go-gin-restful-api/global"
-	"github.com/akazwz/go-gin-restful-api/model"
-	"gorm.io/driver/mysql"
+	"github.com/akazwz/gin-api/model"
+	"gorm.io/driver/sqlite"
 	"gorm.io/gorm"
 )
 
-// InitDB 初始化数据库连接
-func InitDB() *gorm.DB {
-	m := global.CFG.Database
-
-	if m.Name == "" {
+func InitGorm() *gorm.DB {
+	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
+	if err != nil {
 		return nil
 	}
-
-	dsn := fmt.Sprintf("%v:%v@tcp(%v)/%v?charset=utf8&parseTime=True&loc=Local",
-		m.User,
-		m.Password,
-		m.Host,
-		m.Name,
-	)
-
-	if db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{}); err != nil {
-		return nil
-	} else {
-		//sqlDB, _ := db.DB()
-		//sqlDB.SetMaxIdleConns()
-		//sqlDB.SetMaxIdleConns()
-		return db
-	}
+	return db
 }
 
-func CreateTables(db *gorm.DB) {
+func RegisterTables(db *gorm.DB) error {
 	err := db.AutoMigrate(
 		model.User{},
-		model.Book{},
-		model.File{},
-		model.FileMD5{},
-		model.Sub{},
-		model.AllSubWords{},
 	)
-	if err != nil {
-		os.Exit(0)
-	}
+	return err
 }

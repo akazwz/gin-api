@@ -2,37 +2,35 @@ package initialize
 
 import (
 	"net/http"
-	"time"
 
-	"github.com/akazwz/go-gin-restful-api/api"
-	"github.com/akazwz/go-gin-restful-api/middleware"
-	"github.com/akazwz/go-gin-restful-api/model/response"
-	"github.com/akazwz/go-gin-restful-api/routers"
+	"github.com/akazwz/gin-api/api/auth"
+	"github.com/akazwz/gin-api/api/file"
+	"github.com/akazwz/gin-api/api/s3/r2"
+	"github.com/akazwz/gin-api/middleware"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
-	swaggerFiles "github.com/swaggo/files"
-	ginSwagger "github.com/swaggo/gin-swagger"
 )
 
-func Routers() *gin.Engine {
-	var router = gin.Default()
-	router.Static("/public", "./public")
-	//cors
-	router.Use(cors.New(cors.Config{
+func InitRouter() *gin.Engine {
+	r := gin.Default()
+
+	//  cors 跨域
+	r.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 		AllowAllOrigins:  true,
 		AllowMethods:     []string{"*"},
 		AllowHeaders:     []string{"*"},
 	}))
 
-	// rate limit
-	router.Use(middleware.RateLimitMiddleware(time.Millisecond*10, 100))
+	// 404 not found
+	r.NoRoute(func(c *gin.Context) {
+		c.JSON(http.StatusNotFound, gin.H{
+			"message": "Not Found",
+		})
+	})
 
-	router.NoRoute(response.NotFound)
-	//go-swagger
-	router.GET("/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
-	//Teapot
-	router.GET("teapot", func(c *gin.Context) {
+	//Teapot  418
+	r.GET("teapot", func(c *gin.Context) {
 		c.JSON(http.StatusTeapot, gin.H{
 			"message": "I'm a teapot",
 			"story": "This code was defined in 1998 " +
@@ -42,21 +40,38 @@ func Routers() *gin.Engine {
 				" However, known implementations do exist.",
 		})
 	})
-	router.GET("/", api.GetApiList)
-	publicRouterV1 := router.Group("v1")
+
+	// 文件路由组
+	fileGroup := r.Group("/file").Use(middleware.LimitByRequest(3))
 	{
-		routers.InitBaseRouter(publicRouterV1)
-		routers.InitVerificationCodeRouter(publicRouterV1)
+		// 简单上传
+		fileGroup.POST("", file.UploadFile)
+		// 分块上传
+		fileGroup.POST("/chunk", file.UploadChunk)
+		fileGroup.POST("/chunk/merge", file.MergeChunk)
+		fileGroup.GET("/chunk/state", file.ChunkState)
+	}
+	// auth 路由组
+	authGroup := r.Group("/auth").Use(middleware.LimitByRequest(3))
+	{
+		authGroup.POST("/signup", auth.SignupByUsernamePwd)
+		authGroup.POST("/login", auth.LoginByUsernamePwd)
+		/* me jwt auth  */
+		authGroup.GET("/me", middleware.JWTAuth(), auth.Me)
 	}
 
-	privateGroupV1 := router.Group("v1")
-	privateGroupV1.Use(middleware.JWTAuth())
+	// s3
+	s3Group := r.Group("/s3").Use(middleware.LimitByRequest(3))
 	{
-		routers.InitBookRouter(privateGroupV1)
-		routers.InitFileRouter(privateGroupV1)
-		routers.InitUserRouter(privateGroupV1)
-		routers.InitSubRouter(privateGroupV1)
+		s3Group.POST("/r2/upload", r2.Upload)
+		// https://docs.aws.amazon.com/amazonglacier/latest/dev/uploading-an-archive-mpu-using-rest.html
+		s3Group.POST("/r2/upload/:key", r2.CreateMultipartUpload)
+		s3Group.PUT("/r2/upload/:key", r2.UploadPart)
+		s3Group.POST("/r2/upload/complete", r2.CompleteMultipartUpload)
+		s3Group.DELETE("/r2/upload/:key", r2.AbortMultipartUpload)
+		s3Group.GET("/r2/upload/:key", r2.ListParts)
+		s3Group.GET("/r2/upload", r2.ListMultipartUploads)
 	}
 
-	return router
+	return r
 }

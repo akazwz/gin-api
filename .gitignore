@@ -1,3 +1,4 @@
-/config.yaml
 .idea/
 /public/file/
+/.env.local
+/test.db
