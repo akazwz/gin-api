@@ -39,7 +39,7 @@ func JWTAuth() gin.HandlerFunc {
 		if claims.ExpiresAt.Unix()-time.Now().Unix() < claims.BufferTime {
 
 		}
-		c.Set("uid", claims.UUID.String())
+		c.Set("uid", claims.UUID)
 		c.Next()
 	}
 }

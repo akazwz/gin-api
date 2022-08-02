@@ -11,6 +11,7 @@ import (
 func InitGorm() *gorm.DB {
 	db, err := gorm.Open(sqlite.Open("test.db"), &gorm.Config{})
 	if err != nil {
+		log.Println(err.Error())
 		log.Fatalln("初始化 gorm 失败")
 	}
 	return db
@@ -19,8 +20,10 @@ func InitGorm() *gorm.DB {
 func RegisterTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		model.User{},
+		model.Post{},
 	)
 	if err != nil {
+		log.Println(err.Error())
 		log.Fatalln("数据库表迁移失败")
 	}
 }

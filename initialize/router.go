@@ -5,6 +5,7 @@ import (
 
 	"github.com/akazwz/gin-api/api/auth"
 	"github.com/akazwz/gin-api/api/file"
+	"github.com/akazwz/gin-api/api/posts"
 	"github.com/akazwz/gin-api/api/s3/r2"
 	"github.com/akazwz/gin-api/middleware"
 	"github.com/gin-contrib/cors"
@@ -72,6 +73,13 @@ func InitRouter() *gin.Engine {
 		s3Group.DELETE("/r2/upload/:key", r2.AbortMultipartUpload)
 		s3Group.GET("/r2/upload/:key", r2.ListParts)
 		s3Group.GET("/r2/upload", r2.ListMultipartUploads)
+	}
+
+	postsGroup := r.Group("/posts").Use(middleware.LimitByRequest(3))
+	{
+		postsGroup.GET("/:id", posts.GetPostById)
+		postsGroup.POST("", middleware.JWTAuth(), posts.CreatePost)
+		postsGroup.GET("", posts.FindPosts)
 	}
 
 	return r

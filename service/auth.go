@@ -19,7 +19,7 @@ func (authService *AuthService) SignupService(u model.User) (*model.User, error)
 		return user, errors.New("用户名已注册")
 	}
 	u.Password = utils.BcryptHash(u.Password)
-	u.UUID = uuid.NewV4()
+	u.UUID = uuid.NewV4().String()
 	err := global.GDB.Create(&u).Error
 	return &u, err
 }
