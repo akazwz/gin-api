@@ -18,7 +18,7 @@ const (
 )
 
 func Ok(code int, data interface{}, msg string, c *gin.Context) {
-	c.JSON(http.StatusOK, Response{
+	c.AbortWithStatusJSON(http.StatusOK, Response{
 		Code: code,
 		Data: data,
 		Msg:  msg,
@@ -26,7 +26,7 @@ func Ok(code int, data interface{}, msg string, c *gin.Context) {
 }
 
 func Created(code int, data interface{}, msg string, c *gin.Context) {
-	c.JSON(http.StatusCreated, Response{
+	c.AbortWithStatusJSON(http.StatusCreated, Response{
 		Code: code,
 		Data: data,
 		Msg:  msg,
@@ -34,7 +34,7 @@ func Created(code int, data interface{}, msg string, c *gin.Context) {
 }
 
 func BadRequest(code int, data interface{}, msg string, c *gin.Context) {
-	c.JSON(http.StatusBadRequest, Response{
+	c.AbortWithStatusJSON(http.StatusBadRequest, Response{
 		Code: code,
 		Data: data,
 		Msg:  msg,
@@ -42,21 +42,21 @@ func BadRequest(code int, data interface{}, msg string, c *gin.Context) {
 }
 
 func Unauthorized(code int, msg string, c *gin.Context) {
-	c.JSON(http.StatusUnauthorized, Response{
+	c.AbortWithStatusJSON(http.StatusUnauthorized, Response{
 		Code: code,
 		Msg:  msg,
 	})
 }
 
 func Forbidden(code int, msg string, c *gin.Context) {
-	c.JSON(http.StatusForbidden, Response{
+	c.AbortWithStatusJSON(http.StatusForbidden, Response{
 		Code: code,
 		Msg:  msg,
 	})
 }
 
 func NotFound(code int, msg string, c *gin.Context) {
-	c.JSON(http.StatusNotFound, Response{
+	c.AbortWithStatusJSON(http.StatusNotFound, Response{
 		Code: code,
 		Msg:  msg,
 	})

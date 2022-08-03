@@ -1,12 +1,16 @@
 package utils
 
 import (
+	"context"
 	"crypto/md5"
 	"crypto/sha1"
 	"crypto/sha256"
 	"crypto/sha512"
 	"encoding/hex"
 	"fmt"
+	"github.com/akazwz/gin-api/global"
+	"github.com/aws/aws-sdk-go-v2/aws"
+	"github.com/aws/aws-sdk-go-v2/service/s3"
 	"hash"
 	"io"
 	"io/ioutil"
@@ -116,8 +120,8 @@ func MergeChunkFile(dir string) (int64, error) {
 	return timeSend, nil
 }
 
-// GetExtension 获取文件扩展名
-func GetExtension(filename string) string {
+// GetFileExtension 获取文件扩展名
+func GetFileExtension(filename string) string {
 	pos := strings.LastIndex(filename, ".")
 	if pos == -1 {
 		return ""
@@ -137,4 +141,22 @@ func GetRandomString(length int) string {
 		b[i] = charset[seededRand.Intn(len(charset))]
 	}
 	return string(b)
+}
+
+func GenerateR2Key(ext string) string {
+	var key string
+	if len(ext) < 1 {
+		key = GetRandomString(7)
+	} else {
+		key = GetRandomString(7) + "." + ext
+	}
+	_, err := global.R2C.HeadObject(context.TODO(), &s3.HeadObjectInput{
+		Bucket: aws.String(os.Getenv("R2_BUCKET_NAME")),
+		Key:    aws.String(key),
+	})
+
+	if err == nil {
+		GenerateR2Key(ext)
+	}
+	return key
 }

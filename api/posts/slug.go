@@ -18,3 +18,14 @@ func GetPostById(c *gin.Context) {
 	_ = postService.AddViewed(id)
 	response.Ok(api.CodeCommonSuccess, post, "success", c)
 }
+
+func DeletePostById(c *gin.Context) {
+	id := c.Param("id")
+	postService := service.PostService{}
+	err := postService.DeletePostByID(id)
+	if err != nil {
+		response.BadRequest(api.CodeCommonFailed, nil, "删除失败", c)
+		return
+	}
+	response.Ok(api.CodeCommonSuccess, nil, "success", c)
+}

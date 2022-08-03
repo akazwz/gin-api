@@ -65,7 +65,10 @@ func InitRouter() *gin.Engine {
 	s3Group := r.Group("/s3").Use(middleware.LimitByRequest(3))
 	{
 		// 直传
-		s3Group.POST("/r2/upload", r2.Upload)
+		s3Group.POST("/r2/upload",
+			middleware.FileSizeLimit(100*1024*1024),
+			r2.Upload,
+		)
 		// https://docs.aws.amazon.com/amazonglacier/latest/dev/uploading-an-archive-mpu-using-rest.html
 		s3Group.POST("/r2/upload/:key", r2.CreateMultipartUpload)
 		s3Group.PUT("/r2/upload/:key", r2.UploadPart)
@@ -75,9 +78,19 @@ func InitRouter() *gin.Engine {
 		s3Group.GET("/r2/upload", r2.ListMultipartUploads)
 	}
 
+	imagesTypes := []string{"image/jpeg", "image/png", "image/gif", "image/webp"}
+	imagesGroup := r.Group("/images")
+	{
+		imagesGroup.POST("",
+			middleware.FileSizeLimit(10*1024*1024),
+			middleware.FileMimeTypeLimit(imagesTypes),
+			r2.Upload)
+	}
+
 	postsGroup := r.Group("/posts").Use(middleware.LimitByRequest(3))
 	{
 		postsGroup.GET("/:id", posts.GetPostById)
+		postsGroup.DELETE("/:id", middleware.JWTAuth(), posts.DeletePostById)
 		postsGroup.POST("", middleware.JWTAuth(), posts.CreatePost)
 		postsGroup.GET("", posts.FindPosts)
 	}

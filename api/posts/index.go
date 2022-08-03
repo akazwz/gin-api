@@ -28,12 +28,12 @@ func CreatePost(c *gin.Context) {
 		Viewed:  0,
 		UID:     uid,
 	}
-	err = postService.CreatePost(post)
+	postInstance, err := postService.CreatePost(post)
 	if err != nil {
 		response.BadRequest(api.CodeCommonFailed, nil, "新建失败", c)
 		return
 	}
-	response.Created(api.CodeCommonSuccess, post, "success", c)
+	response.Created(api.CodeCommonSuccess, postInstance, "success", c)
 }
 
 func FindPosts(c *gin.Context) {

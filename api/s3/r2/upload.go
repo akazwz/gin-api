@@ -3,11 +3,11 @@ package r2
 import (
 	"context"
 	"fmt"
+	"mime/multipart"
 	"os"
 
 	"github.com/akazwz/gin-api/api"
 	"github.com/akazwz/gin-api/global"
-	"github.com/akazwz/gin-api/model/request"
 	"github.com/akazwz/gin-api/model/response"
 	"github.com/akazwz/gin-api/utils"
 	"github.com/aws/aws-sdk-go-v2/aws"
@@ -18,49 +18,32 @@ import (
 
 // Upload 直传
 func Upload(c *gin.Context) {
-	var fileUp request.UploadFile
-	// 绑定上传文件
-	err := c.ShouldBind(&fileUp)
-	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
-		return
-	}
-
-	// 判断文件是否为空
-	if fileUp.File.Size <= 0 {
-		response.BadRequest(api.CodeCommonFailed, nil, "file empty", c)
-		return
-	}
+	// 获取 file header
+	fileHeaderAny, _ := c.Get("fh")
+	fileHeader := fileHeaderAny.(*multipart.FileHeader)
 
 	// 获取文件 hash
-	hash, err := utils.HashFileByAlgo(fileUp.File, "sha256")
+	_, err := utils.HashFileByAlgo(fileHeader, "sha256")
 	if err != nil {
-		response.BadRequest(api.CodeCommonFailed, nil, "hash file error", c)
+		response.BadRequest(api.CodeCommonFailed, nil, "hash 文件失败", c)
 		return
 	}
 
 	// 打开文件， 获取 File
-	file, err := fileUp.File.Open()
+	file, err := fileHeader.Open()
 	if err != nil {
 		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
 		return
 	}
 
-	// 获取文件 meta data
-	_, err = global.R2C.HeadObject(context.TODO(), &s3.HeadObjectInput{
-		Bucket: aws.String(os.Getenv("R2_BUCKET_NAME")),
-		Key:    aws.String(hash),
-	})
+	// 获取文件扩展名
+	ext := utils.GetFileExtension(fileHeader.Filename)
 
-	url := fmt.Sprintf("%s/%s", os.Getenv("R2_HOST"), hash)
+	// 生成文件key
+	key := utils.GenerateR2Key(ext)
 
-	// 文件已经存在
-	if err == nil {
-		response.Created(api.CodeCommonSuccess, gin.H{
-			"url": url,
-		}, "object already exists", c)
-		return
-	}
+	// 文件 url
+	url := fmt.Sprintf("%s/%s", os.Getenv("R2_HOST"), key)
 
 	// 获取文件 mime-type
 	mtype, err := mimetype.DetectReader(file)
@@ -72,7 +55,7 @@ func Upload(c *gin.Context) {
 	// 上传文件
 	_, err = global.R2C.PutObject(context.TODO(), &s3.PutObjectInput{
 		Bucket:      aws.String(os.Getenv("R2_BUCKET_NAME")),
-		Key:         aws.String(hash),
+		Key:         aws.String(key),
 		ContentType: aws.String(mtype.String()),
 		Body:        file,
 	})

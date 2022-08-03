@@ -8,10 +8,10 @@ import (
 
 type PostService struct{}
 
-func (postService *PostService) CreatePost(post model.Post) error {
+func (postService *PostService) CreatePost(post model.Post) (model.Post, error) {
 	post.UUID = uuid.NewV4().String()
 	err := global.GDB.Create(&post).Error
-	return err
+	return post, err
 }
 
 func (postService *PostService) FindPosts() ([]model.Post, error) {
@@ -24,6 +24,12 @@ func (postService *PostService) FindPostByID(id string) (model.Post, error) {
 	var post model.Post
 	err := global.GDB.Where("uuid = ?", id).First(&post).Error
 	return post, err
+}
+
+func (postService *PostService) DeletePostByID(id string) error {
+	var post model.Post
+	err := global.GDB.Where("uuid = ?", id).Delete(&post).Error
+	return err
 }
 
 func (postService *PostService) AddViewed(id string) error {
