@@ -10,7 +10,7 @@ type Post struct {
 	Cover     string    `json:"cover"`
 	Content   string    `json:"content"`
 	Viewed    int       `json:"viewed"`
-	UID       string    `json:"uid"`
+	UID       string    `json:"uid" gorm:"size:191"`
 	User      User      `json:"-" gorm:"foreignKey:UID"`
 	CreatedAt time.Time `json:"created_at" gorm:"created_at"`
 	UpdatedAt time.Time `json:"updated_at" gorm:"updated_at"`

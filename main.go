@@ -14,6 +14,7 @@ import (
 func main() {
 	// 读取环境变量配置
 	InitEnvConfig()
+
 	// 初始化路由
 	r := initialize.InitRouter()
 	// 初始化 R2
