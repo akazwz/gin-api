@@ -36,6 +36,7 @@ func main() {
 		Handler: r,
 	}
 	if err := s.ListenAndServe(); err != nil {
+		log.Println(err)
 		log.Fatalln("Api启动失败")
 	}
 }
