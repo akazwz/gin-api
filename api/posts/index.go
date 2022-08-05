@@ -39,7 +39,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 	// 清除 posts 缓存
-	global.GREDIS.Set(context.TODO(), "cache-posts", nil, 0)
+	global.GREDIS.Del(context.TODO(), "cache-posts")
 	response.Created(api.CodeCommonSuccess, postInstance, "success", c)
 }
 
