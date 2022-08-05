@@ -63,7 +63,7 @@ func FindPosts(c *gin.Context) {
 	// posts 转为 json字符串
 	bytes, _ := json.Marshal(posts)
 	// 存入缓存
-	_ = global.GREDIS.Set(context.TODO(), "cache-posts", string(bytes), 1*time.Minute).Err()
+	_ = global.GREDIS.Set(context.TODO(), "cache-posts", string(bytes), 24*time.Hour).Err()
 
 	response.Ok(api.CodeCommonSuccess, posts, "success", c)
 }
