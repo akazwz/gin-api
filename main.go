@@ -29,6 +29,9 @@ func main() {
 		}
 	}(db)
 
+	// 初始化 redis
+	global.GREDIS = initialize.InitRedis()
+
 	// 端口地址
 	port := os.Getenv("API_PORT")
 	s := &http.Server{
