@@ -22,18 +22,13 @@ func (postService *PostService) FindPosts() ([]model.Post, error) {
 
 func (postService *PostService) FindPostByID(id string) (model.Post, error) {
 	var post model.Post
-	err := global.GDB.Where("uuid = ?", id).First(&post).Error
+	// 获取 post 并且 viewed + 1
+	err := global.GDB.Where("uuid = ?", id).First(&post).Update("viewed", post.Viewed+1).Error
 	return post, err
 }
 
 func (postService *PostService) DeletePostByID(id string) error {
 	var post model.Post
 	err := global.GDB.Where("uuid = ?", id).Delete(&post).Error
-	return err
-}
-
-func (postService *PostService) AddViewed(id string) error {
-	var post model.Post
-	err := global.GDB.Where("uuid = ?", id).First(&post).Update("viewed", post.Viewed+1).Error
 	return err
 }
