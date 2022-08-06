@@ -44,7 +44,7 @@ func CreatePost(c *gin.Context) {
 func FindPosts(c *gin.Context) {
 	// 获取缓存
 	var postsCache []model.Post
-	err := utils.RedisCacheGet("cache-projects", &postsCache)
+	err := utils.RedisCacheGet("cache-posts", &postsCache)
 	if err == nil {
 		response.Ok(api.CodeCommonSuccess, postsCache, "success", c)
 		return
@@ -57,6 +57,6 @@ func FindPosts(c *gin.Context) {
 		return
 	}
 	// 设置缓存
-	_ = utils.RedisCacheSet("cache-projects", posts, 24*time.Hour)
+	_ = utils.RedisCacheSet("cache-posts", posts, 24*time.Hour)
 	response.Ok(api.CodeCommonSuccess, posts, "success", c)
 }
