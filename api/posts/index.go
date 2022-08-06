@@ -3,6 +3,7 @@ package posts
 import (
 	"context"
 	"encoding/json"
+	"log"
 	"time"
 
 	"github.com/akazwz/gin-api/api"
@@ -48,6 +49,7 @@ func FindPosts(c *gin.Context) {
 	result, err := global.GREDIS.Get(context.TODO(), "cache-posts").Result()
 	// redis 中有缓存
 	if err == nil {
+		log.Println("cache")
 		var posts []model.Post
 		_ = json.Unmarshal([]byte(result), &posts)
 		response.Ok(api.CodeCommonSuccess, posts, "success", c)

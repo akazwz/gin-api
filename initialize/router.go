@@ -1,6 +1,7 @@
 package initialize
 
 import (
+	"github.com/akazwz/gin-api/api/projects"
 	"net/http"
 
 	"github.com/akazwz/gin-api/api/auth"
@@ -93,6 +94,12 @@ func InitRouter() *gin.Engine {
 		postsGroup.DELETE("/:id", middleware.JWTAuth(), posts.DeletePostById)
 		postsGroup.POST("", middleware.JWTAuth(), posts.CreatePost)
 		postsGroup.GET("", posts.FindPosts)
+	}
+
+	projectsGroup := r.Group("/projects").Use(middleware.LimitByRequest(3))
+	{
+		projectsGroup.GET("", projects.FindProjects)
+		projectsGroup.POST("", middleware.JWTAuth(), projects.CreateProject)
 	}
 
 	return r

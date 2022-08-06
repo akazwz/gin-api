@@ -49,6 +49,7 @@ func RegisterTables(db *gorm.DB) {
 	err := db.AutoMigrate(
 		model.User{},
 		model.Post{},
+		model.Project{},
 	)
 	if err != nil {
 		log.Println(err.Error())
