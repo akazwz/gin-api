@@ -1,40 +1,35 @@
 package projects
 
 import (
-	"context"
-	"encoding/json"
 	"time"
 
 	"github.com/akazwz/gin-api/api"
-	"github.com/akazwz/gin-api/global"
 	"github.com/akazwz/gin-api/model"
 	"github.com/akazwz/gin-api/model/request"
 	"github.com/akazwz/gin-api/model/response"
 	"github.com/akazwz/gin-api/service"
+	"github.com/akazwz/gin-api/utils"
 	"github.com/gin-gonic/gin"
 )
 
+var projectService = service.ProjectService{}
+
 func FindProjects(c *gin.Context) {
-	// redis 中获取缓存
-	result, err := global.GREDIS.Get(context.TODO(), "cache-projects").Result()
-	// redis 中有缓存
+	// 获取缓存
+	var projectsCache []model.Project
+	err := utils.RedisCacheGet("cache-projects", &projectsCache)
 	if err == nil {
-		var projects []model.Project
-		_ = json.Unmarshal([]byte(result), &projects)
-		response.Ok(api.CodeCommonSuccess, projects, "success", c)
+		response.Ok(api.CodeCommonSuccess, projectsCache, "success", c)
 		return
 	}
-	projectService := service.ProjectService{}
+
 	projects, err := projectService.FindProjects()
 	if err != nil {
 		response.BadRequest(api.CodeCommonFailed, nil, "获取失败", c)
 		return
 	}
-	// posts 转为 json字符串
-	bytes, _ := json.Marshal(projects)
-	// 存入缓存
-	_ = global.GREDIS.Set(context.TODO(), "cache-projects", string(bytes), 24*time.Hour).Err()
-
+	// 设置缓存
+	_ = utils.RedisCacheSet("cache-projects", projects, 24*time.Hour)
 	response.Ok(api.CodeCommonSuccess, projects, "success", c)
 }
 
@@ -48,7 +43,6 @@ func CreateProject(c *gin.Context) {
 		response.BadRequest(api.CodeCommonFailed, nil, "参数错误", c)
 		return
 	}
-	projectService := service.ProjectService{}
 	project := model.Project{
 		Name:    projectParams.Name,
 		About:   projectParams.About,
@@ -64,7 +58,7 @@ func CreateProject(c *gin.Context) {
 		response.BadRequest(api.CodeCommonFailed, nil, "新建失败", c)
 		return
 	}
-	// 清除 posts 缓存
-	global.GREDIS.Del(context.TODO(), "cache-projects")
+	// 清除缓存
+	_ = utils.RedisCacheDel("cache-projects")
 	response.Created(api.CodeCommonSuccess, projectInstance, "success", c)
 }
