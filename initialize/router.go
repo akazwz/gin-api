@@ -1,14 +1,16 @@
 package initialize
 
 import (
-	"github.com/akazwz/gin-api/api/projects"
 	"net/http"
 
+	"github.com/akazwz/gin-api/api"
 	"github.com/akazwz/gin-api/api/auth"
 	"github.com/akazwz/gin-api/api/file"
 	"github.com/akazwz/gin-api/api/posts"
+	"github.com/akazwz/gin-api/api/projects"
 	"github.com/akazwz/gin-api/api/s3/r2"
 	"github.com/akazwz/gin-api/middleware"
+	"github.com/akazwz/gin-api/model/response"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -101,6 +103,15 @@ func InitRouter() *gin.Engine {
 		projectsGroup.GET("", projects.FindProjects)
 		projectsGroup.POST("", middleware.JWTAuth(), projects.CreateProject)
 	}
+
+	// api endpoint
+	r.GET("", func(c *gin.Context) {
+		response.Ok(api.CodeCommonSuccess, gin.H{
+			"auth":     "https://api.onio.cc/auth",
+			"posts":    "https://api.onio.cc/posts",
+			"projects": "https://api.onio.cc/projects",
+		}, "success", c)
+	})
 
 	return r
 }
