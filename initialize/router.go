@@ -106,6 +106,10 @@ func InitRouter() *gin.Engine {
 		projectsGroup.DELETE("/:id", middleware.JWTAuth(), projects.DeleteProjectByID)
 	}
 
+	r.GET("/healthz", func(c *gin.Context) {
+		response.Ok(api.CodeCommonSuccess, nil, "success", c)
+	})
+
 	// api endpoint
 	r.GET("", func(c *gin.Context) {
 		response.Ok(api.CodeCommonSuccess, gin.H{
