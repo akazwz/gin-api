@@ -1,0 +1,21 @@
+syntax = "proto3";
+
+option go_package = "github.com/akazwz/gin-api/grpc/nsfw";
+
+package nsfw;
+
+service Classify {
+  rpc ClassifyImage(ClassifyRequest) returns (ClassifyReply) {}
+}
+
+message ClassifyRequest {
+  bytes image = 1;
+}
+
+message ClassifyReply {
+  double drawing = 1;
+  double hentai = 2;
+  double neutral = 3;
+  double porn = 4;
+  double sexy = 5;
+}
