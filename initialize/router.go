@@ -102,6 +102,8 @@ func InitRouter() *gin.Engine {
 	{
 		projectsGroup.GET("", projects.FindProjects)
 		projectsGroup.POST("", middleware.JWTAuth(), projects.CreateProject)
+		projectsGroup.GET("/:id", projects.FindProjectByID)
+		projectsGroup.DELETE("/:id", middleware.JWTAuth(), projects.DeleteProjectByID)
 	}
 
 	// api endpoint
