@@ -6,6 +6,7 @@ import (
 	"github.com/akazwz/gin-api/api"
 	"github.com/akazwz/gin-api/api/auth"
 	"github.com/akazwz/gin-api/api/file"
+	"github.com/akazwz/gin-api/api/image/classify"
 	"github.com/akazwz/gin-api/api/posts"
 	"github.com/akazwz/gin-api/api/projects"
 	"github.com/akazwz/gin-api/api/s3/r2"
@@ -82,12 +83,17 @@ func InitRouter() *gin.Engine {
 	}
 
 	imagesTypes := []string{"image/jpeg", "image/png", "image/gif", "image/webp"}
-	imagesGroup := r.Group("/images")
+	imagesGroup := r.Group("/image")
 	{
 		imagesGroup.POST("",
 			middleware.FileSizeLimit(10*1024*1024),
 			middleware.FileMimeTypeLimit(imagesTypes),
 			r2.Upload)
+
+		imagesGroup.POST("/classify/file",
+			middleware.FileSizeLimit(10*1024*1024),
+			middleware.FileMimeTypeLimit(imagesTypes),
+			classify.ImageFile)
 	}
 
 	postsGroup := r.Group("/posts").Use(middleware.LimitByRequest(3))
