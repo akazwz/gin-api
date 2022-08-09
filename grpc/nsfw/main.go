@@ -32,7 +32,7 @@ func NSFWClassify(image []byte) (err error, result ClassifyResult) {
 
 	c := pb.NewClassifyClient(conn)
 
-	ctx, cancel := context.WithTimeout(context.Background(), 10*time.Second)
+	ctx, cancel := context.WithTimeout(context.Background(), 30*time.Second)
 	defer cancel()
 
 	reply, err := c.ClassifyImage(ctx, &pb.ClassifyRequest{Image: image})
