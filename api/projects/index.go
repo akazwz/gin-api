@@ -19,7 +19,7 @@ func FindProjects(c *gin.Context) {
 	var projectsCache []model.Project
 	err := utils.RedisCacheGet("cache-projects", &projectsCache)
 	if err == nil {
-		response.Ok(api.CodeCommonSuccess, projectsCache, "success", c)
+		response.Ok(api.CodeCommonSuccess, projectsCache, "success-cache", c)
 		return
 	}
 

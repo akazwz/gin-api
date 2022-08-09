@@ -45,7 +45,7 @@ func FindPosts(c *gin.Context) {
 	var postsCache []model.Post
 	err := utils.RedisCacheGet("cache-posts", &postsCache)
 	if err == nil {
-		response.Ok(api.CodeCommonSuccess, postsCache, "success", c)
+		response.Ok(api.CodeCommonSuccess, postsCache, "success-cache", c)
 		return
 	}
 

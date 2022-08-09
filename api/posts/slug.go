@@ -20,7 +20,7 @@ func GetPostById(c *gin.Context) {
 	cachePost := model.Post{}
 	err := utils.RedisCacheGet(key, &cachePost)
 	if err == nil {
-		response.Ok(api.CodeCommonSuccess, cachePost, "", c)
+		response.Ok(api.CodeCommonSuccess, cachePost, "success-cache", c)
 		return
 	}
 

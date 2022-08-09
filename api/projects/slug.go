@@ -18,7 +18,7 @@ func FindProjectByID(c *gin.Context) {
 	cacheProject := model.Project{}
 	err := utils.RedisCacheGet(key, &cacheProject)
 	if err == nil {
-		response.Ok(api.CodeCommonSuccess, cacheProject, "success", c)
+		response.Ok(api.CodeCommonSuccess, cacheProject, "success-cache", c)
 		return
 	}
 	project, err := projectService.FindProjectByID(id)
