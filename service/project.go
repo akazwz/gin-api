@@ -27,7 +27,7 @@ func (p *ProjectService) FindProjectByID(id string) (model.Project, error) {
 }
 
 func (p *ProjectService) DeleteProjectByID(id string) error {
-	var post model.Post
-	err := global.GDB.Where("uuid = ?", id).Delete(&post).Error
+	var project model.Project
+	err := global.GDB.Where("uuid = ?", id).Delete(&project).Error
 	return err
 }
