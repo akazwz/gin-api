@@ -28,7 +28,6 @@ func CreatePost(c *gin.Context) {
 		Title:   postParams.Title,
 		Cover:   postParams.Cover,
 		Content: postParams.Content,
-		Viewed:  0,
 		UID:     uid,
 	}
 	postInstance, err := postService.CreatePost(post)
