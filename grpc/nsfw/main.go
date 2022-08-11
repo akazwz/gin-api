@@ -18,7 +18,7 @@ type ClassifyResult struct {
 	Sexy    float64
 }
 
-func NSFWClassify(image []byte) (err error, result ClassifyResult) {
+func ClassifyImage(image []byte) (err error, result ClassifyResult) {
 	conn, err := grpc.Dial(os.Getenv("NSFW_SERVICE_HOST"), grpc.WithTransportCredentials(insecure.NewCredentials()))
 	if err != nil {
 		return

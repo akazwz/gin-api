@@ -32,7 +32,7 @@ func ImageFile(c *gin.Context) {
 		return
 	}
 
-	err, result := nsfw.NSFWClassify(b)
+	err, result := nsfw.ClassifyImage(b)
 	if err != nil {
 		log.Println(err)
 		response.BadRequest(api.CodeCommonFailed, nil, "分类检测失败", c)
