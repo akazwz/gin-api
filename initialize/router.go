@@ -1,8 +1,6 @@
 package initialize
 
 import (
-	"net/http"
-
 	"github.com/akazwz/gin-api/api"
 	"github.com/akazwz/gin-api/api/auth"
 	"github.com/akazwz/gin-api/api/file"
@@ -11,7 +9,6 @@ import (
 	"github.com/akazwz/gin-api/api/projects"
 	"github.com/akazwz/gin-api/api/s3/r2"
 	"github.com/akazwz/gin-api/middleware"
-	"github.com/akazwz/gin-api/model/response"
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -27,24 +24,10 @@ func InitRouter() *gin.Engine {
 		AllowHeaders:     []string{"*"},
 	}))
 
-	// 404 not found
-	r.NoRoute(func(c *gin.Context) {
-		c.JSON(http.StatusNotFound, gin.H{
-			"message": "Not Found",
-		})
-	})
-
-	//Teapot  418
-	r.GET("teapot", func(c *gin.Context) {
-		c.JSON(http.StatusTeapot, gin.H{
-			"message": "I'm a teapot",
-			"story": "This code was defined in 1998 " +
-				"as one of the traditional IETF April Fools' jokes," +
-				" in RFC 2324, Hyper Text Coffee Pot Control Protocol," +
-				" and is not expected to be implemented by actual HTTP servers." +
-				" However, known implementations do exist.",
-		})
-	})
+	r.NoRoute(api.NotFound)
+	r.GET("/healthz", api.Healthz)
+	r.GET("", api.Endpoints)
+	r.GET("teapot", api.Teapot)
 
 	// 文件路由组
 	fileGroup := r.Group("/file").Use(middleware.LimitByRequest(3))
@@ -111,19 +94,6 @@ func InitRouter() *gin.Engine {
 		projectsGroup.GET("/:id", projects.FindProjectByID)
 		projectsGroup.DELETE("/:id", middleware.JWTAuth(), projects.DeleteProjectByID)
 	}
-
-	r.GET("/healthz", func(c *gin.Context) {
-		response.Ok(api.CodeCommonSuccess, nil, "success", c)
-	})
-
-	// api endpoint
-	r.GET("", func(c *gin.Context) {
-		response.Ok(api.CodeCommonSuccess, gin.H{
-			"auth":     "https://api.onio.cc/auth",
-			"posts":    "https://api.onio.cc/posts",
-			"projects": "https://api.onio.cc/projects",
-		}, "success", c)
-	})
 
 	return r
 }
