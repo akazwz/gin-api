@@ -2,7 +2,6 @@ package main
 
 import (
 	"database/sql"
-	"github.com/akazwz/gin-api/kafka/counter"
 	"log"
 	"net/http"
 	"os"
@@ -13,7 +12,7 @@ import (
 )
 
 func main() {
-	counter.Consume()
+	//counter.Consume()
 	// 读取环境变量配置
 	InitEnvConfig()
 

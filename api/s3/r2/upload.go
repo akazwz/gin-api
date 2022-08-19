@@ -43,7 +43,7 @@ func Upload(c *gin.Context) {
 	key := utils.GenerateR2Key(ext)
 
 	// 文件 url
-	url := fmt.Sprintf("%s/%s", os.Getenv("R2_HOST"), key)
+	_ = fmt.Sprintf("%s/%s", os.Getenv("R2_HOST"), key)
 
 	// 获取文件 mime-type
 	mtype, err := mimetype.DetectReader(file)
@@ -60,12 +60,26 @@ func Upload(c *gin.Context) {
 		Body:        file,
 	})
 
+	psClient := s3.NewPresignClient(global.R2C, func(options *s3.PresignOptions) {
+		options.Expires = 3600
+	})
+
+	getObjectInput := &s3.GetObjectInput{
+		Bucket: nil,
+		Key:    nil,
+	}
+
+	u, err := psClient.PresignGetObject(context.Background(), getObjectInput)
+	if err != nil {
+		return
+	}
+
 	if err != nil {
 		response.BadRequest(api.CodeCommonFailed, nil, err.Error(), c)
 		return
 	}
 
 	response.Created(api.CodeCommonSuccess, gin.H{
-		"url": url,
+		"url": u.URL,
 	}, "success", c)
 }
